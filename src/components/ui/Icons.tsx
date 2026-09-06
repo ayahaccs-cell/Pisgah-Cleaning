@@ -103,3 +103,67 @@ export function StatusDot({ className = '' }: { className?: string }) {
     />
   );
 }
+
+/* Sector marks for the trust bar. Monochrome, 1.5px stroke, no filled badges. */
+
+export function RetailIcon(props: IconProps) {
+  return (
+    <svg {...base(props)} fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+      <path d="M3 7l1.5-3h15L21 7" />
+      <path d="M3 7h18v13H3z" />
+      <path d="M3 7a2.5 2.5 0 0 0 5 0 2.5 2.5 0 0 0 5 0 2.5 2.5 0 0 0 5 0 2.5 2.5 0 0 0 3 0" />
+      <path d="M9 20v-6h6v6" />
+    </svg>
+  );
+}
+
+export function CinemaIcon(props: IconProps) {
+  return (
+    <svg {...base(props)} fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+      <rect x="2" y="6" width="20" height="14" rx="2" />
+      <path d="M2 10h20" />
+      <path d="M6 6L4 2M11 6L9 2M16 6l-2-4M21 6l-2-4" />
+      <path d="M10 13.5l4 2.5-4 2.5z" />
+    </svg>
+  );
+}
+
+export function MosqueIcon(props: IconProps) {
+  return (
+    <svg {...base(props)} fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 3c2.2 1.8 3.5 3.6 3.5 5.4 0 1.4-1.1 2.6-3.5 2.6s-3.5-1.2-3.5-2.6C8.5 6.6 9.8 4.8 12 3z" />
+      <path d="M4 21v-8a8 8 0 0 1 16 0v8" />
+      <path d="M2 21h20" />
+      <path d="M4 13H2v8M20 13h2v8" />
+      <path d="M10 21v-4a2 2 0 0 1 4 0v4" />
+    </svg>
+  );
+}
+
+export function TowerIcon(props: IconProps) {
+  return (
+    <svg {...base(props)} fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+      <path d="M5 21V5a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v16" />
+      <path d="M14 10h4a1 1 0 0 1 1 1v10" />
+      <path d="M3 21h18" />
+      <path d="M8 8h3M8 12h3M8 16h3M16.5 14h0M16.5 17.5h0" />
+    </svg>
+  );
+}
+
+export function StarIcon(props: IconProps) {
+  return (
+    <svg {...base(props)} fill="currentColor">
+      <path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5-5.8-3-5.8 3 1.1-6.5L2.6 9.4l6.5-.9z" />
+    </svg>
+  );
+}
+
+export function ShieldCheckIcon(props: IconProps) {
+  return (
+    <svg {...base(props)} fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+      <path d="M9 12l2 2 4-4" />
+    </svg>
+  );
+}

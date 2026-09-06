@@ -162,6 +162,14 @@ export const siteConfig = {
       width: 1600,
       height: 2000,
     },
+    /* Wide hero panel. A uniformed technician with equipment in a bright,
+       pristine interior, framed so the inline start third stays clean for the
+       headline. */
+    heroWide: {
+      src: '/media/hero-wide.jpg',
+      width: 1920,
+      height: 1080,
+    },
   },
 
   /**

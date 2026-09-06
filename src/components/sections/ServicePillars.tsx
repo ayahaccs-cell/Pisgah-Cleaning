@@ -64,7 +64,7 @@ export function ServicePillars() {
             <h3 className="mt-7 max-w-[18ch] font-display text-[clamp(24px,2.7vw,34px)] font-bold text-white">
               {leadCopy.title}
             </h3>
-            <p className="mt-4 max-w-[52ch] text-[16px] leading-relaxed text-[#A9C4CD]">
+            <p className="mt-4 max-w-[52ch] text-[16px] leading-relaxed text-[#CBD5E1]">
               {leadCopy.summary}
             </p>
             <p className="spec spec-on-ink mt-5">{leadCopy.spec}</p>
@@ -73,7 +73,7 @@ export function ServicePillars() {
               {leadCopy.items.map((item) => (
                 <li
                   key={item}
-                  className="relative ps-4 text-[15px] leading-snug text-[#C3D8E0]"
+                  className="relative ps-4 text-[15px] leading-snug text-[#CBD5E1]"
                 >
                   <span
                     aria-hidden="true"

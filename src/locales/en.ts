@@ -18,6 +18,9 @@ export const en = {
     emergency: '24/7 Emergency Call-Out',
     office: 'Office',
     skipToContent: 'Skip to content',
+    mailLabel: 'Mail to us',
+    hoursLabel: 'Operating hours',
+    callAnytime: 'Call anytime',
   },
 
   nav: {
@@ -34,6 +37,7 @@ export const en = {
   },
 
   cta: {
+    bookNow: 'Book Now',
     survey: 'Book Free Site Survey',
     inspection: 'Book Complimentary Inspection',
     scopeRequest: 'Request Site Scope',
@@ -46,9 +50,9 @@ export const en = {
 
   hero: {
     eyebrow: 'ESTABLISHED 2008 - KINGDOM OF BAHRAIN - DIRECT MANAGEMENT',
-    headline: "Bahrain's landmark sites and private villas, cared for by one accountable team.",
+    headline: 'Cleaning Made Simple',
     narrative:
-      'Since 2008 we have held the floors of malls, cinemas, schools and villas that cannot afford a closed day, with crews employed directly by Pisgah W.L.L., inducted and uniformed by us. No day-labour dispatching, no subcontractors, and no scope written before we have walked the building.',
+      "Since 2008 we have held the floors of Bahrain's landmark malls, cinemas, schools, mosques, and villas that cannot afford a closed day. Directly employed, uniformed Pisgah W.L.L. crews with zero subcontractors.",
     marks: {
       years: 'OPERATING SINCE 2008',
       employment: 'DIRECT W.L.L. EMPLOYMENT',
@@ -56,18 +60,17 @@ export const en = {
     },
     badge: '100% In-House Workforce - Zero Subcontracted Labor',
     portraitAlt: 'A uniformed Pisgah technician at work in a bright modern interior',
-    videoTitle: 'Inside a Pisgah shift',
-    videoSub: 'Owner uploaded footage',
+    videoTitle: 'Professional and Premium',
+    videoSub: 'Inside a Pisgah shift',
     videoPending: 'Awaiting media.heroVideos[0].url',
   },
 
   intake: {
-    title: 'Get a survey scope in minutes',
+    title: 'Get your free estimate today!',
     note: 'No pricing online. Every scope is quoted after we walk the property.',
     category: 'Property Category',
     scope: 'Service Scope',
     phone: 'Mobile or WhatsApp Number',
-    preview: 'Message that opens on WhatsApp',
     assurances: {
       free: 'Survey is complimentary',
       noObligation: 'No obligation',
@@ -86,6 +89,21 @@ export const en = {
       technical: 'Technical Maintenance',
     },
     fallbackNumber: '[your number]',
+    submit: 'Request Site Scope',
+    phonePlaceholder: '+973 0000 0000',
+  },
+
+  trust: {
+    ratingTitle: 'Top Rated Commercial and Villa Care in Bahrain',
+    ratingSub: 'Retained on landmark contracts since 2008',
+    sectorsLabel: 'Sectors we hold',
+    sectors: {
+      retail: 'Retail Malls',
+      cinemas: 'Cinemas',
+      mosques: 'Mosques',
+      towers: 'Corporate Towers',
+    },
+    guarantee: 'Direct Pisgah Induction - Zero Subcontractors Guarantee',
   },
 
   clients: {

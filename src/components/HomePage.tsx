@@ -2,6 +2,8 @@ import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { MobilePinnedBar } from '@/components/layout/MobilePinnedBar';
 import { HeroSection } from '@/components/sections/HeroSection';
+import { EstimateCard } from '@/components/sections/EstimateCard';
+import { TrustBar } from '@/components/sections/TrustBar';
 import { ClientStrip } from '@/components/sections/ClientStrip';
 import { ProcessJourney } from '@/components/sections/ProcessJourney';
 import { ServicePillars } from '@/components/sections/ServicePillars';
@@ -22,6 +24,8 @@ export function HomePage() {
       <Navbar />
       <MainLandmark>
         <HeroSection />
+        <EstimateCard />
+        <TrustBar />
         <ClientStrip />
         <ProcessJourney />
         <ServicePillars />

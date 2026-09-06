@@ -32,8 +32,8 @@ const VARIANTS: Record<Variant, string> = {
   primary: 'bg-deep text-white shadow-deep hover:bg-blue hover:shadow-cyan',
   ghost: 'bg-transparent text-body border-hairline hover:border-teal hover:text-blue',
   glass: 'glass-ghost text-ink hover:bg-white/80',
-  whatsapp: 'bg-whatsapp text-[#06301A] shadow-[0_8px_20px_rgba(37,211,102,.28)] hover:bg-[#2BE674]',
-  teal: 'bg-teal text-[#06282E] hover:bg-[#4AC6D7]',
+  whatsapp: 'bg-whatsapp text-[#06301A] shadow-[0_8px_20px_rgba(37,211,102,.28)] hover:bg-[#22C55E]',
+  teal: 'bg-teal text-[#04231F] hover:bg-[#14B8A6]',
   outline: 'bg-transparent text-white border-white/70 hover:border-white hover:bg-white/10',
 };
 

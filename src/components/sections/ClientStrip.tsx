@@ -21,7 +21,7 @@ export function ClientStrip() {
     <section
       id="clients"
       aria-labelledby="clients-heading"
-      className="bg-ink py-rhythm-sm text-[#8FAEBA]"
+      className="bg-ink py-rhythm-sm text-[#94A3B8]"
     >
       <div className="container-page grid gap-10 lg:grid-cols-12 lg:gap-14">
         <div className="lg:col-span-4">

@@ -22,7 +22,7 @@ export function EmergencyCallout() {
     <section
       id="emergency"
       aria-labelledby="emergency-heading"
-      className="section-rhythm relative isolate overflow-hidden bg-ink text-[#A9C4CD]"
+      className="section-rhythm relative isolate overflow-hidden bg-ink text-[#CBD5E1]"
     >
       {/* Soft radial lighting behind the headline. Painted, never animated. */}
       <div

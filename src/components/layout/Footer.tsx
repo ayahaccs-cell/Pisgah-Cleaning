@@ -47,7 +47,7 @@ export function Footer() {
       id="contact"
       role="contentinfo"
       aria-label={t.a11y.footerLandmark}
-      className="bg-ink text-[#8FAEBA]"
+      className="bg-ink text-[#94A3B8]"
     >
 
       <div className="container-page grid gap-10 py-14 md:grid-cols-2 lg:grid-cols-4">

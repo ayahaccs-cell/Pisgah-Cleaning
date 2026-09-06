@@ -31,9 +31,9 @@ export function LocaleSwitcher({ tone = 'bar', className = '' }: Props) {
   const { locale, t } = useLocale();
 
   const shell = tone === 'bar' ? 'border-white/20' : 'border-hairline w-full';
-  const idle = tone === 'bar' ? 'text-[#9DBAC6]' : 'text-muted';
+  const idle = tone === 'bar' ? 'text-[#94A3B8]' : 'text-muted';
   const active =
-    tone === 'bar' ? 'bg-cyan text-[#052637] font-semibold' : 'bg-deep text-white font-semibold';
+    tone === 'bar' ? 'bg-cyan text-[#042F2A] font-semibold' : 'bg-deep text-white font-semibold';
   const height = tone === 'bar' ? 'min-h-[40px]' : 'min-h-[48px] flex-1';
   const focus = tone === 'bar' ? 'focus-ring-ink' : 'focus-ring-light';
 

@@ -94,13 +94,13 @@
 
   /* WCAG 2.1 SC 1.4.11 requires a focus indicator at 3:1 against what sits
      behind it. Measured on this palette:
-       Deep Blue #02547E on white      8.16:1  pass
-       Deep Blue #02547E on Ink Navy   1.83:1  fail
-       Emerald  #34D399 on Ink Navy    7.79:1  pass
+       Teal 700 #0F766E on white       5.47:1  pass
+       Teal 700 #0F766E on Slate 900   1.44:1  fail
+       Emerald  #34D399 on Slate 900   9.29:1  pass
        Emerald  #34D399 on white       1.92:1  fail
      So the ring colour is chosen by surface rather than fixed. */
   :root {
-    --focus-ring: #02547E;
+    --focus-ring: #0F766E;
     --focus-offset: #FFFFFF;
   }
 
@@ -116,7 +116,7 @@
   }
 
   ::selection {
-    background: theme('colors.cyan');
+    background: theme('colors.deep');
     color: #fff;
   }
 }
@@ -204,7 +204,7 @@
     appearance: none;
     -webkit-appearance: none;
     padding-inline-end: 40px;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23096DA1' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M5 8l5 5 5-5'/></svg>");
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%230F766E' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M5 8l5 5 5-5'/></svg>");
     background-repeat: no-repeat;
     background-size: 18px;
     background-position: right 14px center;
@@ -238,11 +238,11 @@
   .hair-b { border-bottom: 1px solid rgb(255 255 255 / 0.08); }
 
   /* On light ground the hairline is ink at low alpha, never a grey border. */
-  .hair-light-b { border-bottom: 1px solid rgb(15 42 53 / 0.08); }
-  .hair-light-t { border-top: 1px solid rgb(15 42 53 / 0.08); }
+  .hair-light-b { border-bottom: 1px solid rgb(15 23 42 / 0.08); }
+  .hair-light-t { border-top: 1px solid rgb(15 23 42 / 0.08); }
   .surface-light {
     background-color: #ffffff;
-    border: 1px solid rgb(15 42 53 / 0.07);
+    border: 1px solid rgb(15 23 42 / 0.07);
   }
 
   /* A 1.5px stroke that reads as a drawn rule, integrated into the type. */
@@ -254,8 +254,8 @@
       to right,
       theme('colors.teal') 0,
       theme('colors.teal') 34px,
-      rgb(15 42 53 / 0.1) 34px,
-      rgb(15 42 53 / 0.1) 100%
+      rgb(15 23 42 / 0.1) 34px,
+      rgb(15 23 42 / 0.1) 100%
     );
   }
 
@@ -264,8 +264,8 @@
       to left,
       theme('colors.teal') 0,
       theme('colors.teal') 34px,
-      rgb(15 42 53 / 0.1) 34px,
-      rgb(15 42 53 / 0.1) 100%
+      rgb(15 23 42 / 0.1) 34px,
+      rgb(15 23 42 / 0.1) 100%
     );
   }
 
@@ -296,16 +296,15 @@
     line-height: 1.5;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    /* #56707C measures 5.24:1 on white and 4.82:1 on the paper ground.
-       The previous value was 3.23:1, which fails AA for text this size. */
-    color: #56707C;
+    /* Slate 500. 4.76:1 on white, 4.55:1 on the slate 50 ground. */
+    color: #64748B;
   }
 
-  /* 5.59:1 on white. */
-  .spec-cyan { color: #166F97; }
+  /* Teal 700. 5.47:1 on white. */
+  .spec-cyan { color: #0F766E; }
 
-  /* 5.13:1 on Ink Navy. */
-  .spec-on-ink { color: #7D9CA8; }
+  /* Slate 400. 6.96:1 on slate 900. */
+  .spec-on-ink { color: #94A3B8; }
 
   [dir='rtl'] .spec {
     font-size: 12px;
@@ -317,14 +316,14 @@
     outline: none;
     box-shadow:
       0 0 0 2px #FFFFFF,
-      0 0 0 4px #02547E;
+      0 0 0 4px #0F766E;
     border-radius: 999px;
   }
 
   .focus-ring-ink:focus-visible {
     outline: none;
     box-shadow:
-      0 0 0 2px #0F2A35,
+      0 0 0 2px #0F172A,
       0 0 0 4px #34D399;
     border-radius: 999px;
   }
@@ -333,8 +332,8 @@
   .focus-ring-field:focus-visible,
   .focus-ring-field:focus {
     outline: none;
-    border-color: #02547E;
-    box-shadow: 0 0 0 3px rgba(2, 84, 126, 0.28);
+    border-color: #0F766E;
+    box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.22);
   }
 
   /* Technical numbering replaces icon badges. Sits in the type, not in a box. */
@@ -363,8 +362,8 @@
     block-size: 420px;
     background: radial-gradient(
       52% 52% at 30% 44%,
-      rgba(25, 160, 222, 0.13),
-      rgba(53, 180, 198, 0.06) 46%,
+      rgba(13, 148, 136, 0.10),
+      rgba(45, 212, 191, 0.05) 46%,
       transparent 72%
     );
     pointer-events: none;
@@ -373,8 +372,8 @@
   .headline-light-ink::before {
     background: radial-gradient(
       52% 52% at 30% 44%,
-      rgba(25, 160, 222, 0.18),
-      rgba(53, 180, 198, 0.07) 48%,
+      rgba(45, 212, 191, 0.16),
+      rgba(13, 148, 136, 0.06) 48%,
       transparent 74%
     );
   }
@@ -382,32 +381,44 @@
   /* Ambient bloom behind the hero portrait. Static blur, never transitioned. */
   .hero-bloom {
     background:
-      radial-gradient(58% 52% at 62% 34%, rgba(25, 160, 222, 0.42), transparent 70%),
-      radial-gradient(64% 60% at 34% 76%, rgba(15, 42, 53, 0.34), transparent 72%);
+      radial-gradient(58% 52% at 62% 34%, rgba(45, 212, 191, 0.34), transparent 70%),
+      radial-gradient(64% 60% at 34% 76%, rgba(15, 23, 42, 0.30), transparent 72%);
     filter: blur(46px);
     opacity: 0.7;
   }
 
   .hero-ground {
-    background:
-      radial-gradient(1100px 520px at 88% 8%, rgba(25, 160, 222, 0.16), transparent 64%),
-      radial-gradient(760px 420px at 2% 4%, rgba(53, 180, 198, 0.11), transparent 62%),
-      linear-gradient(180deg, #f7fbfc 0%, #f2f6f7 62%, #e9f1f4 100%);
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
   }
 
-  [dir='rtl'] .hero-ground {
-    background:
-      radial-gradient(1100px 520px at 12% 8%, rgba(25, 160, 222, 0.16), transparent 64%),
-      radial-gradient(760px 420px at 98% 4%, rgba(53, 180, 198, 0.11), transparent 62%),
-      linear-gradient(180deg, #f7fbfc 0%, #f2f6f7 62%, #e9f1f4 100%);
+  /* The hero media panel. A slate scrim keeps white type above 7:1 over any
+     photograph, and the gradient is stronger on the text side. */
+  .hero-scrim {
+    background: linear-gradient(
+      to right,
+      rgba(15, 23, 42, 0.88) 0%,
+      rgba(15, 23, 42, 0.72) 38%,
+      rgba(15, 23, 42, 0.34) 68%,
+      rgba(15, 23, 42, 0.2) 100%
+    );
+  }
+
+  [dir='rtl'] .hero-scrim {
+    background: linear-gradient(
+      to left,
+      rgba(15, 23, 42, 0.88) 0%,
+      rgba(15, 23, 42, 0.72) 38%,
+      rgba(15, 23, 42, 0.34) 68%,
+      rgba(15, 23, 42, 0.2) 100%
+    );
   }
 
   /* Cursor spotlight. Bound only on fine pointers, opacity capped under .08. */
   .hero-spotlight {
     background: radial-gradient(
       340px circle at var(--mx, 50%) var(--my, 40%),
-      rgba(25, 160, 222, 0.075),
-      rgba(25, 160, 222, 0.03) 42%,
+      rgba(45, 212, 191, 0.08),
+      rgba(45, 212, 191, 0.03) 42%,
       transparent 72%
     );
   }

@@ -17,22 +17,27 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        ink: '#0F2A35',        // profile deck dark panel
-        deep: '#02547E',       // logo P stem, primary action
-        blue: '#096DA1',       // wordmark, links and hovers
-        cyan: '#19A0DE',       // logo swoosh, highlights only
-        teal: '#35B4C6',       // profile accent, survey CTA and rules
-        graphite: '#4E4E4E',   // squeegee, monochrome client marks
-        mist: '#DCE5E8',       // borders and dividers
-        paper: '#F2F6F7',      // page ground, never pure white
+        /* Reference palette, approved September 2026.
+           Deep teal primary on a crisp white and slate ground.
+           Contrast measured: accent on white 5.47:1, white on accent 5.47:1,
+           accent-hover on white 7.58:1, slate on white 17.85:1. */
+        ink: '#0F172A',        // slate 900, dark contrast surfaces and type
+        deep: '#0F766E',       // teal 700, primary action fill
+        blue: '#115E59',       // teal 800, primary hover. Darker, not lighter,
+                               // so white label stays above 4.5:1
+        cyan: '#2DD4BF',       // teal 400, accents on dark surfaces only
+        teal: '#0D9488',       // teal 600, rules, markers and hairline accents
+        graphite: '#475569',   // slate 600
+        mist: '#E2E8F0',       // slate 200, borders and image placeholders
+        paper: '#F8FAFC',      // slate 50, page ground
         emerald: '#10B981',    // status indicator only
         whatsapp: '#25D366',
-        body: '#12303B',
-        muted: '#4A6570',
-        faint: '#56707C',      // 5.24:1 on white, 4.82:1 on paper. AA for small text.
-        'faint-soft': '#7C939C', // decorative only, never for text
-        hairline: '#D7E1E5',
-        'hairline-soft': '#E6EDEF',
+        body: '#0F172A',
+        muted: '#475569',      // 7.58:1 on white
+        faint: '#64748B',      // 4.76:1 on white, 4.55:1 on the ground. AA for small text
+        'faint-soft': '#94A3B8', // decorative and on-dark metadata only
+        hairline: '#E2E8F0',
+        'hairline-soft': '#F1F5F9',
       },
       fontFamily: {
         display: ['var(--font-display)'],
@@ -51,22 +56,22 @@ const config: Config = {
         frame: '22px',
       },
       boxShadow: {
-        nav: '0 10px 30px rgba(15,42,53,.10), 0 2px 6px rgba(15,42,53,.06)',
-        card: '0 1px 2px rgba(15,42,53,.05), 0 2px 8px rgba(15,42,53,.05)',
-        lifted: '0 14px 34px rgba(15,42,53,.12), 0 3px 8px rgba(15,42,53,.07)',
+        nav: '0 10px 30px rgba(15,23,42,.08), 0 2px 6px rgba(15,23,42,.05)',
+        card: '0 1px 2px rgba(15,23,42,.05), 0 2px 8px rgba(15,23,42,.05)',
+        lifted: '0 14px 34px rgba(15,23,42,.11), 0 3px 8px rgba(15,23,42,.06)',
         intake:
-          '0 24px 60px rgba(15,42,53,.14), 0 8px 20px rgba(15,42,53,.08), 0 1px 2px rgba(15,42,53,.06)',
-        badge: '0 12px 32px rgba(15,42,53,.16), 0 2px 6px rgba(15,42,53,.08)',
-        frame: '0 30px 70px rgba(15,42,53,.22), 0 6px 18px rgba(15,42,53,.10)',
-        deep: '0 8px 22px rgba(2,84,126,.30)',
-        cyan: '0 10px 26px rgba(25,160,222,.32)',
-        drawer: '0 0 50px rgba(15,42,53,.24)',
+          '0 30px 70px rgba(15,23,42,.12), 0 10px 24px rgba(15,23,42,.07), 0 1px 2px rgba(15,23,42,.05)',
+        badge: '0 12px 32px rgba(15,23,42,.14), 0 2px 6px rgba(15,23,42,.07)',
+        frame: '0 30px 70px rgba(15,23,42,.20), 0 6px 18px rgba(15,23,42,.09)',
+        deep: '0 8px 22px rgba(15,118,110,.28)',
+        cyan: '0 12px 28px rgba(13,148,136,.34)',
+        drawer: '0 0 50px rgba(15,23,42,.22)',
         /* Multi-stop diffuse elevation. Three offsets at low alpha read as
            depth; a single large blur reads as a default Tailwind shadow. */
         diffuse:
-          '0 1px 1px rgba(15,42,53,.04), 0 4px 8px rgba(15,42,53,.04), 0 12px 24px rgba(15,42,53,.05)',
+          '0 1px 1px rgba(15,23,42,.04), 0 4px 8px rgba(15,23,42,.04), 0 12px 24px rgba(15,23,42,.05)',
         'diffuse-lg':
-          '0 1px 1px rgba(15,42,53,.05), 0 6px 14px rgba(15,42,53,.06), 0 18px 36px rgba(15,42,53,.07), 0 40px 72px rgba(15,42,53,.06)',
+          '0 1px 1px rgba(15,23,42,.05), 0 6px 14px rgba(15,23,42,.06), 0 18px 36px rgba(15,23,42,.07), 0 40px 72px rgba(15,23,42,.06)',
         'diffuse-ink':
           '0 1px 1px rgba(0,0,0,.20), 0 8px 20px rgba(0,0,0,.22), 0 28px 56px rgba(0,0,0,.20)',
       },
@@ -100,8 +105,8 @@ const config: Config = {
         'pulse-ring': 'pulseRing 2.4s cubic-bezier(0.16, 1, 0.3, 1) infinite',
       },
       ringColor: {
-        focus: '#02547E',      // on light surfaces
-        'focus-ink': '#34D399', // emerald 400, on Ink Navy surfaces
+        focus: '#0F766E',       // 5.47:1 on white
+        'focus-ink': '#34D399', // 9.29:1 on slate 900
       },
     },
   },
@@ -129,7 +134,7 @@ const config: Config = {
           WebkitBackdropFilter: 'blur(12px) saturate(1.25)',
         },
         '.glass-dark': {
-          backgroundColor: 'rgba(15,42,53,.62)',
+          backgroundColor: 'rgba(15,23,42,.58)',
           border: '1px solid rgba(255,255,255,.22)',
           backdropFilter: 'blur(12px)',
           WebkitBackdropFilter: 'blur(12px)',
