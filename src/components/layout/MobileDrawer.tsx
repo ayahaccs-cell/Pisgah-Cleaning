@@ -7,7 +7,7 @@ import { useLocale } from '@/context/LocaleProvider';
 import { callPrimaryHref, generateWhatsAppLink } from '@/lib/whatsapp';
 import { Button } from '@/components/ui/Button';
 import { LocaleSwitcher } from '@/components/ui/LocaleSwitcher';
-import { PhoneIcon, WhatsAppIcon } from '@/components/ui/Icons';
+import { ClockIcon, PhoneIcon, WhatsAppIcon } from '@/components/ui/Icons';
 import { NAV_LINKS } from './Navbar';
 
 /**
@@ -134,6 +134,11 @@ export function MobileDrawer({ open, onClose }: Props) {
             <span dir="ltr">{siteConfig.contact.primaryPhone.display}</span>
           </Button>
         </div>
+
+        <p className="mb-4 inline-flex items-center gap-2 rounded-full bg-paper px-3.5 py-2 text-[12.5px] font-medium text-muted">
+          <ClockIcon size={14} className="flex-none text-deep" />
+          {siteConfig.contact.hours.office}
+        </p>
 
         <nav aria-label={t.nav.mobile} className="flex flex-col border-t border-hairline-soft pt-2">
           {NAV_LINKS.map((link) => (

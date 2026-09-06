@@ -47,6 +47,7 @@ export const en = {
     videoTitle: 'Sneak Peek',
     videoSub: 'Inside a Pisgah Shift',
     videoPending: 'Awaiting media.heroVideos[0].url',
+    videoModalTitle: 'Inside a Pisgah Shift',
   },
 
   intake: {
@@ -302,6 +303,7 @@ export const en = {
     whatsappPackage: 'Open WhatsApp to book a complimentary inspection for this tier',
     whatsappEmergency: 'Open WhatsApp to report an emergency',
     playVideoLabel: 'Play the Pisgah site video',
+    closeVideoLabel: 'Close the video',
   },
 };
 

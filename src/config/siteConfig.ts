@@ -153,9 +153,13 @@ export const siteConfig = {
   ] as const satisfies readonly LeadershipMember[],
 
   media: {
-    /** Paste a link here to light up the hero video slot. No redeploy of code required. */
+    /**
+     * The hero video. A local file plays in the modal; an external link opens
+     * in a new tab instead. Swap the url to change what the card plays, with no
+     * code change anywhere else.
+     */
     heroVideos: [
-      { poster: '/media/shift-poster.jpg', url: '' },
+      { poster: '/media/pisgah-shift-poster.jpg', url: '/media/pisgah-shift.mp4' },
     ] as HeroVideo[],
     /* Client photography, supplied September 2026. */
     intro: {

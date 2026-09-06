@@ -130,6 +130,40 @@ See `DEPLOYMENT.md` for the verification sequence and the post-deploy checklist.
 
 **Photography.** Client shots replace every placeholder. See the asset table below.
 
+## Video modal (v5.3)
+
+The Sneak Peek card opens a modal that plays `/public/media/pisgah-shift.mp4` with native
+controls. Playback stops and resets on every exit path: the close button, the Escape key,
+and a tap on the backdrop.
+
+`siteConfig.media.heroVideos[0]` drives it. A path starting with `/` plays in the modal;
+anything else, for example a YouTube URL, opens in a new tab instead. One edit changes the
+behaviour, no component knows the difference.
+
+**Encoding.** The supplied `.mov` was HEVC, 1080x1920, 60fps, 30MB. Re-encoded to H.264
+High, yuv420p, 720x1280 at 30fps, CRF 24, AAC 128k, with `+faststart` so the moov atom sits
+in the first bytes and playback begins before the file has finished downloading. Result is
+4.5MB for 18 seconds.
+
+**Aspect ratio.** The footage is portrait 9:16. A fixed `aspect-video` frame would have
+letterboxed it with heavy bars, so the frame reads the real ratio from `loadedmetadata` and
+matches it. Replace the file with a landscape clip and the frame follows, no code change.
+
+## Header (v5.3)
+
+Three zones inside one `max-w-7xl` container:
+
+| Zone | Behaviour |
+| --- | --- |
+| Logo | `flex-none` with `pe-6 xl:pe-8`. Nothing can slide under it at any width. |
+| Navigation | `min-w-0 flex-1`, `text-xs lg:text-sm`, `gap-3 xl:gap-5`. Shrinks before it collides. |
+| Contact | `flex-none`. Hours at `text-[11px]`, office line at `text-xs` behind a `border-s` divider, WhatsApp, language toggle, Book Now. |
+
+The collapse threshold is `xl` (1280px). A 13 or 14 inch laptop reports 1280 to 1512 CSS
+pixels, and six link labels plus a full contact cluster do not fit comfortably below that,
+so those machines get the drawer rather than collided text. The divider uses `border-s`, so
+it lands on the correct side in Arabic with no override.
+
 ## Assets to replace
 
 Client photography supplied September 2026 is now in place.
@@ -143,6 +177,8 @@ Client photography supplied September 2026 is now in place.
 | `tier-studio.jpg` | Studio tier | Upholstery rotary, portrait crop |
 | `tier-1bhk.jpg`, `tier-2bhk.jpg`, `tier-3bhk.jpg`, `tier-4bhk.jpg` | Remaining tiers | **Stand-in.** All four reuse the carpet extraction frame until tier-specific shots exist. The ids are listed in `siteConfig.media.tiersAwaitingPhotography`; remove an id once its real photograph is dropped in. |
 | `og-cover.jpg` | Social share card | Generated from the brand palette. Replace with a photograph. |
+| `pisgah-shift.mp4` | Sneak Peek modal | Client footage, re-encoded to web H.264. |
+| `pisgah-shift-poster.jpg` | Modal poster frame | Pulled from the video at 3 seconds. |
 
 `pisgah-logo.png` is the supplied artwork, trimmed and transparent.
 

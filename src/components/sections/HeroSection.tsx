@@ -5,6 +5,7 @@ import { siteConfig } from '@/config/siteConfig';
 import { useLocale } from '@/context/LocaleProvider';
 import { callOfficeHref, generateWhatsAppLink } from '@/lib/whatsapp';
 import { Button } from '@/components/ui/Button';
+import { VideoModal } from '@/components/ui/VideoModal';
 import { PhoneIcon, PlayIcon } from '@/components/ui/Icons';
 
 /**
@@ -25,9 +26,13 @@ import { PhoneIcon, PlayIcon } from '@/components/ui/Icons';
 export function HeroSection() {
   const { t, locale } = useLocale();
   const [videoNotice, setVideoNotice] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const heroVideo = siteConfig.media.heroVideos[0];
   const hasVideo = Boolean(heroVideo && heroVideo.url);
+  /* A local file plays in the modal. An external link, for example a YouTube
+     URL pasted into siteConfig, opens in a new tab instead. */
+  const isLocalFile = hasVideo && heroVideo.url.startsWith('/');
   const scopeHref = generateWhatsAppLink('hero', {}, { locale });
 
   const onVideo = useCallback(() => {
@@ -35,10 +40,15 @@ export function HeroSection() {
       setVideoNotice(true);
       return;
     }
+    if (isLocalFile) {
+      setModalOpen(true);
+      return;
+    }
     window.open(heroVideo.url, '_blank', 'noopener,noreferrer');
-  }, [hasVideo, heroVideo]);
+  }, [hasVideo, isLocalFile, heroVideo]);
 
   return (
+    <>
     <section
       id="top"
       aria-label={t.a11y.heroLandmark}
@@ -87,9 +97,9 @@ export function HeroSection() {
             type="button"
             onClick={onVideo}
             aria-label={t.a11y.playVideoLabel}
-            className="focus-ring-ink u-press glass-dark mt-9 inline-flex items-center gap-4 rounded-2xl py-3 pe-6 ps-3 text-start shadow-diffuse-ink"
+            className="focus-ring-ink u-press group mt-9 inline-flex cursor-pointer items-center gap-4 rounded-2xl border border-white/20 bg-slate-950/50 py-3 pe-6 ps-3 text-start shadow-diffuse-ink backdrop-blur-md transition-colors duration-fast ease-feedback hover:bg-slate-950/65"
           >
-            <span className="grid h-12 w-12 flex-none place-items-center rounded-full bg-white text-[#0F766E] transition-transform duration-standard ease-entrance">
+            <span className="grid h-12 w-12 flex-none place-items-center rounded-full bg-white text-[#0F766E] transition-transform duration-standard ease-entrance group-hover:scale-105">
               <PlayIcon size={13} className="rtl:-scale-x-100" />
             </span>
             <span>
@@ -104,6 +114,18 @@ export function HeroSection() {
         </div>
       </div>
     </section>
+
+    {/* Rendered as a sibling of the hero, so no ancestor stacking context or
+        overflow rule can clip the fixed overlay. */}
+    <VideoModal
+      open={modalOpen}
+      onClose={() => setModalOpen(false)}
+      src={heroVideo.url}
+      poster={heroVideo.poster}
+      title={t.hero.videoModalTitle}
+      closeLabel={t.a11y.closeVideoLabel}
+    />
+    </>
   );
 }
 

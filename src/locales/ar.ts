@@ -49,6 +49,7 @@ export const ar: Dictionary = {
     videoTitle: 'لمحة سريعة',
     videoSub: 'من داخل وردية بسجاه',
     videoPending: 'بانتظار رابط الفيديو في الإعدادات',
+    videoModalTitle: 'من داخل وردية بسجاه',
   },
 
   intake: {
@@ -304,6 +305,7 @@ export const ar: Dictionary = {
     whatsappPackage: 'فتح واتساب لحجز معاينة مجانية لهذه الفئة',
     whatsappEmergency: 'فتح واتساب للإبلاغ عن حالة طارئة',
     playVideoLabel: 'تشغيل فيديو موقع بسجاه',
+    closeVideoLabel: 'إغلاق الفيديو',
   },
 };
 

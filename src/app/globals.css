@@ -372,6 +372,15 @@
     flex: none;
   }
 
+  /* Video modal frame. dvh keeps the frame inside a phone's visible area once
+     the browser chrome collapses; vh is the fallback for older engines. */
+  .video-frame {
+    max-height: 82vh;
+    max-height: 82dvh;
+    max-width: min(100%, 56rem);
+    margin-inline: auto;
+  }
+
   /* Technical numbering replaces icon badges. Sits in the type, not in a box. */
   .numeral {
     font-family: var(--font-mono);

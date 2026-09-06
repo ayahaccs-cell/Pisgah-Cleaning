@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { useState } from 'react';
 import { siteConfig } from '@/config/siteConfig';
 import { useLocale } from '@/context/LocaleProvider';
 import { callOfficeHref, generateWhatsAppLink } from '@/lib/whatsapp';
@@ -8,17 +9,27 @@ import { Button } from '@/components/ui/Button';
 import { LocaleSwitcher } from '@/components/ui/LocaleSwitcher';
 import { ClockIcon, PhoneIcon, WhatsAppIcon } from '@/components/ui/Icons';
 import { MobileDrawer } from './MobileDrawer';
-import { useState } from 'react';
 
 /**
- * Single green header.
+ * Green header, three zones.
  *
- * The separate white sub-bar is gone. Working hours, the direct office line and
- * the WhatsApp action are embedded here, on the brand green, with the logo on a
- * white plate at the inline start and the drawer toggle at the inline end.
+ * Left is the logo. It is flex-none with its own inline-end padding, so the
+ * navigation can never slide under it however long the link labels become in
+ * either language.
  *
- * Every value is read from siteConfig, so a change of line or of hours flows
- * through without an edit here.
+ * Centre is the navigation. It is min-w-0 and flex-1, which lets it shrink
+ * rather than push into its neighbours.
+ *
+ * Right is the contact cluster: hours, the office line, WhatsApp, the language
+ * toggle and the primary action. Also flex-none.
+ *
+ * The collapse threshold is xl, which is 1280px. A 13 or 14 inch laptop is
+ * typically 1280 to 1512 CSS pixels wide, and six link labels plus a full
+ * contact cluster do not fit comfortably below that, so those machines get the
+ * drawer instead of collided text.
+ *
+ * Dividers use border-s, not border-l, so they land on the correct side in
+ * Arabic without an override.
  */
 
 export const NAV_LINKS = [
@@ -42,33 +53,35 @@ export function Navbar() {
         aria-label={t.a11y.headerLandmark}
         className="sticky top-0 z-[60] bg-deep text-white shadow-nav"
       >
-        <div className="container-page flex min-h-[72px] items-center justify-between gap-3 py-2.5 sm:min-h-[84px] sm:gap-5 sm:py-3">
-          {/* Logo on a white plate, so the blue mark keeps its contrast. */}
-          <a
-            href="#top"
-            aria-label={siteConfig.company.legalName}
-            className="focus-ring-ink flex flex-none items-center rounded-xl bg-white px-2.5 py-1.5 sm:px-3 sm:py-2"
-          >
-            <Image
-              src={siteConfig.company.logo}
-              alt={siteConfig.company.legalName}
-              width={344}
-              height={148}
-              priority
-              className="h-auto w-[104px] sm:w-[128px] lg:w-[146px]"
-            />
-          </a>
+        <div className="mx-auto flex min-h-[72px] w-full max-w-7xl items-center px-4 py-2.5 sm:min-h-[80px] sm:px-6">
+          {/* ---- Zone 1: logo. Never shrinks, never shares its space. ---- */}
+          <div className="flex flex-none items-center pe-6 xl:pe-8">
+            <a
+              href="#top"
+              aria-label={siteConfig.company.legalName}
+              className="focus-ring-ink flex items-center rounded-xl bg-white px-2.5 py-1.5 sm:px-3 sm:py-2"
+            >
+              <Image
+                src={siteConfig.company.logo}
+                alt={siteConfig.company.legalName}
+                width={344}
+                height={148}
+                priority
+                className="h-auto w-[100px] sm:w-[118px] xl:w-[132px]"
+              />
+            </a>
+          </div>
 
-          {/* Primary links. Centred from xl, in the drawer below that. */}
+          {/* ---- Zone 2: navigation. Shrinks before it collides. ---- */}
           <nav
             aria-label={t.nav.primary}
-            className="hidden min-w-0 flex-1 items-center justify-center gap-5 xl:flex"
+            className="hidden min-w-0 flex-1 items-center justify-center gap-3 xl:flex xl:gap-5"
           >
             {NAV_LINKS.map((link) => (
               <a
                 key={link.key}
                 href={link.href}
-                className="focus-ring-ink group relative inline-flex min-h-[44px] items-center whitespace-nowrap rounded px-0.5 font-display text-[14.5px] font-medium text-white/85 transition-colors duration-fast ease-feedback hover:text-white"
+                className="focus-ring-ink group relative inline-flex min-h-[44px] items-center whitespace-nowrap rounded px-0.5 font-display text-xs font-medium tracking-normal text-white/85 transition-colors duration-fast ease-feedback hover:text-white lg:text-sm"
               >
                 {t.nav[link.key]}
                 <span
@@ -79,37 +92,44 @@ export function Navbar() {
             ))}
           </nav>
 
-          {/* Contact cluster. Hours are a statement, the number is a link. */}
-          <div className="flex flex-none items-center gap-2 sm:gap-3">
-            <span className="hidden items-center gap-2 whitespace-nowrap text-[12.5px] text-white/80 lg:inline-flex">
-              <ClockIcon size={15} className="text-white/70" />
-              {siteConfig.contact.hours.office}
-            </span>
+          {/* Spacer that only exists below xl, so the contact cluster still
+              sits at the inline end once the navigation is hidden. */}
+          <div className="flex-1 xl:hidden" />
 
-            <a
-              href={callOfficeHref()}
-              aria-label={t.a11y.callOfficeLabel}
-              className="focus-ring-ink u-press tap hidden min-h-[44px] items-center gap-2 rounded-full border border-white/30 px-3.5 font-display text-[13.5px] font-semibold text-white transition-colors duration-fast ease-feedback hover:bg-white/10 sm:inline-flex"
-            >
-              <PhoneIcon size={15} />
-              <span dir="ltr" className="tabular-nums">
-                {siteConfig.contact.secondaryPhone.display}
+          {/* ---- Zone 3: contact, language, action. ---- */}
+          <div className="flex flex-none items-center gap-2 sm:gap-3">
+            {/* Compact contact block, hairline divided. */}
+            <div className="hidden items-center gap-3 lg:flex">
+              <span className="inline-flex items-center gap-1.5 whitespace-nowrap text-[11px] leading-tight text-white/80">
+                <ClockIcon size={14} className="flex-none text-white/60" />
+                {siteConfig.contact.hours.office}
               </span>
-            </a>
+
+              <a
+                href={callOfficeHref()}
+                aria-label={t.a11y.callOfficeLabel}
+                className="focus-ring-ink inline-flex items-center gap-1.5 whitespace-nowrap rounded border-s border-white/30 ps-3 text-xs font-semibold leading-tight text-white transition-colors duration-fast ease-feedback hover:text-white/80"
+              >
+                <PhoneIcon size={14} className="flex-none text-white/60" />
+                <span dir="ltr" className="tabular-nums">
+                  {siteConfig.contact.secondaryPhone.display}
+                </span>
+              </a>
+            </div>
 
             <a
               href={waHref}
               target="_blank"
               rel="noopener noreferrer"
               aria-label={t.a11y.whatsappGeneric}
-              className="focus-ring-ink u-press tap flex h-11 w-11 flex-none items-center justify-center rounded-full bg-white text-[#0F766E] transition-colors duration-fast ease-feedback hover:bg-white/90 sm:h-12 sm:w-12"
+              className="focus-ring-ink u-press tap flex h-10 w-10 flex-none items-center justify-center rounded-full bg-white text-[#0F766E] transition-colors duration-fast ease-feedback hover:bg-white/90 sm:h-11 sm:w-11"
             >
-              <WhatsAppIcon size={20} />
+              <WhatsAppIcon size={19} />
             </a>
 
             <LocaleSwitcher tone="bar" className="hidden sm:inline-flex" />
 
-            <Button href="#intake" variant="light" className="hidden xl:inline-flex">
+            <Button href="#intake" variant="light" size="md" className="hidden xl:inline-flex">
               {t.cta.bookNow}
             </Button>
 
@@ -120,7 +140,7 @@ export function Navbar() {
               aria-expanded={drawerOpen}
               aria-controls="mobile-drawer"
               aria-haspopup="dialog"
-              className="focus-ring-ink u-press tap flex h-11 w-11 flex-none items-center justify-center rounded-full border border-white/30 xl:hidden sm:h-12 sm:w-12"
+              className="focus-ring-ink u-press tap flex h-10 w-10 flex-none items-center justify-center rounded-full border border-white/30 sm:h-11 sm:w-11 xl:hidden"
             >
               <span
                 aria-hidden="true"
