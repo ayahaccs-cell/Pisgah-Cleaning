@@ -10,22 +10,35 @@ npm install
 npm run dev        # http://localhost:3000
 npm run build
 npm run typecheck
-npm run guardrails # the three build rules, see below
+npm run guardrails # phone, pricing and dash rules
+npm run validate   # dictionary, config, asset and import integrity
 ```
 
-Wire the guardrails into CI and into `prebuild`:
+`npm run verify` chains all five gates in order and stops at the first failure:
 
-```json
-"prebuild": "node scripts/guardrails.mjs"
+```
+guardrails -> validate -> typecheck -> lint -> build
 ```
 
-## The three rules this codebase enforces
+## Build gates
 
-`scripts/guardrails.mjs` fails the build on any of these, so they cannot drift:
+Two zero-dependency scripts run before every build, wired into `prebuild` so a violation cannot reach a deploy even if someone skips a step.
 
-1. **No phone literal outside `src/config/siteConfig.ts`.** Every number, email and address is imported.
-2. **No pricing anywhere.** No currency, no rate, no minimum hours, in English or Arabic. Every call to action routes to a complimentary survey.
-3. **No em dash or en dash** in any source file, in any language. Standard hyphens only.
+**`scripts/guardrails.mjs`** fails on:
+
+1. **A phone literal outside `src/config/siteConfig.ts`.** Every number, email and address is imported.
+2. **Any pricing.** No currency, no rate, no minimum hours, in English or Arabic. Every call to action routes to a complimentary survey.
+3. **An em dash or en dash** in any source file, in any language. Standard hyphens only.
+
+**`scripts/validate-dictionary.mjs`** fails on:
+
+1. A `t.<path>` used in a component that does not exist in `en.ts`.
+2. Any structural difference between `en.ts` and `ar.ts`, including array lengths.
+3. A `siteConfig.<path>` used in a component that does not exist.
+4. A `/media/...` asset referenced in source but missing from `public/media`.
+5. A local import pointing at a file that is not on disk.
+
+That second script exists because a stale component referencing a removed dictionary key once passed every local check and failed on Vercel. TypeScript catches it, but only after `npm install`. This runs in about a second with no dependencies, so it is safe in a pre-commit hook.
 
 ## Where things live
 
@@ -43,7 +56,8 @@ src/
                               PackageSelector, EmergencyCallout, LeadershipSection.
   components/ui/              Button, Icons, LocaleSwitcher, Reveal.
 tailwind.config.ts            Colour, type, shadow, motion and glass tokens.
-scripts/guardrails.mjs        The three rules above.
+scripts/guardrails.mjs        Phone, pricing and dash rules.
+scripts/validate-dictionary.mjs  Dictionary, config, asset and import integrity.
 ```
 
 ## Changing business facts

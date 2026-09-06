@@ -10,8 +10,9 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "guardrails": "node scripts/guardrails.mjs",
-    "prebuild": "node scripts/guardrails.mjs",
-    "verify": "npm run guardrails && npm run typecheck && npm run lint && npm run build"
+    "prebuild": "node scripts/guardrails.mjs && node scripts/validate-dictionary.mjs",
+    "verify": "npm run guardrails && npm run validate && npm run typecheck && npm run lint && npm run build",
+    "validate": "node scripts/validate-dictionary.mjs"
   },
   "dependencies": {
     "next": "14.2.15",
