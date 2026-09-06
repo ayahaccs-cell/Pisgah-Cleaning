@@ -21,9 +21,9 @@ export function ClientStrip() {
     <section
       id="clients"
       aria-labelledby="clients-heading"
-      className="bg-ink py-rhythm-sm text-[#94A3B8]"
+      className="bg-ink section-rhythm text-[#94A3B8]"
     >
-      <div className="container-page grid gap-10 lg:grid-cols-12 lg:gap-14">
+      <div className="container-page grid gap-8 lg:grid-cols-12 lg:gap-12">
         <div className="lg:col-span-4">
           <p className="spec spec-on-ink">{t.clients.spec}</p>
           <h2
@@ -37,7 +37,7 @@ export function ClientStrip() {
         </div>
 
         {/* Two column register on desktop, hairline ruled. Not a logo wall. */}
-        <ul className="lg:col-span-8 lg:columns-2 lg:gap-14">
+        <ul className="lg:col-span-8 lg:columns-2 lg:gap-12">
           {siteConfig.clients.map((client, index) => (
             <li
               key={client.id}

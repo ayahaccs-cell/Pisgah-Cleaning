@@ -50,7 +50,7 @@ export function Footer() {
       className="bg-ink text-[#94A3B8]"
     >
 
-      <div className="container-page grid gap-10 py-14 md:grid-cols-2 lg:grid-cols-4">
+      <div className="container-page grid gap-8 py-10 md:grid-cols-2 lg:grid-cols-4 lg:py-14">
         {/* Identity */}
         <div>
           <div className="inline-block rounded-xl bg-white p-3">
@@ -181,8 +181,6 @@ export function Footer() {
         </div>
       </div>
 
-      {/* Reserves the pinned bar height so its entrance never shifts layout. */}
-      <div aria-hidden="true" className="h-[76px] xl:hidden" />
     </footer>
   );
 }

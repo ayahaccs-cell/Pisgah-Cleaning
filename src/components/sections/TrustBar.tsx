@@ -34,9 +34,9 @@ export function TrustBar() {
   const { t } = useLocale();
 
   return (
-    <section aria-label={t.trust.ratingTitle} className="bg-paper py-rhythm-sm">
+    <section aria-label={t.trust.ratingTitle} className="bg-paper pb-10 pt-8 sm:pb-14 sm:pt-10">
       <div className="container-page">
-        <div className="grid items-center gap-8 rounded-[18px] border border-hairline-soft bg-white px-[clamp(20px,3vw,34px)] py-7 shadow-diffuse lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1.1fr)_auto_minmax(0,0.9fr)] lg:gap-10">
+        <div className="grid items-center gap-7 rounded-2xl border border-hairline-soft bg-white px-5 py-6 shadow-diffuse sm:px-7 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1.1fr)_auto_minmax(0,0.9fr)] lg:gap-10">
           {/* Rating */}
           <div>
             <div className="flex items-center gap-1" aria-hidden="true">

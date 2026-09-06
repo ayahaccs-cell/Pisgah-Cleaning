@@ -223,9 +223,19 @@
      and technical numbering rather than icon badges.
      ---------------------------------------------------------------------- */
 
-  /* Vertical rhythm of an architectural publication, not a landing page. */
+  /* Balanced rhythm. 40px on a phone, 64px from sm, 80px from lg.
+     The previous clamp ran to 120px, which opened dead bands between
+     sections on a laptop. */
   .section-rhythm {
-    padding-block: clamp(80px, 9vw, 120px);
+    padding-block: 40px;
+  }
+
+  @media (min-width: 640px) {
+    .section-rhythm { padding-block: 64px; }
+  }
+
+  @media (min-width: 1024px) {
+    .section-rhythm { padding-block: 80px; }
   }
 
   /* Ink panel. The hairline is the only edge; there is no border colour. */
@@ -336,6 +346,32 @@
     box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.22);
   }
 
+  /* List marker. A dot, never a dash, so a bullet never reads as a hyphen or
+     as an en dash. Sized 6px and aligned to the first line's cap height. */
+  .bullet-dot {
+    position: absolute;
+    inset-inline-start: 0;
+    inset-block-start: 0.55em;
+    inline-size: 6px;
+    block-size: 6px;
+    border-radius: 9999px;
+    background-color: theme('colors.deep');
+    flex: none;
+  }
+
+  .bullet-dot-soft { background-color: theme('colors.teal'); }
+  .bullet-dot-on-ink { background-color: theme('colors.cyan'); }
+
+  /* Inline variant for a row of assurances rather than a stacked list. */
+  .bullet-inline {
+    display: inline-block;
+    inline-size: 6px;
+    block-size: 6px;
+    border-radius: 9999px;
+    background-color: theme('colors.deep');
+    flex: none;
+  }
+
   /* Technical numbering replaces icon badges. Sits in the type, not in a box. */
   .numeral {
     font-family: var(--font-mono);
@@ -389,6 +425,23 @@
 
   .hero-ground {
     background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  }
+
+  /* Fixed attachment gives depth on a desktop pointer with no scroll listener
+     and no transform loop. Mobile browsers handle it badly, so it is opted into
+     rather than out of, and it is dropped under reduced motion. */
+  .hero-parallax {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  @media (min-width: 1024px) and (hover: hover) and (pointer: fine) {
+    .hero-parallax { background-attachment: fixed; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-parallax { background-attachment: scroll; }
   }
 
   /* The hero media panel. A slate scrim keeps white type above 7:1 over any

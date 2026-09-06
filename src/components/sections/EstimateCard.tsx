@@ -48,7 +48,7 @@ export function EstimateCard() {
   }, [t, category, scope, phone, locale]);
 
   return (
-    <div className="container-page relative z-[40] -mt-[clamp(44px,7vw,72px)]">
+    <div className="container-page relative z-[40] -mt-14 sm:-mt-16 lg:-mt-20">
       <section
         id="intake"
         role="region"
@@ -130,14 +130,14 @@ export function EstimateCard() {
           </div>
         </div>
 
-        <ul className="hair-light-t mt-6 flex flex-wrap items-center gap-x-8 gap-y-2 pt-5">
+        <ul className="hair-light-t mt-5 flex flex-wrap items-center gap-x-7 gap-y-2 pt-4">
           {[
             t.intake.assurances.free,
             t.intake.assurances.noObligation,
             t.intake.assurances.inHouse,
           ].map((item) => (
             <li key={item} className="spec inline-flex items-center gap-2.5">
-              <span aria-hidden="true" className="h-[1.5px] w-4 flex-none bg-teal" />
+              <span aria-hidden="true" className="bullet-inline" />
               {item}
             </li>
           ))}

@@ -102,18 +102,33 @@ The baseline build was refactored for visual and verbal specificity. Nothing in 
 
 See `DEPLOYMENT.md` for the verification sequence and the post-deploy checklist.
 
+## Reference refactor and photography pass (v5)
+
+**Header.** One green bar at `#0F766E`. The separate white sub-bar is gone; working hours, the direct office line, a WhatsApp action, the language switcher and the drawer toggle all live inside it, with the logo on a white plate so the blue mark keeps its contrast. The `ESTABLISHED 2008` eyebrow was removed from the hero, since the logo already carries it.
+
+**Hero.** The supplied intro photograph fills the panel through `.hero-parallax`. Depth uses `background-attachment: fixed`, opted into only at `min-width: 1024px` with a fine pointer, and dropped under reduced motion, so there is still no scroll listener and no judder on a phone. A direction-aware slate scrim holds white type above 7:1. The video card sits at the base of the content column reading `Sneak Peek` over `Inside a Pisgah Shift`.
+
+**Rhythm and alignment.** `.section-rhythm` is now 40px, 64px from `sm`, 80px from `lg`, replacing a clamp that ran to 120px. `.container-page` is `max-w-7xl` with the `1rem / 1.5rem / 2rem` padding scale, so every header, card edge and text column lands on one grid. The estimate card overlaps the hero by a fixed `-3.5rem / -4rem / -5rem` rather than a viewport clamp, which is what removes the dead band beneath the hero.
+
+**Sticky bottom bar removed.** `MobilePinnedBar.tsx` is deleted along with its footer spacer. Conversion now runs through the header, the hero buttons and the estimate card.
+
+**Bullets.** Every dash marker is a dot. `.bullet-dot` for stacked lists (with `-soft` and `-on-ink` variants) and `.bullet-inline` for the assurance row, all anchored with `inset-inline-start` so they mirror in Arabic.
+
+**Photography.** Client shots replace every placeholder. See the asset table below.
+
 ## Assets to replace
 
-Everything in `public/media` is a labelled placeholder.
+Client photography supplied September 2026 is now in place.
 
-| File | Ratio | Subject |
+| File | Used by | Source |
 | --- | --- | --- |
-| `hero-technician.jpg` | 4:5, min 1600px | One uniformed technician, upper body, bright interior, right two thirds of the frame kept clean |
-| `shift-poster.jpg` | 16:9, min 1280px | Still frame from your own site footage |
-| `journey-survey.jpg` | 3:2 | Supervisor with a tablet or tape measure in a client corridor |
-| `journey-mobilisation.jpg` | 3:2 | Crew and scrubber drier coming off the transport |
-| `journey-signoff.jpg` | 3:2 | Finished marble or glass, reflection in shot |
-| `og-cover.jpg` | 1200x630 | Social share card. Generated from the brand palette; replace with a real photograph once the shoot is done |
+| `intro-hero.jpg` | Hero background | Tower lobby, vacuuming, WTC through the window |
+| `process-01-survey.jpg` | Journey step 01 | Office desk detail |
+| `process-02-mobilisation.jpg` | Journey step 02 | Carpet extraction with the rotary machine |
+| `process-03-signoff.jpg` | Journey step 03 | Upholstery rotary and spray |
+| `tier-studio.jpg` | Studio tier | Upholstery rotary, portrait crop |
+| `tier-1bhk.jpg`, `tier-2bhk.jpg`, `tier-3bhk.jpg`, `tier-4bhk.jpg` | Remaining tiers | **Stand-in.** All four reuse the carpet extraction frame until tier-specific shots exist. The ids are listed in `siteConfig.media.tiersAwaitingPhotography`; remove an id once its real photograph is dropped in. |
+| `og-cover.jpg` | Social share card | Generated from the brand palette. Replace with a photograph. |
 
 `pisgah-logo.png` is the supplied artwork, trimmed and transparent.
 

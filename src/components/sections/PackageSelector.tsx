@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useState } from 'react';
 import { siteConfig } from '@/config/siteConfig';
 import { useLocale } from '@/context/LocaleProvider';
@@ -35,7 +36,7 @@ export function PackageSelector() {
             >
               {t.packages.heading}
             </h2>
-            <span aria-hidden="true" className="rule-stroke mt-7" />
+            <span aria-hidden="true" className="rule-stroke mt-5" />
           </div>
           <p className="text-[16.5px] leading-relaxed text-muted lg:col-span-5">
             {t.packages.intro}
@@ -43,7 +44,7 @@ export function PackageSelector() {
         </Reveal>
 
         {/* Snap carousel on a phone, five columns on a wide desktop. */}
-        <div className="mt-14 flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4 [overscroll-behavior-x:contain] sm:grid sm:grid-cols-2 sm:overflow-visible lg:grid-cols-3 xl:grid-cols-5">
+        <div className="mt-8 flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4 [overscroll-behavior-x:contain] sm:grid sm:grid-cols-2 sm:overflow-visible lg:grid-cols-3 xl:grid-cols-5">
           {siteConfig.packages.map((tier, index) => {
             const copy = t.packages.tiers[tier.id];
             const isSelected = selected === tier.id;
@@ -62,12 +63,23 @@ export function PackageSelector() {
                 as="article"
                 key={tier.id}
                 index={index}
-                className={`u-lift flex w-[82%] flex-none snap-start flex-col rounded-[16px] bg-white p-6 shadow-diffuse transition-shadow hover:shadow-diffuse-lg sm:w-auto ${
+                className={`group u-lift flex w-[82%] flex-none snap-start flex-col overflow-hidden rounded-2xl bg-white shadow-diffuse transition-shadow hover:shadow-diffuse-lg sm:w-auto ${
                   tier.featured
                     ? 'border border-deep/70 ring-1 ring-inset ring-deep/15'
                     : 'border border-ink/[0.07]'
                 } ${isSelected ? 'ring-2 ring-teal' : ''}`}
               >
+                <div className="relative aspect-[4/3] w-full overflow-hidden bg-mist">
+                  <Image
+                    src={siteConfig.media.tiers[tier.id]}
+                    alt={copy.name}
+                    fill
+                    sizes="(max-width: 640px) 82vw, (max-width: 1280px) 45vw, 20vw"
+                    className="object-cover transition-transform duration-standard ease-entrance group-hover:scale-[1.03]"
+                  />
+                </div>
+
+                <div className="flex flex-1 flex-col p-5">
                 <div className="flex items-baseline justify-between gap-3">
                   <span className="numeral text-[26px] leading-none">
                     {String(index + 1).padStart(2, '0')}
@@ -77,26 +89,23 @@ export function PackageSelector() {
                   ) : null}
                 </div>
 
-                <span aria-hidden="true" className="hair-light-t mt-5 block" />
+                <span aria-hidden="true" className="hair-light-t mt-4 block" />
 
-                <h3 className="mt-5 font-display text-[19px] font-bold leading-snug">
+                <h3 className="mt-4 font-display text-[19px] font-bold leading-snug">
                   {copy.name}
                 </h3>
 
-                <p className="spec mt-6">{t.packages.coverageLabel}</p>
+                <p className="spec mt-5">{t.packages.coverageLabel}</p>
                 <ul className="mt-3 space-y-2.5">
                   {copy.covers.map((room) => (
                     <li key={room} className="relative ps-4 text-[14.5px] leading-snug text-muted">
-                      <span
-                        aria-hidden="true"
-                        className="absolute start-0 top-[0.62em] h-[1.5px] w-2 bg-teal"
-                      />
+                      <span aria-hidden="true" className="bullet-dot" />
                       {room}
                     </li>
                   ))}
                 </ul>
 
-                <div className="hair-light-t mt-6 pt-4">
+                <div className="hair-light-t mt-5 pt-4">
                   <p className="spec">{t.packages.crewLabel}</p>
                   <p className="mt-1.5 font-mono text-[12.5px] tabular-nums text-body">
                     {copy.crew} / {copy.duration}
@@ -104,7 +113,7 @@ export function PackageSelector() {
                 </div>
 
                 {/* Where a price would sit. */}
-                <div className="mt-auto pt-7">
+                <div className="mt-auto pt-6">
                   <a
                     href={href}
                     target="_blank"
@@ -118,6 +127,7 @@ export function PackageSelector() {
                     {t.cta.inspection}
                   </a>
                   <p className="spec mt-3 text-center">{t.packages.priceLine}</p>
+                </div>
                 </div>
               </Reveal>
             );

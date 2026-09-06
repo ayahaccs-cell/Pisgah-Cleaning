@@ -35,7 +35,7 @@ export function EmergencyCallout() {
         }}
       />
 
-      <div className="container-page grid items-end gap-12 lg:grid-cols-12 lg:gap-16">
+      <div className="container-page grid items-end gap-8 lg:grid-cols-12 lg:gap-12">
         <div className="lg:col-span-7">
           <p className="spec spec-on-ink inline-flex items-center gap-2.5">
             <StatusDot />
@@ -49,7 +49,7 @@ export function EmergencyCallout() {
             {t.emergency.heading}
           </h2>
 
-          <span aria-hidden="true" className="rule-stroke-ink mt-8 block h-[1.5px] w-full max-w-[460px]" />
+          <span aria-hidden="true" className="rule-stroke-ink mt-6 block h-[1.5px] w-full max-w-[460px]" />
 
           <p className="mt-6 max-w-[58ch] text-[16.5px] leading-relaxed">{t.emergency.body}</p>
 

@@ -157,19 +157,28 @@ export const siteConfig = {
     heroVideos: [
       { poster: '/media/shift-poster.jpg', url: '' },
     ] as HeroVideo[],
-    heroPortrait: {
-      src: '/media/hero-technician.jpg',
-      width: 1600,
-      height: 2000,
+    /* Client photography, supplied September 2026. */
+    intro: {
+      src: '/media/intro-hero.jpg',
+      width: 905,
+      height: 509,
     },
-    /* Wide hero panel. A uniformed technician with equipment in a bright,
-       pristine interior, framed so the inline start third stays clean for the
-       headline. */
-    heroWide: {
-      src: '/media/hero-wide.jpg',
-      width: 1920,
-      height: 1080,
+    process: {
+      survey: '/media/process-01-survey.jpg',
+      mobilisation: '/media/process-02-mobilisation.jpg',
+      signoff: '/media/process-03-signoff.jpg',
     },
+    /* One shot per residential tier. Tiers still awaiting their own photograph
+       reuse the carpet extraction frame, which is marked below. */
+    tiers: {
+      studio: '/media/tier-studio.jpg',
+      oneBhk: '/media/tier-1bhk.jpg',
+      twoBhk: '/media/tier-2bhk.jpg',
+      threeBhk: '/media/tier-3bhk.jpg',
+      fourBhk: '/media/tier-4bhk.jpg',
+    },
+    /* Tier slots still showing the stand-in frame. Replace and remove the id. */
+    tiersAwaitingPhotography: ['oneBhk', 'twoBhk', 'threeBhk', 'fourBhk'] as string[],
   },
 
   /**

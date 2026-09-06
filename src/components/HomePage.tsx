@@ -1,6 +1,5 @@
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
-import { MobilePinnedBar } from '@/components/layout/MobilePinnedBar';
 import { HeroSection } from '@/components/sections/HeroSection';
 import { EstimateCard } from '@/components/sections/EstimateCard';
 import { TrustBar } from '@/components/sections/TrustBar';
@@ -34,7 +33,6 @@ export function HomePage() {
         <LeadershipSection />
       </MainLandmark>
       <Footer />
-      <MobilePinnedBar />
     </>
   );
 }

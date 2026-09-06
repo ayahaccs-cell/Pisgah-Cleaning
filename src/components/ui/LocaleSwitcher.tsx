@@ -30,11 +30,13 @@ const OPTIONS: { code: Locale; label: string }[] = [
 export function LocaleSwitcher({ tone = 'bar', className = '' }: Props) {
   const { locale, t } = useLocale();
 
-  const shell = tone === 'bar' ? 'border-white/20' : 'border-hairline w-full';
-  const idle = tone === 'bar' ? 'text-[#94A3B8]' : 'text-muted';
+  /* 'bar' sits on the brand green header, so the idle state is white at 75
+     percent and the active state is a white pill with the green label. */
+  const shell = tone === 'bar' ? 'border-white/30' : 'border-hairline w-full';
+  const idle = tone === 'bar' ? 'text-white/75 hover:text-white' : 'text-muted';
   const active =
-    tone === 'bar' ? 'bg-cyan text-[#042F2A] font-semibold' : 'bg-deep text-white font-semibold';
-  const height = tone === 'bar' ? 'min-h-[40px]' : 'min-h-[48px] flex-1';
+    tone === 'bar' ? 'bg-white text-deep font-semibold' : 'bg-deep text-white font-semibold';
+  const height = tone === 'bar' ? 'min-h-[44px]' : 'min-h-[48px] flex-1';
   const focus = tone === 'bar' ? 'focus-ring-ink' : 'focus-ring-light';
 
   return (
@@ -50,7 +52,7 @@ export function LocaleSwitcher({ tone = 'bar', className = '' }: Props) {
             {index > 0 && (
               <span
                 aria-hidden="true"
-                className={`w-px self-stretch ${tone === 'bar' ? 'bg-white/20' : 'bg-hairline'}`}
+                className={`w-px self-stretch ${tone === 'bar' ? 'bg-white/30' : 'bg-hairline'}`}
               />
             )}
             <Link

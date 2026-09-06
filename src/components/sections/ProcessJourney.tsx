@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { siteConfig } from '@/config/siteConfig';
 import { useLocale } from '@/context/LocaleProvider';
 import { generateWhatsAppLink } from '@/lib/whatsapp';
 import { Button } from '@/components/ui/Button';
@@ -19,26 +20,26 @@ import { ChevronRight } from '@/components/ui/Icons';
 const STEPS = [
   {
     key: 'survey',
-    image: '/media/journey-survey.jpg',
+    image: siteConfig.media.process.survey,
     /* Widths narrow as the sequence advances, which is what makes the column
        read as a timeline rather than as a stack. */
-    frame: 'aspect-[21/9] w-full',
+    frame: 'aspect-[16/9] w-full',
     indent: '',
-    title: 'text-[clamp(24px,2.6vw,32px)]',
+    title: 'text-[clamp(23px,2.4vw,30px)]',
   },
   {
     key: 'mobilisation',
-    image: '/media/journey-mobilisation.jpg',
-    frame: 'aspect-[16/9] w-full lg:w-[84%]',
-    indent: 'lg:ms-[8%]',
-    title: 'text-[clamp(21px,2.1vw,26px)]',
+    image: siteConfig.media.process.mobilisation,
+    frame: 'aspect-[16/9] w-full lg:w-[86%]',
+    indent: 'lg:ms-[7%]',
+    title: 'text-[clamp(20px,2vw,25px)]',
   },
   {
     key: 'signoff',
-    image: '/media/journey-signoff.jpg',
-    frame: 'aspect-[16/9] w-full lg:w-[70%]',
-    indent: 'lg:ms-[16%]',
-    title: 'text-[clamp(20px,1.9vw,24px)]',
+    image: siteConfig.media.process.signoff,
+    frame: 'aspect-[16/9] w-full lg:w-[74%]',
+    indent: 'lg:ms-[14%]',
+    title: 'text-[clamp(19px,1.85vw,23px)]',
   },
 ] as const;
 
@@ -48,7 +49,7 @@ export function ProcessJourney() {
 
   return (
     <section id="process" aria-labelledby="process-heading" className="section-rhythm bg-paper">
-      <div className="container-page grid gap-12 lg:grid-cols-12 lg:gap-16">
+      <div className="container-page grid gap-8 lg:grid-cols-12 lg:gap-12">
         {/* Heading rail */}
         <Reveal className="headline-light lg:col-span-4">
           <div className="lg:sticky lg:top-28">
@@ -59,11 +60,11 @@ export function ProcessJourney() {
             >
               {t.journey.heading}
             </h2>
-            <span aria-hidden="true" className="rule-stroke mt-7" />
-            <p className="mt-6 max-w-[46ch] text-[16.5px] leading-relaxed text-muted">
+            <span aria-hidden="true" className="rule-stroke mt-5" />
+            <p className="mt-5 max-w-[46ch] text-[16.5px] leading-relaxed text-muted">
               {t.journey.intro}
             </p>
-            <div className="mt-8 hidden lg:block">
+            <div className="mt-6 hidden lg:block">
               <Button
                 href={ctaHref}
                 external
@@ -87,8 +88,8 @@ export function ProcessJourney() {
                 as="li"
                 key={step.key}
                 index={index}
-                className={`group block pt-10 first:pt-0 ${
-                  index > 0 ? 'hair-light-t mt-10' : ''
+                className={`group block pt-7 first:pt-0 ${
+                  index > 0 ? 'hair-light-t mt-7' : ''
                 }`}
               >
                 <div className={step.indent}>
@@ -108,7 +109,7 @@ export function ProcessJourney() {
                   </p>
 
                   <div
-                    className={`mt-7 overflow-hidden rounded-[14px] bg-mist shadow-diffuse ${step.frame}`}
+                    className={`mt-5 overflow-hidden rounded-2xl border border-hairline-soft bg-mist shadow-diffuse ${step.frame}`}
                   >
                     <div className="relative h-full w-full">
                       <Image

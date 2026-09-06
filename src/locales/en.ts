@@ -15,12 +15,7 @@ export const en = {
   },
 
   util: {
-    emergency: '24/7 Emergency Call-Out',
-    office: 'Office',
     skipToContent: 'Skip to content',
-    mailLabel: 'Mail to us',
-    hoursLabel: 'Operating hours',
-    callAnytime: 'Call anytime',
   },
 
   nav: {
@@ -38,30 +33,19 @@ export const en = {
 
   cta: {
     bookNow: 'Book Now',
-    survey: 'Book Free Site Survey',
     inspection: 'Book Complimentary Inspection',
     scopeRequest: 'Request Site Scope',
     whatsapp: 'Chat on WhatsApp',
-    whatsappSurvey: 'WhatsApp Survey',
-    getScope: 'Get Survey Scope via WhatsApp',
     callOffice: 'Call Office',
     callNow: 'Call Now',
   },
 
   hero: {
-    eyebrow: 'ESTABLISHED 2008 - KINGDOM OF BAHRAIN - DIRECT MANAGEMENT',
     headline: 'Cleaning Made Simple',
     narrative:
       "Since 2008 we have held the floors of Bahrain's landmark malls, cinemas, schools, mosques, and villas that cannot afford a closed day. Directly employed, uniformed Pisgah W.L.L. crews with zero subcontractors.",
-    marks: {
-      years: 'OPERATING SINCE 2008',
-      employment: 'DIRECT W.L.L. EMPLOYMENT',
-      fleet: 'OWN MACHINERY AND TRANSPORT',
-    },
-    badge: '100% In-House Workforce - Zero Subcontracted Labor',
-    portraitAlt: 'A uniformed Pisgah technician at work in a bright modern interior',
-    videoTitle: 'Professional and Premium',
-    videoSub: 'Inside a Pisgah shift',
+    videoTitle: 'Sneak Peek',
+    videoSub: 'Inside a Pisgah Shift',
     videoPending: 'Awaiting media.heroVideos[0].url',
   },
 
@@ -303,10 +287,8 @@ export const en = {
     languageGroup: 'Language',
     mainLandmark: 'Main content',
     headerLandmark: 'Site header',
-    utilityLandmark: 'Contact and language',
     footerLandmark: 'Site footer and company details',
     heroLandmark: 'Introduction and survey request',
-    intakeLandmark: 'Quick survey request',
     switchToEnglish: 'View this page in English',
     switchToArabic: 'عرض هذه الصفحة بالعربية',
     openMenuLabel: 'Open the navigation menu',
@@ -320,7 +302,6 @@ export const en = {
     whatsappPackage: 'Open WhatsApp to book a complimentary inspection for this tier',
     whatsappEmergency: 'Open WhatsApp to report an emergency',
     playVideoLabel: 'Play the Pisgah site video',
-    externalHint: 'Opens WhatsApp in a new tab',
   },
 };
 

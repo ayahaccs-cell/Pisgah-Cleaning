@@ -151,11 +151,16 @@ const config: Config = {
       });
 
       addComponents({
+        /* One container for every section, so headers, card edges and text
+           columns land on the same grid. max-w-7xl with the 4 / 6 / 8 padding
+           scale. */
         '.container-page': {
           width: '100%',
-          maxWidth: '1200px',
+          maxWidth: '80rem',
           marginInline: 'auto',
-          paddingInline: 'clamp(16px, 4vw, 28px)',
+          paddingInline: '1rem',
+          '@media (min-width: 640px)': { paddingInline: '1.5rem' },
+          '@media (min-width: 1024px)': { paddingInline: '2rem' },
         },
       });
     }),

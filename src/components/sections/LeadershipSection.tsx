@@ -39,14 +39,14 @@ export function LeadershipSection() {
             >
               {t.leadership.heading}
             </h2>
-            <span aria-hidden="true" className="rule-stroke mt-7" />
+            <span aria-hidden="true" className="rule-stroke mt-5" />
           </div>
           <p className="max-w-[52ch] text-[16.5px] leading-relaxed text-muted lg:col-span-6">
             {t.leadership.intro}
           </p>
         </Reveal>
 
-        <ul className="mt-14 grid grid-cols-2 gap-x-6 gap-y-10 lg:grid-cols-4 lg:gap-x-8">
+        <ul className="mt-8 grid grid-cols-2 gap-x-5 gap-y-8 lg:grid-cols-4 lg:gap-x-7">
           {siteConfig.leadership.map((member, index) => {
             const copy = t.leadership.members[member.id];
             return (

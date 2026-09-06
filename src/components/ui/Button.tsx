@@ -10,7 +10,7 @@ import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from 'reac
  * WhatsAppAction wrapper, not here, so a plain navigation link stays simple.
  */
 
-type Variant = 'primary' | 'ghost' | 'glass' | 'whatsapp' | 'teal' | 'outline';
+type Variant = 'primary' | 'ghost' | 'glass' | 'whatsapp' | 'teal' | 'outline' | 'light';
 type Size = 'md' | 'lg' | 'block';
 
 const BASE =
@@ -26,6 +26,7 @@ const FOCUS: Record<Variant, string> = {
   whatsapp: 'focus-ring-light',
   teal: 'focus-ring-ink',
   outline: 'focus-ring-ink',
+  light: 'focus-ring-ink',
 };
 
 const VARIANTS: Record<Variant, string> = {
@@ -35,6 +36,8 @@ const VARIANTS: Record<Variant, string> = {
   whatsapp: 'bg-whatsapp text-[#06301A] shadow-[0_8px_20px_rgba(37,211,102,.28)] hover:bg-[#22C55E]',
   teal: 'bg-teal text-[#04231F] hover:bg-[#14B8A6]',
   outline: 'bg-transparent text-white border-white/70 hover:border-white hover:bg-white/10',
+  /* On the green header. White fill, brand green label. */
+  light: 'bg-white text-deep hover:bg-white/90',
 };
 
 const SIZES: Record<Size, string> = {

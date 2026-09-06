@@ -17,12 +17,7 @@ export const ar: Dictionary = {
   },
 
   util: {
-    emergency: 'طوارئ على مدار الساعة',
-    office: 'المكتب',
     skipToContent: 'تخطي إلى المحتوى',
-    mailLabel: 'راسلنا',
-    hoursLabel: 'أوقات العمل',
-    callAnytime: 'اتصل في أي وقت',
   },
 
   nav: {
@@ -40,29 +35,18 @@ export const ar: Dictionary = {
 
   cta: {
     bookNow: 'احجز الآن',
-    survey: 'احجز معاينة مجانية',
     inspection: 'احجز معاينة مجانية للعقار',
     scopeRequest: 'اطلب نطاق عمل للموقع',
     whatsapp: 'تواصل عبر واتساب',
-    whatsappSurvey: 'معاينة عبر واتساب',
-    getScope: 'احصل على نطاق المعاينة عبر واتساب',
     callOffice: 'اتصل بالمكتب',
     callNow: 'اتصل الآن',
   },
 
   hero: {
-    eyebrow: 'تأسست عام 2008 - مملكة البحرين - إدارة مباشرة',
     headline: 'النظافة بكل بساطة',
     narrative:
       'منذ عام 2008 ونحن نتولى نظافة المجمعات ودور السينما والمدارس والمساجد والفلل البارزة في البحرين، التي لا تحتمل يوم توقف واحد. فرق موظفة مباشرة لدى شركة بسجاه ذ.م.م وبزي رسمي، دون أي مقاولين من الباطن.',
-    marks: {
-      years: 'نعمل منذ عام 2008',
-      employment: 'توظيف مباشر لدى الشركة',
-      fleet: 'معداتنا ووسائل نقلنا',
-    },
-    badge: 'قوة عاملة داخلية 100% - بدون عمالة من الباطن',
-    portraitAlt: 'فني من بسجاه بالزي الرسمي أثناء العمل في مساحة داخلية مضيئة',
-    videoTitle: 'احترافية ومستوى متميز',
+    videoTitle: 'لمحة سريعة',
     videoSub: 'من داخل وردية بسجاه',
     videoPending: 'بانتظار رابط الفيديو في الإعدادات',
   },
@@ -305,10 +289,8 @@ export const ar: Dictionary = {
     languageGroup: 'اللغة',
     mainLandmark: 'المحتوى الرئيسي',
     headerLandmark: 'ترويسة الموقع',
-    utilityLandmark: 'التواصل واللغة',
     footerLandmark: 'تذييل الموقع وبيانات الشركة',
     heroLandmark: 'المقدمة وطلب المعاينة',
-    intakeLandmark: 'طلب معاينة سريع',
     switchToEnglish: 'View this page in English',
     switchToArabic: 'عرض هذه الصفحة بالعربية',
     openMenuLabel: 'فتح قائمة التنقل',
@@ -322,7 +304,6 @@ export const ar: Dictionary = {
     whatsappPackage: 'فتح واتساب لحجز معاينة مجانية لهذه الفئة',
     whatsappEmergency: 'فتح واتساب للإبلاغ عن حالة طارئة',
     playVideoLabel: 'تشغيل فيديو موقع بسجاه',
-    externalHint: 'يفتح واتساب في تبويب جديد',
   },
 };
 

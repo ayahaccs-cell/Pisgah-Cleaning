@@ -41,11 +41,11 @@ export function ServicePillars() {
           >
             {t.pillars.heading}
           </h2>
-          <span aria-hidden="true" className="rule-stroke mt-7" />
-          <p className="mt-6 text-[16.5px] leading-relaxed text-muted">{t.pillars.intro}</p>
+          <span aria-hidden="true" className="rule-stroke mt-5" />
+          <p className="mt-5 text-[16.5px] leading-relaxed text-muted">{t.pillars.intro}</p>
         </Reveal>
 
-        <div className="mt-14 grid gap-8 lg:grid-cols-5 lg:gap-10">
+        <div className="mt-8 grid gap-6 lg:grid-cols-5 lg:gap-8">
           {/* Primary division, three fifths of the row. */}
           <Reveal
             as="article"
@@ -75,10 +75,7 @@ export function ServicePillars() {
                   key={item}
                   className="relative ps-4 text-[15px] leading-snug text-[#CBD5E1]"
                 >
-                  <span
-                    aria-hidden="true"
-                    className="absolute start-0 top-[0.62em] h-[1.5px] w-2 bg-teal"
-                  />
+                  <span aria-hidden="true" className="bullet-dot bullet-dot-on-ink" />
                   {item}
                 </li>
               ))}
@@ -137,10 +134,7 @@ export function ServicePillars() {
                             : ''
                         }`}
                       >
-                        <span
-                          aria-hidden="true"
-                          className="absolute start-0 top-[0.62em] h-[1.5px] w-2 bg-teal/70"
-                        />
+                        <span aria-hidden="true" className="bullet-dot bullet-dot-soft" />
                         {item}
                       </li>
                     ))}
