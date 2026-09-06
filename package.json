@@ -1,0 +1,32 @@
+{
+  "name": "pisgah-cleaning-web",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Pisgah Cleaning Co. W.L.L. - facility care in the Kingdom of Bahrain since 2008.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit",
+    "guardrails": "node scripts/guardrails.mjs",
+    "prebuild": "node scripts/guardrails.mjs",
+    "verify": "npm run guardrails && npm run typecheck && npm run lint && npm run build"
+  },
+  "dependencies": {
+    "next": "14.2.15",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "20.14.10",
+    "@types/react": "18.3.5",
+    "@types/react-dom": "18.3.0",
+    "autoprefixer": "10.4.20",
+    "eslint": "8.57.0",
+    "eslint-config-next": "14.2.15",
+    "postcss": "8.4.47",
+    "tailwindcss": "3.4.13",
+    "typescript": "5.5.4"
+  }
+}

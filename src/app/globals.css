@@ -1,0 +1,462 @@
+/* ==========================================================================
+   Pisgah Cleaning Co. W.L.L. - global foundations
+
+   Font delivery is the Google Fonts CDN, as specified. If you later prefer to
+   self host, swap this import for next/font/google; nothing else changes,
+   because every family resolves through the CSS variables declared below.
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800&family=Hanken+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Latin stacks. Redefined wholesale under RTL below. */
+    --font-display: 'Schibsted Grotesk', 'Hanken Grotesk', system-ui, sans-serif;
+    --font-body: 'Hanken Grotesk', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
+
+    /* Motion tokens, from the approved motion system. */
+    --d-instant: 100ms;
+    --d-fast: 200ms;
+    --d-standard: 350ms;
+    --d-deliberate: 500ms;
+    --stagger: 50ms;
+
+    --ease-entrance: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-hover: cubic-bezier(0.2, 0, 0, 1);
+    --ease-exit: cubic-bezier(0.7, 0, 0.84, 0);
+
+    --lift-card: -4px;
+    --lift-btn: -2px;
+    --press: 0.98;
+    --reveal-y: 16px;
+    --glide: 4px;
+
+    color-scheme: light;
+  }
+
+  /* --------------------------------------------------------------------
+     Arabic rendering.
+
+     Arabic is a connected script. A single stray letter-spacing rule breaks
+     the joins, so tracking is forced to zero on every element under RTL and
+     the whole font stack is swapped in one place.
+     -------------------------------------------------------------------- */
+  [dir='rtl'] {
+    --font-display: 'IBM Plex Sans Arabic', 'Schibsted Grotesk', system-ui, sans-serif;
+    --font-body: 'IBM Plex Sans Arabic', 'Hanken Grotesk', system-ui, sans-serif;
+    --font-mono: 'IBM Plex Sans Arabic', ui-monospace, monospace;
+  }
+
+  [dir='rtl'] * {
+    letter-spacing: 0 !important;
+  }
+
+  /* Uppercase transforms are a Latin device and do nothing useful for Arabic. */
+  [dir='rtl'] .track-label,
+  [dir='rtl'] .track-eyebrow,
+  [dir='rtl'] .uppercase {
+    text-transform: none;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-paper text-body font-sans;
+    font-size: 17px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* A safety net only. Wide content is contained by its own scroller. */
+    overflow-x: clip;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-display;
+    line-height: 1.08;
+    letter-spacing: -0.028em;
+    text-wrap: balance;
+  }
+
+  /* Arabic headings need the tracking removed and a looser leading. */
+  [dir='rtl'] h1,
+  [dir='rtl'] h2,
+  [dir='rtl'] h3,
+  [dir='rtl'] h4 {
+    line-height: 1.28;
+  }
+
+  /* WCAG 2.1 SC 1.4.11 requires a focus indicator at 3:1 against what sits
+     behind it. Measured on this palette:
+       Deep Blue #02547E on white      8.16:1  pass
+       Deep Blue #02547E on Ink Navy   1.83:1  fail
+       Emerald  #34D399 on Ink Navy    7.79:1  pass
+       Emerald  #34D399 on white       1.92:1  fail
+     So the ring colour is chosen by surface rather than fixed. */
+  :root {
+    --focus-ring: #02547E;
+    --focus-offset: #FFFFFF;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  /* Phone numbers and Latin identifiers embedded in Arabic copy. */
+  [dir='ltr'] {
+    unicode-bidi: embed;
+  }
+
+  ::selection {
+    background: theme('colors.cyan');
+    color: #fff;
+  }
+}
+
+@layer components {
+  /* ----------------------------------------------------------------------
+     Motion utilities. Composite properties only: transform and opacity.
+     ---------------------------------------------------------------------- */
+  .u-reveal {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity var(--d-standard) var(--ease-entrance),
+      transform var(--d-standard) var(--ease-entrance);
+    transition-delay: calc(var(--i, 0) * var(--stagger));
+  }
+
+  /* Added by script only after IntersectionObserver support is confirmed, so a
+     page without JavaScript renders fully rather than blank. */
+  .u-reveal.is-pre {
+    opacity: 0;
+    transform: translateY(var(--reveal-y));
+    transition: none;
+    transition-delay: 0ms;
+  }
+
+  .u-press {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    transition:
+      transform var(--d-fast) var(--ease-hover),
+      background-color var(--d-fast) var(--ease-hover),
+      box-shadow var(--d-fast) var(--ease-hover),
+      border-color var(--d-fast) var(--ease-hover);
+  }
+
+  .u-press:active {
+    transform: scale(var(--press));
+    transition-duration: var(--d-instant);
+  }
+
+  .u-lift {
+    transition:
+      transform var(--d-standard) var(--ease-entrance),
+      box-shadow var(--d-standard) var(--ease-entrance),
+      border-color var(--d-standard) var(--ease-entrance);
+  }
+
+  @media (hover: hover) {
+    .u-press:hover { transform: translateY(var(--lift-btn)); }
+    .u-lift:hover { transform: translateY(var(--lift-card)); }
+    .u-glide-host:hover .u-glide { transform: translateX(var(--glide)); }
+  }
+
+  .u-glide {
+    transition: transform var(--d-fast) var(--ease-hover);
+  }
+
+  /* The flip inverts the axis, so the same 4px value travels the right way. */
+  [dir='rtl'] .u-glide { transform: scaleX(-1); }
+  [dir='rtl'] .u-glide-host:hover .u-glide { transform: scaleX(-1) translateX(var(--glide)); }
+
+  .u-menu {
+    transform-origin: top center;
+    transform: scaleY(0.96);
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      transform 180ms var(--ease-entrance),
+      opacity 180ms var(--ease-entrance),
+      visibility 180ms;
+  }
+
+  .u-menu[data-open='true'] {
+    transform: scaleY(1);
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .u-surface-out { transition: transform var(--d-standard) var(--ease-exit); }
+  .u-surface-in { transition-timing-function: var(--ease-entrance); }
+
+  /* Native select with a custom chevron that mirrors under RTL. */
+  .select-field {
+    appearance: none;
+    -webkit-appearance: none;
+    padding-inline-end: 40px;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23096DA1' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M5 8l5 5 5-5'/></svg>");
+    background-repeat: no-repeat;
+    background-size: 18px;
+    background-position: right 14px center;
+  }
+
+  [dir='rtl'] .select-field {
+    background-position: left 14px center;
+  }
+}
+
+@layer components {
+  /* ----------------------------------------------------------------------
+     Editorial surfaces.
+
+     Hairlines rather than borders, diffuse elevation rather than one blur,
+     and technical numbering rather than icon badges.
+     ---------------------------------------------------------------------- */
+
+  /* Vertical rhythm of an architectural publication, not a landing page. */
+  .section-rhythm {
+    padding-block: clamp(80px, 9vw, 120px);
+  }
+
+  /* Ink panel. The hairline is the only edge; there is no border colour. */
+  .surface-ink {
+    background-color: theme('colors.ink');
+    border: 1px solid rgb(255 255 255 / 0.08);
+  }
+
+  .hair-t { border-top: 1px solid rgb(255 255 255 / 0.08); }
+  .hair-b { border-bottom: 1px solid rgb(255 255 255 / 0.08); }
+
+  /* On light ground the hairline is ink at low alpha, never a grey border. */
+  .hair-light-b { border-bottom: 1px solid rgb(15 42 53 / 0.08); }
+  .hair-light-t { border-top: 1px solid rgb(15 42 53 / 0.08); }
+  .surface-light {
+    background-color: #ffffff;
+    border: 1px solid rgb(15 42 53 / 0.07);
+  }
+
+  /* A 1.5px stroke that reads as a drawn rule, integrated into the type. */
+  .rule-stroke {
+    display: block;
+    block-size: 1.5px;
+    inline-size: 100%;
+    background: linear-gradient(
+      to right,
+      theme('colors.teal') 0,
+      theme('colors.teal') 34px,
+      rgb(15 42 53 / 0.1) 34px,
+      rgb(15 42 53 / 0.1) 100%
+    );
+  }
+
+  [dir='rtl'] .rule-stroke {
+    background: linear-gradient(
+      to left,
+      theme('colors.teal') 0,
+      theme('colors.teal') 34px,
+      rgb(15 42 53 / 0.1) 34px,
+      rgb(15 42 53 / 0.1) 100%
+    );
+  }
+
+  .rule-stroke-ink {
+    background: linear-gradient(
+      to right,
+      theme('colors.teal') 0,
+      theme('colors.teal') 34px,
+      rgb(255 255 255 / 0.1) 34px,
+      rgb(255 255 255 / 0.1) 100%
+    );
+  }
+
+  [dir='rtl'] .rule-stroke-ink {
+    background: linear-gradient(
+      to left,
+      theme('colors.teal') 0,
+      theme('colors.teal') 34px,
+      rgb(255 255 255 / 0.1) 34px,
+      rgb(255 255 255 / 0.1) 100%
+    );
+  }
+
+  /* Operational metadata. Uppercase, tight, muted slate with a cyan marker. */
+  .spec {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    line-height: 1.5;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    /* #56707C measures 5.24:1 on white and 4.82:1 on the paper ground.
+       The previous value was 3.23:1, which fails AA for text this size. */
+    color: #56707C;
+  }
+
+  /* 5.59:1 on white. */
+  .spec-cyan { color: #166F97; }
+
+  /* 5.13:1 on Ink Navy. */
+  .spec-on-ink { color: #7D9CA8; }
+
+  [dir='rtl'] .spec {
+    font-size: 12px;
+    text-transform: none;
+  }
+
+  /* Surface aware focus rings. Both measured above 3:1 against their ground. */
+  .focus-ring-light:focus-visible {
+    outline: none;
+    box-shadow:
+      0 0 0 2px #FFFFFF,
+      0 0 0 4px #02547E;
+    border-radius: 999px;
+  }
+
+  .focus-ring-ink:focus-visible {
+    outline: none;
+    box-shadow:
+      0 0 0 2px #0F2A35,
+      0 0 0 4px #34D399;
+    border-radius: 999px;
+  }
+
+  /* For controls with square corners, such as form fields. */
+  .focus-ring-field:focus-visible,
+  .focus-ring-field:focus {
+    outline: none;
+    border-color: #02547E;
+    box-shadow: 0 0 0 3px rgba(2, 84, 126, 0.28);
+  }
+
+  /* Technical numbering replaces icon badges. Sits in the type, not in a box. */
+  .numeral {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    font-weight: 500;
+    color: theme('colors.teal');
+  }
+}
+
+@layer utilities {
+  /* Soft radial lighting behind a section headline. Painted, never animated. */
+  .headline-light {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .headline-light::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    inset-block-start: -140px;
+    inset-inline-start: -180px;
+    inline-size: 620px;
+    block-size: 420px;
+    background: radial-gradient(
+      52% 52% at 30% 44%,
+      rgba(25, 160, 222, 0.13),
+      rgba(53, 180, 198, 0.06) 46%,
+      transparent 72%
+    );
+    pointer-events: none;
+  }
+
+  .headline-light-ink::before {
+    background: radial-gradient(
+      52% 52% at 30% 44%,
+      rgba(25, 160, 222, 0.18),
+      rgba(53, 180, 198, 0.07) 48%,
+      transparent 74%
+    );
+  }
+
+  /* Ambient bloom behind the hero portrait. Static blur, never transitioned. */
+  .hero-bloom {
+    background:
+      radial-gradient(58% 52% at 62% 34%, rgba(25, 160, 222, 0.42), transparent 70%),
+      radial-gradient(64% 60% at 34% 76%, rgba(15, 42, 53, 0.34), transparent 72%);
+    filter: blur(46px);
+    opacity: 0.7;
+  }
+
+  .hero-ground {
+    background:
+      radial-gradient(1100px 520px at 88% 8%, rgba(25, 160, 222, 0.16), transparent 64%),
+      radial-gradient(760px 420px at 2% 4%, rgba(53, 180, 198, 0.11), transparent 62%),
+      linear-gradient(180deg, #f7fbfc 0%, #f2f6f7 62%, #e9f1f4 100%);
+  }
+
+  [dir='rtl'] .hero-ground {
+    background:
+      radial-gradient(1100px 520px at 12% 8%, rgba(25, 160, 222, 0.16), transparent 64%),
+      radial-gradient(760px 420px at 98% 4%, rgba(53, 180, 198, 0.11), transparent 62%),
+      linear-gradient(180deg, #f7fbfc 0%, #f2f6f7 62%, #e9f1f4 100%);
+  }
+
+  /* Cursor spotlight. Bound only on fine pointers, opacity capped under .08. */
+  .hero-spotlight {
+    background: radial-gradient(
+      340px circle at var(--mx, 50%) var(--my, 40%),
+      rgba(25, 160, 222, 0.075),
+      rgba(25, 160, 222, 0.03) 42%,
+      transparent 72%
+    );
+  }
+
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+}
+
+/* ==========================================================================
+   Reduced motion protocol.
+   Durations collapse and travel is removed. State logic and visibility are
+   preserved, so nothing is ever stranded at opacity 0.
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-delay: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .u-reveal,
+  .u-reveal.is-pre {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .u-press:hover,
+  .u-press:active,
+  .u-lift:hover,
+  .u-glide-host:hover .u-glide {
+    transform: none !important;
+  }
+
+  [dir='rtl'] .u-glide,
+  [dir='rtl'] .u-glide-host:hover .u-glide {
+    transform: scaleX(-1) !important;
+  }
+
+  .u-menu,
+  .u-menu[data-open='true'] {
+    transform: none !important;
+  }
+
+  .hero-spotlight {
+    opacity: 0 !important;
+  }
+}
