@@ -5,35 +5,41 @@ import plugin from 'tailwindcss/plugin';
  * Pisgah design tokens.
  *
  * ---------------------------------------------------------------------------
- * Blue palette, approved September 2026. Six shades, applied as a vertical
- * flow: lightest at the top of the page, deepest at the bottom.
+ * Botanical green palette, approved September 2026. Five shades, applied as a
+ * vertical flow: lightest at the top of the page, deepest at the bottom.
  *
- *   S1  #C1E8FF   navy-50    header and hero glass, text on deep surfaces
- *   S2  #7DA0CA   navy-200   accents and interactive marks on deep surfaces
- *   S3  #5483B3   navy-400   rules, markers, hairline accents, active states
- *   S4  #325884   navy-600   primary action fill, accent labels on light
- *   S5  #052659   navy-800   deep section surfaces and contrasting panels
- *   S6  #021024   navy-950   footer, baseline, and the hero scrim
+ *   G1  #E3EED4   sage-50    pale mint canvas. Section grounds, pill fills,
+ *                            soft card backdrops, body copy on deep surfaces
+ *   G2  #AEC3B0   sage-200   soft mineral sage. Card outlines, dividers,
+ *                            inactive icon strokes, fills on deep surfaces
+ *   G3  #6B9071   sage-400   the ticked primary anchor. Header tint, chevrons,
+ *                            badge numerals, markers, rules, active states
+ *   G4  #375534   sage-600   rich moss. Primary button fill, deep section
+ *                            surfaces, accent labels on light ground
+ *   G5  #0F2A1D   sage-800   deep forest. Footer, drawer, hero scrim, baseline
  *
  * Contrast, measured rather than assumed (WCAG 2.1):
- *   white on S4        7.33:1   primary button label            pass AA
- *   white on S5       14.71:1                                   pass AAA
- *   white on S6       19.05:1                                   pass AAA
- *   S1 on S5          11.38:1   body copy on deep panels        pass AAA
- *   S1 on S6          14.75:1                                   pass AAA
- *   S2 on S6           7.03:1   accents and focus ring on deep  pass AA
- *   S4 on white        7.33:1   accent labels on light ground   pass AA
- *   S3 on white        3.98:1   NON TEXT ONLY. Rules, markers,
- *                               borders and focus rings, never
- *                               a small label on a light ground.
- *   white on S2        2.71:1   never used. S2 carries dark type only.
- *   white on S3        3.98:1   never used, which is why the primary
- *                               button fills with S4 and not S3.
+ *   white on G4        8.36:1   primary button label            pass AAA
+ *   white on G5       15.34:1                                   pass AAA
+ *   G1 on G4           6.95:1   body copy on deep surfaces      pass AA
+ *   G1 on G5          12.74:1                                   pass AAA
+ *   G5 on G2           8.20:1   the pale accent button on deep  pass AAA
+ *   G4 on white        8.36:1   accent labels on light ground   pass AA
+ *   G3 on white        3.59:1   NON TEXT AND LARGE TEXT ONLY
+ *   G3 on G5           4.27:1   below AA for small text
+ *   white on G3        3.59:1   never used
+ *   G5 on G3           4.27:1   never used for a button label
  *
- * That last pair is the one deviation from the brief worth naming: S2 and S3
- * were requested as primary action fills, but neither clears 4.5:1 with a white
- * label. They drive the interactive accents instead, and the button fill steps
- * one shade deeper to S4, hovering deeper still to S5.
+ * The deviation worth naming: G3 is the ticked brand anchor, and the brief put
+ * it on the primary buttons. No label clears 4.5:1 on it. White measures
+ * 3.59:1, and even G5, the darkest shade in the palette, reaches only 4.27:1,
+ * which is a five percent shortfall rather than a rounding error. So the
+ * primary fill steps one shade deeper to G4 and hovers deeper still to G5, and
+ * G3 does everything else the brief asked of it: the translucent header tint,
+ * chevrons, active badges, markers, rules, borders and the large display
+ * numerals, all of which are either non-text or above the 24px large-text
+ * threshold where the 3:1 rule applies. Change `deep` below to '#6B9071' if
+ * you would rather have the ticked colour on the fill and accept 4.27:1.
  *
  * Font families resolve through CSS variables that are redefined under
  * [dir="rtl"] in globals.css, so the Arabic stack swaps in automatically for
@@ -45,45 +51,48 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        /* The six palette shades, addressable by name. */
-        navy: {
-          50: '#C1E8FF',
-          200: '#7DA0CA',
-          400: '#5483B3',
-          600: '#325884',
-          800: '#052659',
-          950: '#021024',
+        /* The five palette shades, addressable by name. */
+        sage: {
+          50: '#E3EED4',
+          200: '#AEC3B0',
+          400: '#6B9071',
+          600: '#375534',
+          800: '#0F2A1D',
         },
 
-        /* The vertical ground ramp. Each light section sits one step deeper
-           than the one above it, which is what produces the gradual descent
-           without a single scroll listener or a page-height gradient. */
+        /* The vertical ground ramp, white stepping toward G1. Each light
+           section sits one step deeper than the one above it, which produces
+           the gradual descent without a scroll listener or a page-height
+           gradient. */
         ground: {
           1: '#FFFFFF',
-          2: '#F6FCFF',
-          3: '#EFF9FF',
-          4: '#E7F6FF',
-          5: '#E0F4FF',
+          2: '#F9FBF6',
+          3: '#F3F8ED',
+          4: '#EEF4E4',
+          5: '#E8F1DC',
         },
 
-        /* Semantic aliases. Components address these, so a future palette
-           revision happens here and nowhere else. */
-        ink: '#021024',        // S6, deepest surfaces and body type
-        deep: '#325884',       // S4, primary action fill
-        blue: '#052659',       // S5, primary hover. Darker, not lighter, so the
-                               // white label climbs from 7.33:1 to 14.71:1
-        cyan: '#7DA0CA',       // S2, accents on deep surfaces only
-        teal: '#5483B3',       // S3, rules, markers and hairline accents
-        graphite: '#3D5A80',
-        mist: '#DCE7F2',       // borders and image placeholders
-        paper: '#F6FCFF',      // ground 2, the page default
+        /* Semantic aliases. Components address these, so a palette revision
+           happens here and nowhere else. */
+        ink: '#0F2A1D',        // G5, deepest surfaces, body type, button hover
+        deep: '#375534',       // G4, primary action fill, accent labels
+        blue: '#375534',       // G4, deep section surfaces. Kept as an alias so
+                               // the section components did not need renaming
+        cyan: '#AEC3B0',       // G2, fills and strokes on deep surfaces
+        teal: '#6B9071',       // G3, the ticked anchor. Rules, markers,
+                               // chevrons, active states, display numerals
+        graphite: '#3F5B41',
+        mist: '#D5E2D6',       // borders and image placeholders
+        paper: '#F9FBF6',      // ground 2, the page default
         whatsapp: '#25D366',   // brand mark, deliberately outside the palette
-        body: '#021024',       // 19.05:1 on white
-        muted: '#3D5A80',      // 7.06:1 on white, 6.24:1 on the deepest ground
-        faint: '#526E8F',      // 5.27:1 on white, 4.65:1 on the deepest ground
-        'faint-soft': '#8FA3BC', // 5.70:1 on S5, 7.38:1 on S6. On deep only
-        hairline: '#D7E6F4',
-        'hairline-soft': '#E8F2FB',
+        body: '#0F2A1D',       // 15.34:1 on white
+        muted: '#3F5B41',      // 7.54:1 on white, 6.48:1 on the deepest ground
+        faint: '#4F6E52',      // 5.70:1 on white, 4.90:1 on the deepest ground
+        'faint-soft': '#C3D3C4', // 5.35:1 on G4, 9.81:1 on G5. Deep only. G2
+                                 // itself is 4.47:1 on G4, just below AA, so
+                                 // the metadata tint is lifted toward G1
+        hairline: '#D3E0D4',
+        'hairline-soft': '#E7EEE7',
       },
       fontFamily: {
         display: ['var(--font-display)'],
@@ -102,22 +111,22 @@ const config: Config = {
         frame: '22px',
       },
       boxShadow: {
-        nav: '0 10px 30px rgba(2,16,36,.10), 0 2px 6px rgba(2,16,36,.06)',
-        card: '0 1px 2px rgba(2,16,36,.05), 0 2px 8px rgba(2,16,36,.05)',
-        lifted: '0 14px 34px rgba(2,16,36,.12), 0 3px 8px rgba(2,16,36,.07)',
+        nav: '0 10px 30px rgba(15,42,29,.10), 0 2px 6px rgba(15,42,29,.06)',
+        card: '0 1px 2px rgba(15,42,29,.05), 0 2px 8px rgba(15,42,29,.05)',
+        lifted: '0 14px 34px rgba(15,42,29,.12), 0 3px 8px rgba(15,42,29,.07)',
         intake:
-          '0 30px 70px rgba(2,16,36,.13), 0 10px 24px rgba(2,16,36,.08), 0 1px 2px rgba(2,16,36,.05)',
-        badge: '0 12px 32px rgba(2,16,36,.15), 0 2px 6px rgba(2,16,36,.08)',
-        frame: '0 30px 70px rgba(2,16,36,.22), 0 6px 18px rgba(2,16,36,.10)',
-        deep: '0 8px 22px rgba(50,88,132,.30)',
-        cyan: '0 12px 28px rgba(84,131,179,.36)',
-        drawer: '0 0 50px rgba(2,16,36,.24)',
+          '0 30px 70px rgba(15,42,29,.13), 0 10px 24px rgba(15,42,29,.08), 0 1px 2px rgba(15,42,29,.05)',
+        badge: '0 12px 32px rgba(15,42,29,.15), 0 2px 6px rgba(15,42,29,.08)',
+        frame: '0 30px 70px rgba(15,42,29,.22), 0 6px 18px rgba(15,42,29,.10)',
+        deep: '0 8px 22px rgba(55,85,52,.30)',
+        cyan: '0 12px 28px rgba(107,144,113,.38)',
+        drawer: '0 0 50px rgba(15,42,29,.24)',
         /* Multi-stop diffuse elevation. Three offsets at low alpha read as
            depth; a single large blur reads as a default Tailwind shadow. */
         diffuse:
-          '0 1px 1px rgba(2,16,36,.04), 0 4px 8px rgba(2,16,36,.04), 0 12px 24px rgba(2,16,36,.05)',
+          '0 1px 1px rgba(15,42,29,.04), 0 4px 8px rgba(15,42,29,.04), 0 12px 24px rgba(15,42,29,.05)',
         'diffuse-lg':
-          '0 1px 1px rgba(2,16,36,.05), 0 6px 14px rgba(2,16,36,.06), 0 18px 36px rgba(2,16,36,.07), 0 40px 72px rgba(2,16,36,.06)',
+          '0 1px 1px rgba(15,42,29,.05), 0 6px 14px rgba(15,42,29,.06), 0 18px 36px rgba(15,42,29,.07), 0 40px 72px rgba(15,42,29,.06)',
         'diffuse-ink':
           '0 1px 1px rgba(0,0,0,.20), 0 8px 20px rgba(0,0,0,.22), 0 28px 56px rgba(0,0,0,.20)',
       },
@@ -142,17 +151,17 @@ const config: Config = {
       },
       keyframes: {
         pulseRing: {
-          '0%': { boxShadow: '0 0 0 0 rgba(125,160,202,.55)' },
-          '70%': { boxShadow: '0 0 0 7px rgba(125,160,202,0)' },
-          '100%': { boxShadow: '0 0 0 0 rgba(125,160,202,0)' },
+          '0%': { boxShadow: '0 0 0 0 rgba(107,144,113,.60)' },
+          '70%': { boxShadow: '0 0 0 7px rgba(107,144,113,0)' },
+          '100%': { boxShadow: '0 0 0 0 rgba(107,144,113,0)' },
         },
       },
       animation: {
         'pulse-ring': 'pulseRing 2.4s cubic-bezier(0.16, 1, 0.3, 1) infinite',
       },
       ringColor: {
-        focus: '#325884',       // 7.33:1 on white
-        'focus-ink': '#7DA0CA', // 7.03:1 on S6, 5.43:1 on S5
+        focus: '#375534',       // 8.36:1 on white
+        'focus-ink': '#AEC3B0', // 8.20:1 on G5, 4.47:1 on G4
       },
     },
   },
@@ -180,8 +189,8 @@ const config: Config = {
           WebkitBackdropFilter: 'blur(12px) saturate(1.25)',
         },
         '.glass-dark': {
-          backgroundColor: 'rgba(2,16,36,.58)',
-          border: '1px solid rgba(193,232,255,.22)',
+          backgroundColor: 'rgba(15,42,29,.58)',
+          border: '1px solid rgba(227,238,212,.22)',
           backdropFilter: 'blur(12px)',
           WebkitBackdropFilter: 'blur(12px)',
         },

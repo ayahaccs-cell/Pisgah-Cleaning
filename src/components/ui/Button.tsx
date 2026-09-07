@@ -18,7 +18,7 @@ const BASE =
   'border border-transparent text-center no-underline min-h-[48px] transform-gpu';
 
 /* Focus ring colour follows the surface the button sits on, because no single
-   hue clears 3:1 against both white and the deep navy grounds. See globals.css. */
+   hue clears 3:1 against both white and the deep forest grounds. See globals.css. */
 const FOCUS: Record<Variant, string> = {
   primary: 'focus-ring-light',
   ghost: 'focus-ring-light',
@@ -30,18 +30,20 @@ const FOCUS: Record<Variant, string> = {
 };
 
 const VARIANTS: Record<Variant, string> = {
-  /* S4 fill, hovering to S5. White on S4 is 7.33:1, on S5 it is 14.71:1, so
+  /* G4 fill, hovering to G5. White on G4 is 8.36:1, on G5 it is 15.34:1, so
      the button gets more legible under the pointer rather than less. */
-  primary: 'bg-deep text-white shadow-deep hover:bg-blue hover:shadow-cyan',
-  ghost: 'bg-transparent text-body border-hairline hover:border-teal hover:text-blue',
+  primary: 'bg-deep text-white shadow-deep hover:bg-ink hover:shadow-cyan',
+  ghost: 'bg-transparent text-body border-hairline hover:border-teal hover:text-deep',
   glass: 'glass-ghost text-ink hover:bg-white/80',
   whatsapp: 'bg-whatsapp text-[#06301A] shadow-[0_8px_20px_rgba(37,211,102,.28)] hover:bg-[#22C55E]',
-  /* The S3 accent fill, used on deep surfaces. It carries S6 type, never
-     white: S6 on S3 is 4.79:1, white on S3 is only 3.98:1. */
-  teal: 'bg-teal text-ink hover:bg-cyan',
+  /* The pale G2 fill, used on deep surfaces. It carries G5 type at 8.20:1, and
+     the fill itself reads 8.20:1 against G5 and 4.47:1 against G4, so it is
+     visible as a shape on either deep ground. The ticked G3 is not used as a
+     button fill: no label clears 4.5:1 on it. */
+  teal: 'bg-cyan text-ink hover:bg-sage-50',
   outline: 'bg-transparent text-white border-white/70 hover:border-white hover:bg-white/10',
-  /* On the glass header. White fill, S5 label, 14.71:1. */
-  light: 'bg-white text-blue hover:bg-navy-50',
+  /* On the glass header. White fill, G4 label, 8.36:1. */
+  light: 'bg-white text-deep hover:bg-sage-50',
 };
 
 const SIZES: Record<Size, string> = {

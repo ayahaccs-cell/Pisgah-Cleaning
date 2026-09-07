@@ -41,10 +41,11 @@ export function TrustBar() {
           <div>
             <div className="flex items-center gap-1" aria-hidden="true">
               {Array.from({ length: 5 }).map((_, index) => (
-                /* The one warm note left on an all-blue page. A rating row is
-                   read as a rating because the stars are amber; recolouring
-                   them navy would make the claim quieter, not more on-brand.
-                   Change to text-teal if you would rather it went. */
+                /* The one warm note on the page. A rating row is read as a
+                   rating because the stars are amber, and amber sits naturally
+                   beside botanical green; recolouring them would make the
+                   claim quieter, not more on-brand. Change to text-teal if you
+                   would rather it went. */
                 <StarIcon key={index} size={15} className="text-[#F59E0B]" />
               ))}
             </div>

@@ -11,7 +11,7 @@ import { ClockIcon, PhoneIcon, WhatsAppIcon } from '@/components/ui/Icons';
 import { NAV_LINKS } from './Navbar';
 
 /**
- * Slide-out menu. Frosted navy glass.
+ * Slide-out menu. Frosted deep forest glass.
  *
  * Enters from the inline end, which is the right in LTR and the left in RTL.
  * The panel is positioned with inset-inline-end and translated on a sign that
@@ -19,23 +19,25 @@ import { NAV_LINKS } from './Navbar';
  * leading edge is border-s, not border-l, so the hairline lands on the left in
  * English and on the right in Arabic with no override.
  *
- * Surface: S5 at 85 percent with backdrop-blur-xl, over an S6 scrim at 60
- * percent that carries its own light blur. A more opaque S5 sits underneath as
+ * Surface: G5 at 85 percent with backdrop-blur-xl, over a G5 scrim at 60
+ * percent that carries its own light blur. A more opaque G5 sits underneath as
  * the fallback where backdrop-filter is unsupported, so the panel is never
  * see-through on an older engine.
  *
  * Contrast, measured against the worst case, which is the drawer opened over a
  * white section:
  *
- *   composite panel surface   #14315E
- *   white                     12.88:1
- *   S1 #C1E8FF                 9.97:1
- *   S1 at 80 percent           6.95:1
- *   S3 fill vs the panel       3.23:1   passes SC 1.4.11 for a control
- *   S2 fill vs the panel       4.75:1
+ *   composite panel surface   #1D372B
+ *   white                     12.86:1
+ *   G1 #E3EED4                10.68:1
+ *   G1 at 80 percent           7.41:1
+ *   G2 fill vs the panel       6.88:1
+ *   G3 accent vs the panel     3.58:1   passes SC 1.4.11 for a control, and
+ *                                       is therefore used on strokes and
+ *                                       indicators rather than on type
  *
- * Every ring inside the panel is focus-ring-ink, because the S4 ring that
- * serves light grounds measures 2.01:1 against S5 and would vanish here.
+ * Every ring inside the panel is focus-ring-ink, because the G4 ring that
+ * serves light grounds measures 1.83:1 against G5 and would vanish here.
  *
  * Nothing here is shared with the desktop header except NAV_LINKS and the
  * LocaleSwitcher 'panel' tone, and that tone is used in this file and nowhere
@@ -110,7 +112,7 @@ export function MobileDrawer({ open, onClose }: Props) {
         aria-modal="true"
         aria-label={t.nav.mobile}
         aria-hidden={!open}
-        className={`fixed inset-y-0 end-0 z-[200] flex w-[min(88%,360px)] flex-col overflow-y-auto border-s border-navy-50/15 bg-blue/95 p-[18px] text-white shadow-drawer backdrop-blur-xl u-surface-out transform-gpu supports-[backdrop-filter]:bg-blue/85 ${
+        className={`fixed inset-y-0 end-0 z-[200] flex w-[min(88%,360px)] flex-col overflow-y-auto border-s border-sage-200/15 bg-ink/95 p-[18px] text-white shadow-drawer backdrop-blur-xl u-surface-out transform-gpu supports-[backdrop-filter]:bg-ink/85 ${
           open ? 'u-surface-in' : ''
         }`}
         style={{ transform: open ? 'translateX(0)' : hidden }}
@@ -131,7 +133,7 @@ export function MobileDrawer({ open, onClose }: Props) {
             type="button"
             onClick={onClose}
             aria-label={t.a11y.closeMenuLabel}
-            className="focus-ring-ink u-press tap flex h-11 w-11 flex-none items-center justify-center rounded-full border border-navy-50/20 bg-white/10 text-lg leading-none text-white transition-colors duration-fast ease-feedback hover:bg-white/20"
+            className="focus-ring-ink u-press tap flex h-11 w-11 flex-none items-center justify-center rounded-full border border-sage-200/20 bg-white/10 text-lg leading-none text-white transition-colors duration-fast ease-feedback hover:bg-white/20"
           >
             &#10005;
           </button>
@@ -152,8 +154,9 @@ export function MobileDrawer({ open, onClose }: Props) {
             {t.cta.whatsapp}
           </Button>
 
-          {/* S3 fill carrying S6 type. White on S3 is only 3.98:1, so the label
-              is ink here, exactly as it is on the emergency section button. */}
+          {/* The pale G2 fill carrying G5 type at 8.20:1, exactly as on the
+              emergency section button. The ticked G3 is not used as a fill
+              anywhere a label sits on it. */}
           <Button
             href={callPrimaryHref()}
             variant="teal"
@@ -183,21 +186,21 @@ export function MobileDrawer({ open, onClose }: Props) {
           </Button>
         </div>
 
-        <p className="mt-4 inline-flex items-center gap-2 text-xs leading-tight text-navy-50/80">
-          <ClockIcon size={14} className="flex-none" />
+        <p className="mt-4 inline-flex items-center gap-2 text-xs leading-tight text-sage-50/80">
+          <ClockIcon size={14} className="flex-none text-teal" />
           {siteConfig.contact.hours.office}
         </p>
 
         <nav
           aria-label={t.nav.mobile}
-          className="mt-5 flex flex-col border-t border-navy-50/15 pt-1"
+          className="mt-5 flex flex-col border-t border-sage-200/15 pt-1"
         >
           {NAV_LINKS.map((link) => (
             <a
               key={link.key}
               href={link.href}
               onClick={onClose}
-              className="focus-ring-ink flex min-h-[52px] items-center rounded border-b border-navy-50/15 py-3 font-display text-base font-medium text-white transition-colors duration-fast ease-feedback hover:text-navy-50"
+              className="focus-ring-ink flex min-h-[52px] items-center rounded border-b border-sage-200/10 py-3 font-display text-base font-medium text-white transition-colors duration-fast ease-feedback hover:text-sage-50"
             >
               {t.nav[link.key]}
             </a>

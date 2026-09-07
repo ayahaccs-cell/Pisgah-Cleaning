@@ -415,6 +415,106 @@ follows to the opposite edge; the logo, close button, link alignment, schedule a
 order all mirror; and the two phone numbers stay in Latin order inside their `dir="ltr"`
 spans.
 
+## Botanical green theme (v7)
+
+The blue palette is gone. Every colour on the site now comes from the five
+supplied botanical green shades.
+
+| Token | Hex | Role |
+| --- | --- | --- |
+| `sage-50` | `#E3EED4` | G1 pale mint canvas. Section grounds, pill fills, soft card backdrops, body copy on deep surfaces |
+| `sage-200` | `#AEC3B0` | G2 soft mineral sage. Card outlines, dividers, inactive strokes, fills on deep surfaces |
+| `sage-400` | `#6B9071` | G3 the ticked primary anchor. Header tint, chevrons, badge numerals, markers, rules, active states |
+| `sage-600` | `#375534` | G4 rich moss. Primary button fill, deep section surfaces, accent labels on light |
+| `sage-800` | `#0F2A1D` | G5 deep forest. Footer, drawer, hero scrim, baseline |
+
+Semantic aliases carry these into components: `ink` is G5, `deep` and `blue` are
+G4, `cyan` is G2, `teal` is G3. Components address the aliases, which is why a
+five-shade repalette was a token edit plus a scale rename rather than a
+component-by-component rewrite.
+
+### The deviation worth naming
+
+The brief put the ticked G3 `#6B9071` on the primary buttons. No label clears
+4.5:1 on it:
+
+```
+white on G3   3.59:1   fails
+G5 on G3      4.27:1   fails, and G5 is the darkest shade in the palette
+white on G4   8.36:1   passes AAA
+white on G5  15.34:1   passes AAA
+```
+
+4.27:1 is a five percent shortfall, not a rounding error, so the primary fill
+steps one shade deeper to G4 and hovers deeper still to G5. G3 does everything
+else the brief asked of it, and more of it than the blue build gave its
+equivalent shade: the translucent header tint at the exact 22 percent
+requested, the video badge tint, chevrons, the active accordion border, the
+featured tier border, the selected ring, list markers, rules, and the display
+numerals on the process steps, the tiers and the division letters.
+
+Those numerals are the interesting case. G3 measures 3.59:1 on white and 3.08:1
+on the deepest light ground, which clears the 3:1 large-text threshold at 24px
+and above but not the 4.5:1 small-text threshold. So `.numeral-accent` carries
+G3 and is applied only where the numeral is display sized, `.numeral` carries
+G4 for everything else, and the division letters moved from 22px to 24px so
+they sit above the threshold rather than just under it. Change `deep` in
+`tailwind.config.ts` to `'#6B9071'` if you would rather have the ticked colour
+on the button fill and accept 4.27:1.
+
+The WhatsApp button keeps its brand green `#25D366`. It is now the one
+saturated note on a botanical page and it does read as a foreign object, which
+is the point of a brand mark: people scan for that specific green. Say the word
+and it becomes the pale G2 fill with the same glyph.
+
+The amber rating stars stayed. Amber sits naturally beside botanical green, and
+a rating row is read as a rating because the stars are amber.
+
+### Vertical flow, lightest at the top
+
+| Section | Surface |
+| --- | --- |
+| Header | G3 at 22 percent over a G5 ground, `backdrop-blur-md` |
+| Hero | G5 scrim, releasing into G4 on the far side |
+| Estimate card | white, G2 border at 50 percent, G3 field hover |
+| Trust bar | `ground-2` `#F9FBF6` |
+| Landmark contracts | G4 `#375534` |
+| Process stages | `ground-3` `#F3F8ED`, G3 badge numerals, G2 frame borders |
+| Divisions | `ground-4` `#EEF4E4`, open card lifts to a G1 backdrop in a G3 border |
+| Residential tiers | `ground-5` `#E8F1DC`, G3 featured border, G3 selected ring |
+| Emergency | G4 |
+| Leadership | G4 to G5 gradient |
+| Footer | G5 `#0F2A1D` |
+
+The service accordion changed direction from v6. The brief asked for an active
+header in G5 type with a G3 chevron, so the open card no longer inverts to a
+dark panel: it lifts to a pale G1 backdrop inside a G3 border, type stays G5 in
+both states, and the chevron is the only element that changes hue. Closed cards
+are white with a G1 tint on hover.
+
+Text colours were measured against the ground each one actually sits on. The
+tightest pairs: `faint` `#4F6E52` on the deepest light ground is 4.90:1, and
+`faint-soft` `#C3D3C4` on G4 is 5.35:1. Both pass AA for small text. That
+second token is G2 lifted toward G1 on purpose: G2 itself measures 4.47:1 on
+G4, just under the line, so the metadata tint is one step lighter than the
+swatch while the borders and strokes stay on G2 exactly.
+
+Focus rings stay surface-aware: G4 on light ground (8.36:1) and G2 on deep
+ground (8.20:1 on G5, 4.47:1 on G4). Neither clears 3:1 on both.
+
+### Header and drawer glass
+
+Both are built the same way, and both keep the tint the brief asked for while
+adding a ground under it. The header is G3 at 22 percent over G5; measured with
+the bar crossing the brightest part of the hero frame, white reads 7.67:1 and
+G1 reads 6.37:1. The video badge uses the same construction at 20 percent. The
+drawer is G5 at 85 percent over a G5 scrim at 60 percent, where white reads
+12.86:1 and G1 10.68:1 in the worst case. A tint alone at those opacities
+inherits whatever the photograph is doing behind it, which is not a contrast
+ratio at all; the ground is what makes it one.
+
+`themeColor` in `app/layout.tsx` is now `#0F2A1D`.
+
 ## Assets to replace
 
 Client photography supplied September 2026 is now in place.

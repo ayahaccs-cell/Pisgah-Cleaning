@@ -16,8 +16,9 @@ import { WhatsAppIcon } from '@/components/ui/Icons';
  * demand is measured without publishing rates.
  *
  * Tiers are numbered in IBM Plex Mono and separated by hairlines. There is no
- * icon, no ribbon and no coloured fill on the featured tier: it is marked by an
- * S4 hairline and a mono label, and a selected tier by an S3 ring.
+ * icon, no ribbon and no coloured fill on the featured tier: it is marked by a
+ * G3 hairline and a mono label, and a selected tier by a G3 ring. The display
+ * numeral is the ticked G3 at 26px, above the large-text threshold.
  */
 
 export function PackageSelector() {
@@ -65,8 +66,8 @@ export function PackageSelector() {
                 index={index}
                 className={`group u-lift flex w-[82%] flex-none snap-start flex-col overflow-hidden rounded-2xl bg-white shadow-diffuse transition-shadow hover:shadow-diffuse-lg sm:w-auto ${
                   tier.featured
-                    ? 'border border-deep/70 ring-1 ring-inset ring-deep/15'
-                    : 'border border-ink/[0.07]'
+                    ? 'border border-teal ring-1 ring-inset ring-teal/20'
+                    : 'border border-cyan/40'
                 } ${isSelected ? 'ring-2 ring-teal' : ''}`}
               >
                 <div className="relative aspect-[4/3] w-full overflow-hidden bg-mist">
@@ -81,7 +82,7 @@ export function PackageSelector() {
 
                 <div className="flex flex-1 flex-col p-5">
                 <div className="flex items-baseline justify-between gap-3">
-                  <span className="numeral text-[26px] leading-none">
+                  <span className="numeral numeral-accent text-[26px] leading-none">
                     {String(index + 1).padStart(2, '0')}
                   </span>
                   {tier.featured ? (
@@ -124,7 +125,7 @@ export function PackageSelector() {
                     onClick={() => setSelected(tier.id)}
                     onFocus={() => setSelected(tier.id)}
                     aria-label={t.a11y.whatsappPackage}
-                    className="focus-ring-light u-press flex min-h-[48px] w-full items-center justify-center gap-2 rounded-full bg-deep px-4 text-center font-display text-[14.5px] font-semibold text-white shadow-deep hover:bg-blue hover:shadow-cyan tap"
+                    className="focus-ring-light u-press flex min-h-[48px] w-full items-center justify-center gap-2 rounded-full bg-deep px-4 text-center font-display text-[14.5px] font-semibold text-white shadow-deep hover:bg-ink hover:shadow-cyan tap"
                   >
                     <WhatsAppIcon size={16} />
                     {t.cta.inspection}

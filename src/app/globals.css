@@ -99,15 +99,15 @@
   }
 
   /* WCAG 2.1 SC 1.4.11 requires a focus indicator at 3:1 against what sits
-     behind it. Measured on the blue palette:
-       S4 #325884 on white        7.33:1  pass
-       S4 #325884 on S6 #021024   2.60:1  fail
-       S2 #7DA0CA on S6 #021024   7.03:1  pass
-       S2 #7DA0CA on S5 #052659   5.43:1  pass
-       S2 #7DA0CA on white        2.71:1  fail
+     behind it. Measured on the green palette:
+       G4 #375534 on white        8.36:1  pass
+       G4 #375534 on G5 #0F2A1D   1.83:1  fail
+       G2 #AEC3B0 on G5 #0F2A1D   8.20:1  pass
+       G2 #AEC3B0 on G4 #375534   4.47:1  pass
+       G2 #AEC3B0 on white        1.87:1  fail
      So the ring colour is chosen by surface rather than fixed. */
   :root {
-    --focus-ring: #325884;
+    --focus-ring: #375534;
     --focus-offset: #FFFFFF;
   }
 
@@ -211,7 +211,7 @@
     appearance: none;
     -webkit-appearance: none;
     padding-inline-end: 40px;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23325884' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M5 8l5 5 5-5'/></svg>");
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23375534' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M5 8l5 5 5-5'/></svg>");
     background-repeat: no-repeat;
     background-size: 18px;
     background-position: right 14px center;
@@ -248,18 +248,18 @@
   /* Ink panel. The hairline is the only edge; there is no border colour. */
   .surface-ink {
     background-color: theme('colors.ink');
-    border: 1px solid rgb(193 232 255 / 0.13);
+    border: 1px solid rgb(227 238 212 / 0.15);
   }
 
-  .hair-t { border-top: 1px solid rgb(193 232 255 / 0.14); }
-  .hair-b { border-bottom: 1px solid rgb(193 232 255 / 0.14); }
+  .hair-t { border-top: 1px solid rgb(227 238 212 / 0.16); }
+  .hair-b { border-bottom: 1px solid rgb(227 238 212 / 0.16); }
 
   /* On light ground the hairline is ink at low alpha, never a grey border. */
-  .hair-light-b { border-bottom: 1px solid rgb(2 16 36 / 0.09); }
-  .hair-light-t { border-top: 1px solid rgb(2 16 36 / 0.09); }
+  .hair-light-b { border-bottom: 1px solid rgb(15 42 29 / 0.10); }
+  .hair-light-t { border-top: 1px solid rgb(15 42 29 / 0.10); }
   .surface-light {
     background-color: #ffffff;
-    border: 1px solid rgb(2 16 36 / 0.08);
+    border: 1px solid rgb(15 42 29 / 0.09);
   }
 
   /* A 1.5px stroke that reads as a drawn rule, integrated into the type. */
@@ -271,8 +271,8 @@
       to right,
       theme('colors.teal') 0,
       theme('colors.teal') 34px,
-      rgb(2 16 36 / 0.11) 34px,
-      rgb(2 16 36 / 0.11) 100%
+      rgb(15 42 29 / 0.12) 34px,
+      rgb(15 42 29 / 0.12) 100%
     );
   }
 
@@ -281,8 +281,8 @@
       to left,
       theme('colors.teal') 0,
       theme('colors.teal') 34px,
-      rgb(2 16 36 / 0.11) 34px,
-      rgb(2 16 36 / 0.11) 100%
+      rgb(15 42 29 / 0.12) 34px,
+      rgb(15 42 29 / 0.12) 100%
     );
   }
 
@@ -291,8 +291,8 @@
       to right,
       theme('colors.teal') 0,
       theme('colors.teal') 34px,
-      rgb(193 232 255 / 0.16) 34px,
-      rgb(193 232 255 / 0.16) 100%
+      rgb(227 238 212 / 0.18) 34px,
+      rgb(227 238 212 / 0.18) 100%
     );
   }
 
@@ -301,8 +301,8 @@
       to left,
       theme('colors.teal') 0,
       theme('colors.teal') 34px,
-      rgb(193 232 255 / 0.16) 34px,
-      rgb(193 232 255 / 0.16) 100%
+      rgb(227 238 212 / 0.18) 34px,
+      rgb(227 238 212 / 0.18) 100%
     );
   }
 
@@ -313,15 +313,16 @@
     line-height: 1.5;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    /* 5.27:1 on white, 4.65:1 on the deepest light ground. Pass AA. */
-    color: #526E8F;
+    /* 5.70:1 on white, 4.90:1 on the deepest light ground. Pass AA. */
+    color: #4F6E52;
   }
 
-  /* S4. 7.33:1 on white, 6.48:1 on the deepest light ground. */
-  .spec-cyan { color: #325884; }
+  /* G4. 8.36:1 on white, 7.19:1 on the deepest light ground. */
+  .spec-cyan { color: #375534; }
 
-  /* 5.70:1 on S5, 7.38:1 on S6. Deep surfaces only. */
-  .spec-on-ink { color: #8FA3BC; }
+  /* 5.35:1 on G4, 9.81:1 on G5. Deep surfaces only. G2 itself is 4.47:1 on
+     G4, just below AA, so the metadata tint is lifted toward G1. */
+  .spec-on-ink { color: #C3D3C4; }
 
   [dir='rtl'] .spec {
     font-size: 12px;
@@ -333,15 +334,15 @@
     outline: none;
     box-shadow:
       0 0 0 2px #FFFFFF,
-      0 0 0 4px #325884;
+      0 0 0 4px #375534;
     border-radius: 999px;
   }
 
   .focus-ring-ink:focus-visible {
     outline: none;
     box-shadow:
-      0 0 0 2px #021024,
-      0 0 0 4px #7DA0CA;
+      0 0 0 2px #0F2A1D,
+      0 0 0 4px #AEC3B0;
     border-radius: 999px;
   }
 
@@ -349,8 +350,8 @@
   .focus-ring-field:focus-visible,
   .focus-ring-field:focus {
     outline: none;
-    border-color: #325884;
-    box-shadow: 0 0 0 3px rgba(50, 88, 132, 0.22);
+    border-color: #375534;
+    box-shadow: 0 0 0 3px rgba(55, 85, 52, 0.22);
   }
 
   /* List marker. A dot, never a dash, so a bullet never reads as a hyphen or
@@ -393,15 +394,23 @@
     font-family: var(--font-mono);
     font-variant-numeric: tabular-nums;
     font-weight: 500;
-    /* S4, not S3. The 12px numerals in the leadership grid and the client
-       register are small text, and S3 measures 3.98:1 on a light ground. */
+    /* G4, not the ticked G3. Small numerals appear at 12px, and G3 measures
+       only 3.59:1 on white. Use .numeral-accent where the numeral is display
+       sized. */
     color: theme('colors.deep');
   }
 
-  /* The same numeral on a deep surface. S2 measures 5.43:1 on S5 and 7.03:1
-     on S6, so it stays legible at 12px where S4 would disappear. */
+  /* The ticked anchor, for display sized numerals only. G3 measures 3.59:1 on
+     white and 3.08:1 on the deepest light ground, which clears the 3:1 large
+     text threshold at 24px and above, and nothing below that uses this class. */
+  .numeral-accent {
+    color: theme('colors.teal');
+  }
+
+  /* The numeral on a deep surface. G2 is 4.47:1 on G4, just under AA at 12px,
+     so this tint is lifted toward G1 and measures 5.35:1 on G4, 9.81:1 on G5. */
   .numeral-on-deep {
-    color: theme('colors.cyan');
+    color: theme('colors.faint-soft');
   }
 }
 
@@ -422,8 +431,8 @@
     block-size: 420px;
     background: radial-gradient(
       52% 52% at 30% 44%,
-      rgba(84, 131, 179, 0.14),
-      rgba(125, 160, 202, 0.06) 46%,
+      rgba(107, 144, 113, 0.16),
+      rgba(174, 195, 176, 0.07) 46%,
       transparent 72%
     );
     pointer-events: none;
@@ -432,8 +441,8 @@
   .headline-light-ink::before {
     background: radial-gradient(
       52% 52% at 30% 44%,
-      rgba(125, 160, 202, 0.20),
-      rgba(84, 131, 179, 0.08) 48%,
+      rgba(174, 195, 176, 0.22),
+      rgba(107, 144, 113, 0.09) 48%,
       transparent 74%
     );
   }
@@ -441,14 +450,14 @@
   /* Ambient bloom behind the hero portrait. Static blur, never transitioned. */
   .hero-bloom {
     background:
-      radial-gradient(58% 52% at 62% 34%, rgba(125, 160, 202, 0.36), transparent 70%),
-      radial-gradient(64% 60% at 34% 76%, rgba(2, 16, 36, 0.32), transparent 72%);
+      radial-gradient(58% 52% at 62% 34%, rgba(174, 195, 176, 0.38), transparent 70%),
+      radial-gradient(64% 60% at 34% 76%, rgba(15, 42, 29, 0.32), transparent 72%);
     filter: blur(46px);
     opacity: 0.7;
   }
 
   .hero-ground {
-    background: linear-gradient(180deg, #ffffff 0%, #f6fcff 100%);
+    background: linear-gradient(180deg, #ffffff 0%, #f9fbf6 100%);
   }
 
   /* Fixed attachment gives depth on a desktop pointer with no scroll listener
@@ -473,20 +482,20 @@
   .hero-scrim {
     background: linear-gradient(
       to right,
-      rgba(2, 16, 36, 0.90) 0%,
-      rgba(2, 16, 36, 0.76) 38%,
-      rgba(5, 38, 89, 0.40) 68%,
-      rgba(5, 38, 89, 0.24) 100%
+      rgba(15, 42, 29, 0.88) 0%,
+      rgba(15, 42, 29, 0.74) 38%,
+      rgba(15, 42, 29, 0.48) 68%,
+      rgba(55, 85, 52, 0.34) 100%
     );
   }
 
   [dir='rtl'] .hero-scrim {
     background: linear-gradient(
       to left,
-      rgba(2, 16, 36, 0.90) 0%,
-      rgba(2, 16, 36, 0.76) 38%,
-      rgba(5, 38, 89, 0.40) 68%,
-      rgba(5, 38, 89, 0.24) 100%
+      rgba(15, 42, 29, 0.88) 0%,
+      rgba(15, 42, 29, 0.74) 38%,
+      rgba(15, 42, 29, 0.48) 68%,
+      rgba(55, 85, 52, 0.34) 100%
     );
   }
 
@@ -494,8 +503,8 @@
   .hero-spotlight {
     background: radial-gradient(
       340px circle at var(--mx, 50%) var(--my, 40%),
-      rgba(193, 232, 255, 0.10),
-      rgba(125, 160, 202, 0.04) 42%,
+      rgba(227, 238, 212, 0.11),
+      rgba(107, 144, 113, 0.05) 42%,
       transparent 72%
     );
   }

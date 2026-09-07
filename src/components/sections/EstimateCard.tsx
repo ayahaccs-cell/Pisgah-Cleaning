@@ -26,7 +26,7 @@ const SCOPE_KEYS: ScopeKey[] = ['routine', 'deep', 'movein'];
 const FIELD =
   'focus-ring-field min-h-[52px] w-full rounded-xl border border-hairline bg-white px-4 py-3 ' +
   'text-[15px] text-ink transition-[border-color,box-shadow] duration-150 ease-feedback ' +
-  /* S3 on hover, S4 on focus. Both are border colour and focus ring, never
+  /* G3 on hover, G4 on focus. Both are border colour and focus ring, never
      type, so the 3:1 non-text threshold is the one that applies. */
   'hover:border-teal placeholder:text-faint';
 
@@ -55,7 +55,7 @@ export function EstimateCard() {
         id="intake"
         role="region"
         aria-labelledby="intake-title"
-        className="rounded-[20px] border border-teal/25 bg-white p-[clamp(20px,3vw,34px)] shadow-intake"
+        className="rounded-[20px] border border-cyan/50 bg-white p-[clamp(20px,3vw,34px)] shadow-intake"
       >
         <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
           <h2 id="intake-title" className="font-display text-[clamp(21px,2.4vw,28px)] font-bold text-ink">
@@ -125,7 +125,7 @@ export function EstimateCard() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label={t.a11y.whatsappEstimate}
-              className="focus-ring-light u-press tap flex min-h-[52px] w-full items-center justify-center whitespace-nowrap rounded-xl bg-deep px-7 font-display text-[15px] font-semibold text-white shadow-deep transition-colors duration-fast ease-feedback hover:bg-blue xl:w-auto"
+              className="focus-ring-light u-press tap flex min-h-[52px] w-full items-center justify-center whitespace-nowrap rounded-xl bg-deep px-7 font-display text-[15px] font-semibold text-white shadow-deep transition-colors duration-fast ease-feedback hover:bg-ink xl:w-auto"
             >
               {t.intake.submit}
             </a>

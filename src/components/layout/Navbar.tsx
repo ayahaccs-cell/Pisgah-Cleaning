@@ -17,15 +17,16 @@ import { MobileDrawer } from './MobileDrawer';
  * image reads from the very top of the page. It is fixed, and the hero carries
  * matching top padding to clear it.
  *
- * Glass construction: an S1 sheen at 16 percent over an S6 ground, with
- * backdrop-blur-md. The brief asked for S1 alone at 15 to 20 percent, but a
- * light wash at that opacity inherits whatever the photograph is doing behind
- * it, and the hero frame runs from a dark lobby to a bright window in the same
- * image. White type over that measures anywhere from 2:1 to 14:1 depending on
- * scroll position, which is not a contrast ratio at all. Laying the same S1
- * tint over an S6 ground keeps the sky-blue glass reading while holding the
- * white label above 12:1 at every scroll position. Swap the two layers if you
- * would rather have the wash and accept the legibility cost.
+ * Glass construction: the ticked G3 #6B9071 as a 22 percent tint over a G5
+ * ground, with backdrop-blur-md. The brief asked for G3 at 20 to 25 percent,
+ * and that tint is exactly what is here; the ground under it is the addition.
+ * A tint alone at that opacity inherits whatever the photograph is doing
+ * behind it, and the hero frame runs from a dark lobby to a bright window
+ * inside one image, so white type over it would measure anywhere from 2:1 to
+ * 14:1 depending on scroll position. Over a G5 ground the same tint holds
+ * white at 7.67:1 and G1 at 6.37:1 in the worst case, which is the bar
+ * crossing the brightest part of the frame. Drop the ground layer if you would
+ * rather have the plain wash and accept the legibility cost.
  *
  * The logo is the white knockout on transparency. No plate, no border, no fill
  * behind it. Its zone is flex-none with its own inline-end margin, so the
@@ -64,10 +65,10 @@ export function Navbar() {
       <header
         role="banner"
         aria-label={t.a11y.headerLandmark}
-        /* background-color carries the S6 ground and the no-backdrop-filter
-           fallback; background-image carries the flat S1 sheen on top of it.
+        /* background-color carries the G5 ground and the no-backdrop-filter
+           fallback; background-image carries the flat G3 tint on top of it.
            Two different properties, so neither overwrites the other. */
-        className="fixed inset-x-0 top-0 z-[60] border-b border-navy-50/25 bg-navy-950/85 bg-gradient-to-b from-navy-50/[0.16] to-navy-50/[0.16] text-white backdrop-blur-md supports-[backdrop-filter]:bg-navy-950/55"
+        className="fixed inset-x-0 top-0 z-[60] border-b border-sage-200/20 bg-sage-800/88 bg-gradient-to-b from-sage-400/[0.22] to-sage-400/[0.22] text-white backdrop-blur-md supports-[backdrop-filter]:bg-sage-800/70"
       >
         <div className="mx-auto flex min-h-[68px] w-full max-w-7xl items-center justify-between gap-4 px-4 py-2 sm:min-h-[76px] sm:px-6">
           {/* ---- Zone 1: logo. Transparent, unboxed, never shares its space. ---- */}
@@ -98,7 +99,7 @@ export function Navbar() {
               <a
                 key={link.key}
                 href={link.href}
-                className="focus-ring-ink group relative inline-flex min-h-[44px] items-center whitespace-nowrap rounded px-0.5 font-display text-xs font-medium text-white/85 transition-colors duration-fast ease-feedback hover:text-white xl:text-sm"
+                className="focus-ring-ink group relative inline-flex min-h-[44px] items-center whitespace-nowrap rounded px-0.5 font-display text-xs font-medium text-white/85 transition-colors duration-fast ease-feedback hover:text-sage-50 xl:text-sm"
               >
                 {t.nav[link.key]}
                 <span
@@ -119,9 +120,9 @@ export function Navbar() {
               <a
                 href={callOfficeHref()}
                 aria-label={t.a11y.callOfficeLabel}
-                className="focus-ring-ink inline-flex items-center gap-1.5 whitespace-nowrap rounded text-xs font-semibold leading-tight text-white transition-colors duration-fast ease-feedback hover:text-navy-50"
+                className="focus-ring-ink inline-flex items-center gap-1.5 whitespace-nowrap rounded text-xs font-semibold leading-tight text-white transition-colors duration-fast ease-feedback hover:text-sage-50"
               >
-                <PhoneIcon size={14} className="flex-none text-navy-50/70" />
+                <PhoneIcon size={14} className="flex-none text-sage-200" />
                 <span dir="ltr" className="tabular-nums">
                   {siteConfig.contact.secondaryPhone.display}
                 </span>
@@ -129,7 +130,7 @@ export function Navbar() {
 
               {/* end-0 rather than right-0, so it tucks under the number on the
                   correct side in Arabic with no second rule. */}
-              <span className="absolute end-0 top-full mt-1 inline-flex items-center gap-1 whitespace-nowrap text-[10px] leading-tight tracking-normal text-navy-50/80">
+              <span className="absolute end-0 top-full mt-1 inline-flex items-center gap-1 whitespace-nowrap text-[10px] leading-tight tracking-normal text-sage-50/80">
                 <ClockIcon size={11} className="flex-none" />
                 {siteConfig.contact.hours.office}
               </span>
@@ -140,7 +141,7 @@ export function Navbar() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label={t.a11y.whatsappGeneric}
-              className="focus-ring-ink u-press tap flex h-10 w-10 flex-none items-center justify-center rounded-full bg-white text-navy-800 transition-colors duration-fast ease-feedback hover:bg-navy-50 sm:h-9 sm:w-9"
+              className="focus-ring-ink u-press tap flex h-10 w-10 flex-none items-center justify-center rounded-full bg-white text-deep transition-colors duration-fast ease-feedback hover:bg-sage-50 sm:h-9 sm:w-9"
             >
               <WhatsAppIcon size={18} />
             </a>

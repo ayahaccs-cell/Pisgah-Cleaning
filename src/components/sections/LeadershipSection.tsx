@@ -14,10 +14,10 @@ import { Reveal } from '@/components/ui/Reveal';
  * Where no photograph has been supplied the card falls back to typographic
  * initials. A stock portrait is never substituted for a named real employee.
  *
- * This is the last step of the vertical flow before the footer: an S5 to S6
- * gradient, so the page arrives at the S6 baseline rather than jumping to it.
- * Every string on it is set in white or S1, both above 11:1 on either end of
- * that gradient.
+ * This is the last step of the vertical flow before the footer: a G4 to G5
+ * gradient, so the page arrives at the G5 baseline rather than jumping to it.
+ * Every string on it is set in white or G1, which measure 8.36:1 and 6.95:1 at
+ * the lighter end of that gradient and better at the deeper end.
  */
 
 function initialsOf(name: string): string {
@@ -36,7 +36,7 @@ export function LeadershipSection() {
     <section
       id="leadership"
       aria-labelledby="leadership-heading"
-      className="section-rhythm bg-gradient-to-b from-blue to-ink text-navy-50"
+      className="section-rhythm bg-gradient-to-b from-blue to-ink text-sage-50"
     >
       <div className="container-page">
         <Reveal className="headline-light headline-light-ink grid gap-8 lg:grid-cols-12 lg:items-end">
@@ -60,7 +60,7 @@ export function LeadershipSection() {
             const copy = t.leadership.members[member.id];
             return (
               <Reveal as="li" key={member.id} index={index} className="group">
-                <div className="relative aspect-square overflow-hidden rounded-[12px] border border-navy-50/15 bg-navy-800 shadow-diffuse-ink lg:aspect-[3/4]">
+                <div className="relative aspect-square overflow-hidden rounded-[12px] border border-sage-200/20 bg-sage-800 shadow-diffuse-ink lg:aspect-[3/4]">
                   {member.photo ? (
                     <Image
                       src={member.photo}
@@ -72,7 +72,7 @@ export function LeadershipSection() {
                   ) : (
                     <span
                       aria-hidden="true"
-                      className="grid h-full w-full place-items-center font-display text-[clamp(30px,6vw,44px)] font-extrabold text-navy-50/30"
+                      className="grid h-full w-full place-items-center font-display text-[clamp(30px,6vw,44px)] font-extrabold text-sage-50/30"
                     >
                       {initialsOf(copy.name)}
                     </span>

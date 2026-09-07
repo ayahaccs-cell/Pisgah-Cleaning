@@ -30,25 +30,24 @@ const OPTIONS: { code: Locale; label: string }[] = [
 export function LocaleSwitcher({ tone = 'bar', className = '' }: Props) {
   const { locale, t } = useLocale();
 
-  /* Both tones now sit on a deep translucent surface, so both are built the
-     same way: an S1 idle label and a filled active pill carrying dark type.
+  /* Both tones sit on a deep translucent surface, so both are built the same
+     way: a G1 idle label and a filled active pill carrying dark type.
 
-     'bar' is the header: a white pill with an S5 label, 14.71:1.
-     'panel' is the drawer: an S2 pill with S6 type, 7.03:1, and the pill fill
-     itself measures 4.75:1 against the drawer glass so the selected state is
-     visible as a shape and not only as a colour. S3 was the other option in
-     the brief, but S3 as a fill drops the ink label to 4.79:1 and the pill
-     itself to 3.23:1 against the panel, so S2 is the safer of the two.
+     'bar' is the header: a white pill with a G4 label, 8.36:1.
+     'panel' is the drawer: a G2 pill with G5 type, 8.20:1, and the pill fill
+     itself measures 6.88:1 against the drawer glass so the selected state is
+     visible as a shape and not only as a colour. The ticked G3 was the other
+     option, but G3 as a fill drops even a G5 label to 4.27:1, below AA.
 
-     'panel' takes the ink ring rather than the light ring, because the S4 ring
-     that serves white grounds measures 2.01:1 against S5. */
-  const shell = tone === 'bar' ? 'border-navy-50/35' : 'border-navy-50/20 w-full';
+     'panel' takes the ink ring rather than the light ring, because the G4 ring
+     that serves white grounds measures 1.83:1 against G5. */
+  const shell = tone === 'bar' ? 'border-sage-200/35' : 'border-sage-200/25 w-full';
   const idle =
     tone === 'bar'
-      ? 'text-navy-50/80 hover:text-white'
+      ? 'text-sage-50/80 hover:text-white'
       : 'bg-white/10 text-white/85 hover:text-white';
   const active =
-    tone === 'bar' ? 'bg-white text-blue font-semibold' : 'bg-cyan text-ink font-semibold';
+    tone === 'bar' ? 'bg-white text-deep font-semibold' : 'bg-cyan text-ink font-semibold';
   const height = tone === 'bar' ? 'min-h-[44px]' : 'min-h-[48px] flex-1';
   const focus = 'focus-ring-ink';
 
@@ -66,7 +65,7 @@ export function LocaleSwitcher({ tone = 'bar', className = '' }: Props) {
               <span
                 aria-hidden="true"
                 className={`w-px self-stretch ${
-              tone === 'bar' ? 'bg-navy-50/35' : 'bg-navy-50/20'
+              tone === 'bar' ? 'bg-sage-200/35' : 'bg-sage-200/25'
             }`}
               />
             )}

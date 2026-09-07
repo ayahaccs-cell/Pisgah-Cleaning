@@ -15,7 +15,7 @@ import { PhoneIcon, PlayIcon } from '@/components/ui/Icons';
  * comes from background-attachment on desktop pointers only, so there is no
  * scroll listener, no transform loop and no judder on a phone.
  *
- * An S6 scrim, deepened toward the reading edge and releasing into S5 on the
+ * A G5 scrim, deepened toward the reading edge and releasing into G4 on the
  * far side, keeps the white type above 7:1 over any part of the photograph.
  * The scrim direction flips with dir, so Arabic gets the same contrast on the
  * other side.
@@ -99,16 +99,19 @@ export function HeroSection() {
             type="button"
             onClick={onVideo}
             aria-label={t.a11y.playVideoLabel}
-            className="focus-ring-ink u-press group mt-9 inline-flex cursor-pointer items-center gap-4 rounded-2xl border border-navy-50/25 bg-navy-950/55 py-3 pe-6 ps-3 text-start shadow-diffuse-ink backdrop-blur-md transition-colors duration-fast ease-feedback hover:bg-navy-950/70"
+            /* The ticked G3 as a 20 percent tint over a G5 ground, the same
+               construction as the header. Measured over the brightest part of
+               the frame: white 6.07:1, G1 4.9:1. */
+            className="focus-ring-ink u-press group mt-9 inline-flex cursor-pointer items-center gap-4 rounded-2xl border border-sage-200/30 bg-sage-800/82 bg-gradient-to-b from-sage-400/[0.20] to-sage-400/[0.20] py-3 pe-6 ps-3 text-start shadow-diffuse-ink backdrop-blur-md transition-colors duration-fast ease-feedback supports-[backdrop-filter]:bg-sage-800/76"
           >
-            <span className="grid h-12 w-12 flex-none place-items-center rounded-full bg-navy-50 text-navy-800 transition-transform duration-standard ease-entrance group-hover:scale-105">
+            <span className="grid h-12 w-12 flex-none place-items-center rounded-full bg-sage-50 text-deep transition-transform duration-standard ease-entrance group-hover:scale-105">
               <PlayIcon size={13} className="rtl:-scale-x-100" />
             </span>
             <span>
               <span className="block font-display text-[15px] font-semibold text-white">
                 {t.hero.videoTitle}
               </span>
-              <span className="mt-0.5 block text-[13px] text-navy-50/85">
+              <span className="mt-0.5 block text-[13px] text-sage-50">
                 {videoNotice ? t.hero.videoPending : t.hero.videoSub}
               </span>
             </span>

@@ -94,7 +94,7 @@ export function ProcessJourney() {
               >
                 <div className={step.indent}>
                   <div className="flex items-baseline gap-5">
-                    <span className="numeral text-[clamp(28px,3vw,38px)] leading-none">
+                    <span className="numeral numeral-accent text-[clamp(28px,3vw,38px)] leading-none">
                       {String(index + 1).padStart(2, '0')}
                     </span>
                     <span className="spec spec-cyan">{copy.spec}</span>
@@ -109,7 +109,7 @@ export function ProcessJourney() {
                   </p>
 
                   <div
-                    className={`mt-5 overflow-hidden rounded-2xl border border-teal/25 bg-mist shadow-diffuse ${step.frame}`}
+                    className={`mt-5 overflow-hidden rounded-2xl border border-cyan/40 bg-mist shadow-diffuse ${step.frame}`}
                   >
                     <div className="relative h-full w-full">
                       <Image
