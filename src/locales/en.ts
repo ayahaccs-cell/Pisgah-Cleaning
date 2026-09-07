@@ -22,7 +22,6 @@ export const en = {
     commercial: 'Commercial',
     residential: 'Residential',
     specialised: 'Specialised',
-    technical: 'Technical Maintenance',
     process: 'How We Work',
     leadership: 'Leadership',
     openMenu: 'Open menu',
@@ -71,7 +70,6 @@ export const en = {
       routine: 'Routine Housekeeping',
       deep: 'Deep Treatment and Marble',
       movein: 'Move-in Turnaround',
-      technical: 'Technical Maintenance',
     },
     fallbackNumber: '[your number]',
     submit: 'Request Site Scope',
@@ -123,10 +121,12 @@ export const en = {
   },
 
   pillars: {
-    heading: 'One contract, four divisions.',
+    heading: 'One contract, three divisions.',
     intro:
-      'One contract covers cleaning, plumbing, electrical, painting and pest control. One supervisor signs for all of it, so there is no vendor to chase when a job crosses a trade.',
-    spec: 'FOUR DIVISIONS / ONE POINT OF ACCOUNTABILITY',
+      'One contract covers daily cleaning, deep machine treatments and the technical work that follows a repair. One supervisor signs for all of it, so there is no vendor to chase when a job crosses a trade.',
+    spec: 'THREE DIVISIONS / ONE POINT OF ACCOUNTABILITY',
+    expandLabel: 'Show what this division covers',
+    collapseLabel: 'Hide what this division covers',
     leadLabel: 'Primary division',
     commercial: {
       title: 'Commercial and facility care',
@@ -157,7 +157,8 @@ export const en = {
     },
     specialised: {
       title: 'Deep and specialised treatments',
-      summary: 'Machine and chemical work, run by crews trained on the exact equipment.',
+      summary:
+        'Machine and chemical work, run by crews trained on the exact equipment, including the technical treatments that follow a repair.',
       spec: 'DIVISION C / MACHINE AND CHEMICAL',
       items: [
         'Single-disc rotary scrubbing and marble crystallisation',
@@ -166,19 +167,8 @@ export const en = {
         'Post-construction acid wash and grout restoration',
         'Facade and internal glass cleaning',
         'Food-grade degreasing and oven detailing',
-      ],
-    },
-    technical: {
-      title: 'Technical and maintenance services',
-      summary: 'The in-house division that keeps the building itself running.',
-      spec: 'DIVISION D / IN-HOUSE TRADES',
-      items: [
-        'Plumbing repairs and emergency call-outs',
-        'Electrical fault finding and rectification',
-        'Internal and external painting',
-        'Water tank cleaning, chlorination and pumps',
-        'Civil, floor and ceiling repairs',
-        'Planned preventive maintenance',
+        'Water tank cleaning and chlorination',
+        'Post-repair make-good and remedial finishes',
       ],
     },
   },

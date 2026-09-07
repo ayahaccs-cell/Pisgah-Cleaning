@@ -65,6 +65,12 @@
 
   html {
     -webkit-text-size-adjust: 100%;
+    /* The header is fixed, so every in-page anchor needs to stop below it. */
+    scroll-padding-top: 96px;
+  }
+
+  @media (min-width: 640px) {
+    html { scroll-padding-top: 108px; }
   }
 
   body {

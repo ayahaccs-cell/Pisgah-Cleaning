@@ -164,6 +164,38 @@ pixels, and six link labels plus a full contact cluster do not fit comfortably b
 so those machines get the drawer rather than collided text. The divider uses `border-s`, so
 it lands on the correct side in Arabic with no override.
 
+## Translucent header and service accordion (v5.4)
+
+**Logo.** `/public/media/logo.png` is the supplied white knockout on transparency, trimmed
+and resized to 1200px. It renders with no plate, no border and no fill behind it.
+`siteConfig.company.logo` remains the full colour mark for white surfaces such as the
+mobile drawer; `siteConfig.company.logoLight` is the knockout, used on the header and the
+footer.
+
+**Header.** Fixed, `bg-emerald-950/40` with `backdrop-blur-md` and a
+`border-emerald-500/20` hairline, so the hero photograph reads from the very top of the
+page. A more opaque `bg-emerald-950/75` sits underneath as the fallback where
+`backdrop-filter` is unsupported, which keeps the white text legible over a bright frame.
+The hero carries matching top padding to clear it, and `html` gets `scroll-padding-top` so
+every in-page anchor stops below the bar rather than under it.
+
+Note: the Tailwind config previously overrode `emerald` with a single hex, which removed
+the whole emerald ramp and would have made `bg-emerald-950` a no-op. The token is now an
+object with a `DEFAULT` plus the 400 / 500 / 800 / 900 / 950 stops.
+
+**Technical Maintenance removed.** Gone from the navigation, the footer service list,
+`siteConfig.divisions`, the `Division` union type, the intake service scopes, and both
+locale dictionaries. Its treatments that still belong on the page (water tank cleaning and
+chlorination, post-repair make-good) fold into Division C. Headline and spec now read three
+divisions, not four.
+
+**Service accordion.** One panel open at a time, Commercial open on load. Each header is a
+real `button` with `aria-expanded` and `aria-controls`; each panel is a labelled `region`.
+Closed panels are unmounted rather than hidden, so the Tab order matches what is on screen.
+There is no height animation, because animating height forces layout every frame and causes
+exactly the shift the accordion was meant to remove. The chevron rotates on the block axis,
+which is direction neutral and needs no RTL flip.
+
 ## Assets to replace
 
 Client photography supplied September 2026 is now in place.
@@ -179,6 +211,7 @@ Client photography supplied September 2026 is now in place.
 | `og-cover.jpg` | Social share card | Generated from the brand palette. Replace with a photograph. |
 | `pisgah-shift.mp4` | Sneak Peek modal | Client footage, re-encoded to web H.264. |
 | `pisgah-shift-poster.jpg` | Modal poster frame | Pulled from the video at 3 seconds. |
+| `logo.png` | Header and footer | Supplied white knockout, transparent. |
 
 `pisgah-logo.png` is the supplied artwork, trimmed and transparent.
 

@@ -58,7 +58,8 @@ export function HeroSection() {
       <div aria-hidden="true" className="hero-scrim absolute inset-0" />
 
       <div className="container-page relative">
-        <div className="max-w-[620px] pb-24 pt-14 sm:pb-28 sm:pt-20 lg:pb-32 lg:pt-24">
+        {/* Top padding clears the fixed translucent header at every width. */}
+        <div className="max-w-[620px] pb-24 pt-[104px] sm:pb-28 sm:pt-[124px] lg:pb-32 lg:pt-[136px]">
           <h1 className="font-display text-[clamp(38px,6.4vw,68px)] font-extrabold leading-[1.02] text-white">
             {t.hero.headline}
           </h1>

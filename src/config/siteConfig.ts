@@ -29,7 +29,7 @@ export type PostalAddress = {
 };
 
 export type Division = {
-  id: 'commercial' | 'residential' | 'specialised' | 'technical';
+  id: 'commercial' | 'residential' | 'specialised';
   /** Reference token appended to every WhatsApp message from this division. */
   ref: string;
 };
@@ -63,7 +63,10 @@ export const siteConfig = {
     crNumber: '',
     domain: 'pisgahcleaning.com',
     url: 'https://pisgahcleaning.com',
+    /** Full colour mark, for white and light surfaces. */
     logo: '/media/pisgah-logo.png',
+    /** White knockout with transparency, for dark and photographic surfaces. */
+    logoLight: '/media/logo.png',
   },
 
   seo: {
@@ -120,7 +123,6 @@ export const siteConfig = {
     { id: 'commercial', ref: 'WEB-SRV-COMMERCIAL' },
     { id: 'residential', ref: 'WEB-SRV-RESIDENTIAL' },
     { id: 'specialised', ref: 'WEB-SRV-SPECIALISED' },
-    { id: 'technical', ref: 'WEB-SRV-TECHNICAL' },
   ] as const satisfies readonly Division[],
 
   packages: [

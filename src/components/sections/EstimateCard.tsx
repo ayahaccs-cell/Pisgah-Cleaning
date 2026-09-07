@@ -21,7 +21,7 @@ type CategoryKey = keyof Dictionary['intake']['categories'];
 type ScopeKey = keyof Dictionary['intake']['scopes'];
 
 const CATEGORY_KEYS: CategoryKey[] = ['commercial', 'retail', 'villa', 'apartment'];
-const SCOPE_KEYS: ScopeKey[] = ['routine', 'deep', 'movein', 'technical'];
+const SCOPE_KEYS: ScopeKey[] = ['routine', 'deep', 'movein'];
 
 const FIELD =
   'focus-ring-field min-h-[52px] w-full rounded-xl border border-hairline bg-white px-4 py-3 ' +

@@ -1,34 +1,36 @@
 'use client';
 
+import { useState } from 'react';
 import { siteConfig } from '@/config/siteConfig';
 import { useLocale } from '@/context/LocaleProvider';
 import { generateWhatsAppLink } from '@/lib/whatsapp';
 import { Reveal } from '@/components/ui/Reveal';
-import { ChevronRight } from '@/components/ui/Icons';
+import { ChevronDown, ChevronRight } from '@/components/ui/Icons';
 
 /**
- * Four divisions, weighted.
+ * Three divisions, as a single-panel accordion.
  *
- * Commercial carries the contract revenue, so it takes a 60/40 share of the
- * section as a single ink panel. The three secondary divisions sit beside it as
- * hairline separated rows rather than as three more boxes, which is what stops
- * the section reading as a four up template grid.
+ * Commercial is open on load because it carries the contract revenue. Opening
+ * Residential or Specialised closes whatever was open, so the section never
+ * grows past one expanded panel and the page below it stays reachable.
  *
- * Division markers are IBM Plex Mono letters set into the type. There are no
- * icon badges anywhere in this section.
+ * The panel is a real button and a real region, wired with aria-expanded and
+ * aria-controls. Closed panels are removed from the tree rather than hidden
+ * with opacity, so a screen reader and a Tab key both agree with what is on
+ * screen.
+ *
+ * There is no height animation. Animating height forces layout on every frame
+ * and produces exactly the jarring shift this section was meant to remove, so
+ * the panel simply appears and the chevron rotates.
  */
 
-const LETTERS = { commercial: 'A', residential: 'B', specialised: 'C', technical: 'D' } as const;
+const LETTERS = { commercial: 'A', residential: 'B', specialised: 'C' } as const;
+
+type DivisionId = (typeof siteConfig.divisions)[number]['id'];
 
 export function ServicePillars() {
   const { t, locale } = useLocale();
-  const [lead, ...secondary] = siteConfig.divisions;
-  const leadCopy = t.pillars[lead.id];
-
-  const leadHref = generateWhatsAppLink('division', { Division: leadCopy.title }, {
-    locale,
-    ref: lead.ref,
-  });
+  const [openId, setOpenId] = useState<DivisionId>('commercial');
 
   return (
     <section id="services" aria-labelledby="services-heading" className="section-rhythm bg-white">
@@ -45,115 +47,108 @@ export function ServicePillars() {
           <p className="mt-5 text-[16.5px] leading-relaxed text-muted">{t.pillars.intro}</p>
         </Reveal>
 
-        <div className="mt-8 grid gap-6 lg:grid-cols-5 lg:gap-8">
-          {/* Primary division, three fifths of the row. */}
-          <Reveal
-            as="article"
-            id={lead.id}
-            className="u-lift group scroll-mt-28 rounded-[18px] surface-ink p-7 shadow-diffuse-ink sm:p-9 lg:col-span-3"
-          >
-            <div className="flex items-baseline justify-between gap-4">
-              <span className="numeral text-[clamp(30px,3.4vw,42px)] leading-none">
-                {LETTERS[lead.id]}
-              </span>
-              <span className="spec spec-on-ink text-end">{t.pillars.leadLabel}</span>
-            </div>
+        <div className="mt-8 flex flex-col gap-3">
+          {siteConfig.divisions.map((division, index) => {
+            const copy = t.pillars[division.id];
+            const isOpen = openId === division.id;
+            const panelId = `division-panel-${division.id}`;
+            const buttonId = `division-button-${division.id}`;
+            const href = generateWhatsAppLink('division', { Division: copy.title }, {
+              locale,
+              ref: division.ref,
+            });
 
-            <span aria-hidden="true" className="rule-stroke-ink mt-7 block h-[1.5px] w-full" />
-
-            <h3 className="mt-7 max-w-[18ch] font-display text-[clamp(24px,2.7vw,34px)] font-bold text-white">
-              {leadCopy.title}
-            </h3>
-            <p className="mt-4 max-w-[52ch] text-[16px] leading-relaxed text-[#CBD5E1]">
-              {leadCopy.summary}
-            </p>
-            <p className="spec spec-on-ink mt-5">{leadCopy.spec}</p>
-
-            <ul className="mt-8 grid gap-x-8 gap-y-3 sm:grid-cols-2">
-              {leadCopy.items.map((item) => (
-                <li
-                  key={item}
-                  className="relative ps-4 text-[15px] leading-snug text-[#CBD5E1]"
-                >
-                  <span aria-hidden="true" className="bullet-dot bullet-dot-on-ink" />
-                  {item}
-                </li>
-              ))}
-            </ul>
-
-            <a
-              href={leadHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={t.a11y.whatsappDivision}
-              className="focus-ring-ink u-glide-host mt-9 rounded-full inline-flex min-h-[48px] items-center gap-2.5 font-display text-[15px] font-semibold text-teal transition-colors duration-fast ease-feedback hover:text-cyan"
-            >
-              {t.cta.scopeRequest}
-              <ChevronRight size={14} className="u-glide" />
-            </a>
-          </Reveal>
-
-          {/* Secondary divisions, two fifths, as hairline separated rows. */}
-          <div className="lg:col-span-2">
-            {secondary.map((division, index) => {
-              const copy = t.pillars[division.id];
-              const href = generateWhatsAppLink('division', { Division: copy.title }, {
-                locale,
-                ref: division.ref,
-              });
-
-              return (
-                <Reveal
-                  as="article"
-                  key={division.id}
-                  id={division.id}
-                  index={index + 1}
-                  className={`group scroll-mt-28 py-7 first:pt-0 ${
-                    index > 0 ? 'hair-light-t' : ''
-                  }`}
-                >
-                  <div className="flex items-baseline gap-4">
-                    <span className="numeral text-[22px] leading-none text-blue">
+            return (
+              <Reveal
+                as="article"
+                key={division.id}
+                id={division.id}
+                index={index}
+                className={`scroll-mt-28 overflow-hidden rounded-2xl border transition-[border-color,box-shadow] duration-standard ease-entrance ${
+                  isOpen
+                    ? 'border-deep/40 bg-white shadow-diffuse-lg'
+                    : 'border-hairline bg-paper/60 shadow-diffuse hover:border-deep/25'
+                }`}
+              >
+                <h3>
+                  <button
+                    type="button"
+                    id={buttonId}
+                    aria-expanded={isOpen}
+                    aria-controls={panelId}
+                    onClick={() => setOpenId(division.id)}
+                    className="focus-ring-light tap flex w-full items-center gap-4 px-5 py-5 text-start sm:gap-6 sm:px-7 sm:py-6"
+                  >
+                    <span className="numeral flex-none text-[22px] leading-none sm:text-[26px]">
                       {LETTERS[division.id]}
                     </span>
-                    <span className="spec">{copy.spec}</span>
-                  </div>
 
-                  <h3 className="mt-3 font-display text-[20px] font-bold">{copy.title}</h3>
-                  <p className="mt-2 max-w-[46ch] text-[15px] leading-relaxed text-muted">
-                    {copy.summary}
-                  </p>
+                    <span className="flex min-w-0 flex-1 flex-col">
+                      <span className="spec spec-cyan">{copy.spec}</span>
+                      <span className="mt-1.5 font-display text-[18px] font-bold leading-snug text-ink sm:text-[21px]">
+                        {copy.title}
+                      </span>
+                      {!isOpen && (
+                        <span className="mt-1.5 line-clamp-2 text-[14.5px] leading-snug text-muted">
+                          {copy.summary}
+                        </span>
+                      )}
+                    </span>
 
-                  <ul className="mt-4 space-y-2">
-                    {copy.items.map((item, itemIndex) => (
-                      <li
-                        key={item}
-                        className={`relative ps-4 text-[14.5px] leading-snug text-muted ${
-                          itemIndex > 3
-                            ? 'lg:max-h-0 lg:overflow-hidden lg:opacity-0 lg:transition-[max-height,opacity] lg:duration-standard lg:ease-entrance lg:group-hover:max-h-14 lg:group-hover:opacity-100 lg:group-focus-within:max-h-14 lg:group-focus-within:opacity-100'
-                            : ''
-                        }`}
-                      >
-                        <span aria-hidden="true" className="bullet-dot bullet-dot-soft" />
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
+                    {/* Rotation is on the block axis, so it needs no RTL flip. */}
+                    <span
+                      aria-hidden="true"
+                      className={`grid h-9 w-9 flex-none place-items-center rounded-full border transition-transform duration-standard ease-entrance ${
+                        isOpen
+                          ? 'rotate-180 border-deep/30 bg-deep/10 text-deep'
+                          : 'border-hairline bg-white text-muted'
+                      }`}
+                    >
+                      <ChevronDown size={17} />
+                    </span>
+                  </button>
+                </h3>
 
-                  <a
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={t.a11y.whatsappDivision}
-                    className="focus-ring-light u-glide-host mt-5 rounded-full inline-flex min-h-[48px] items-center gap-2 font-display text-[14.5px] font-semibold text-deep transition-colors duration-fast ease-feedback hover:text-blue"
+                {isOpen && (
+                  <div
+                    id={panelId}
+                    role="region"
+                    aria-labelledby={buttonId}
+                    className="px-5 pb-6 sm:px-7 sm:pb-7"
                   >
-                    {t.cta.scopeRequest}
-                    <ChevronRight size={13} className="u-glide" />
-                  </a>
-                </Reveal>
-              );
-            })}
-          </div>
+                    <span aria-hidden="true" className="hair-light-t mb-5 block" />
+
+                    <p className="max-w-[62ch] text-[15.5px] leading-relaxed text-muted">
+                      {copy.summary}
+                    </p>
+
+                    <ul className="mt-5 grid gap-x-8 gap-y-2.5 sm:grid-cols-2">
+                      {copy.items.map((item) => (
+                        <li
+                          key={item}
+                          className="relative ps-4 text-[14.5px] leading-snug text-muted"
+                        >
+                          <span aria-hidden="true" className="bullet-dot" />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+
+                    <a
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={t.a11y.whatsappDivision}
+                      className="focus-ring-light u-glide-host mt-6 inline-flex min-h-[48px] items-center gap-2 rounded-full font-display text-[14.5px] font-semibold text-deep transition-colors duration-fast ease-feedback hover:text-blue"
+                    >
+                      {t.cta.scopeRequest}
+                      <ChevronRight size={14} className="u-glide" />
+                    </a>
+                  </div>
+                )}
+              </Reveal>
+            );
+          })}
         </div>
       </div>
     </section>

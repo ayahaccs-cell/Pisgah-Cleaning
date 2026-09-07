@@ -25,7 +25,6 @@ const SERVICE_LINKS = [
   { href: '#commercial', key: 'commercial' },
   { href: '#residential', key: 'residential' },
   { href: '#specialised', key: 'specialised' },
-  { href: '#technical', key: 'technical' },
 ] as const;
 
 const COMPANY_LINKS = [
@@ -53,15 +52,14 @@ export function Footer() {
       <div className="container-page grid gap-8 py-10 md:grid-cols-2 lg:grid-cols-4 lg:py-14">
         {/* Identity */}
         <div>
-          <div className="inline-block rounded-xl bg-white p-3">
-            <Image
-              src={siteConfig.company.logo}
-              alt={siteConfig.company.legalName}
-              width={344}
-              height={148}
-              className="h-auto w-[150px]"
-            />
-          </div>
+          <Image
+            src={siteConfig.company.logoLight}
+            alt={siteConfig.company.legalName}
+            width={1200}
+            height={481}
+            sizes="180px"
+            className="h-auto w-[180px]"
+          />
           <p className="mt-5 max-w-[34ch] font-display text-xl font-medium text-white">
             {t.footer.promise}
           </p>

@@ -30,7 +30,17 @@ const config: Config = {
         graphite: '#475569',   // slate 600
         mist: '#E2E8F0',       // slate 200, borders and image placeholders
         paper: '#F8FAFC',      // slate 50, page ground
-        emerald: '#10B981',    // status indicator only
+        emerald: {
+          /* DEFAULT keeps bg-emerald working for the status dot. The scale
+             values are what the translucent header is built on, and they are
+             the stock Tailwind emerald ramp. */
+          DEFAULT: '#10B981',
+          400: '#34D399',
+          500: '#10B981',
+          800: '#065F46',
+          900: '#064E3B',
+          950: '#022C22',
+        },
         whatsapp: '#25D366',
         body: '#0F172A',
         muted: '#475569',      // 7.58:1 on white
