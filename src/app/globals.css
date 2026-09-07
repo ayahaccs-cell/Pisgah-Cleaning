@@ -99,14 +99,15 @@
   }
 
   /* WCAG 2.1 SC 1.4.11 requires a focus indicator at 3:1 against what sits
-     behind it. Measured on this palette:
-       Teal 700 #0F766E on white       5.47:1  pass
-       Teal 700 #0F766E on Slate 900   1.44:1  fail
-       Emerald  #34D399 on Slate 900   9.29:1  pass
-       Emerald  #34D399 on white       1.92:1  fail
+     behind it. Measured on the blue palette:
+       S4 #325884 on white        7.33:1  pass
+       S4 #325884 on S6 #021024   2.60:1  fail
+       S2 #7DA0CA on S6 #021024   7.03:1  pass
+       S2 #7DA0CA on S5 #052659   5.43:1  pass
+       S2 #7DA0CA on white        2.71:1  fail
      So the ring colour is chosen by surface rather than fixed. */
   :root {
-    --focus-ring: #0F766E;
+    --focus-ring: #325884;
     --focus-offset: #FFFFFF;
   }
 
@@ -210,7 +211,7 @@
     appearance: none;
     -webkit-appearance: none;
     padding-inline-end: 40px;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%230F766E' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M5 8l5 5 5-5'/></svg>");
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23325884' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M5 8l5 5 5-5'/></svg>");
     background-repeat: no-repeat;
     background-size: 18px;
     background-position: right 14px center;
@@ -247,18 +248,18 @@
   /* Ink panel. The hairline is the only edge; there is no border colour. */
   .surface-ink {
     background-color: theme('colors.ink');
-    border: 1px solid rgb(255 255 255 / 0.08);
+    border: 1px solid rgb(193 232 255 / 0.13);
   }
 
-  .hair-t { border-top: 1px solid rgb(255 255 255 / 0.08); }
-  .hair-b { border-bottom: 1px solid rgb(255 255 255 / 0.08); }
+  .hair-t { border-top: 1px solid rgb(193 232 255 / 0.14); }
+  .hair-b { border-bottom: 1px solid rgb(193 232 255 / 0.14); }
 
   /* On light ground the hairline is ink at low alpha, never a grey border. */
-  .hair-light-b { border-bottom: 1px solid rgb(15 23 42 / 0.08); }
-  .hair-light-t { border-top: 1px solid rgb(15 23 42 / 0.08); }
+  .hair-light-b { border-bottom: 1px solid rgb(2 16 36 / 0.09); }
+  .hair-light-t { border-top: 1px solid rgb(2 16 36 / 0.09); }
   .surface-light {
     background-color: #ffffff;
-    border: 1px solid rgb(15 23 42 / 0.07);
+    border: 1px solid rgb(2 16 36 / 0.08);
   }
 
   /* A 1.5px stroke that reads as a drawn rule, integrated into the type. */
@@ -270,8 +271,8 @@
       to right,
       theme('colors.teal') 0,
       theme('colors.teal') 34px,
-      rgb(15 23 42 / 0.1) 34px,
-      rgb(15 23 42 / 0.1) 100%
+      rgb(2 16 36 / 0.11) 34px,
+      rgb(2 16 36 / 0.11) 100%
     );
   }
 
@@ -280,8 +281,8 @@
       to left,
       theme('colors.teal') 0,
       theme('colors.teal') 34px,
-      rgb(15 23 42 / 0.1) 34px,
-      rgb(15 23 42 / 0.1) 100%
+      rgb(2 16 36 / 0.11) 34px,
+      rgb(2 16 36 / 0.11) 100%
     );
   }
 
@@ -290,8 +291,8 @@
       to right,
       theme('colors.teal') 0,
       theme('colors.teal') 34px,
-      rgb(255 255 255 / 0.1) 34px,
-      rgb(255 255 255 / 0.1) 100%
+      rgb(193 232 255 / 0.16) 34px,
+      rgb(193 232 255 / 0.16) 100%
     );
   }
 
@@ -300,8 +301,8 @@
       to left,
       theme('colors.teal') 0,
       theme('colors.teal') 34px,
-      rgb(255 255 255 / 0.1) 34px,
-      rgb(255 255 255 / 0.1) 100%
+      rgb(193 232 255 / 0.16) 34px,
+      rgb(193 232 255 / 0.16) 100%
     );
   }
 
@@ -312,15 +313,15 @@
     line-height: 1.5;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    /* Slate 500. 4.76:1 on white, 4.55:1 on the slate 50 ground. */
-    color: #64748B;
+    /* 5.27:1 on white, 4.65:1 on the deepest light ground. Pass AA. */
+    color: #526E8F;
   }
 
-  /* Teal 700. 5.47:1 on white. */
-  .spec-cyan { color: #0F766E; }
+  /* S4. 7.33:1 on white, 6.48:1 on the deepest light ground. */
+  .spec-cyan { color: #325884; }
 
-  /* Slate 400. 6.96:1 on slate 900. */
-  .spec-on-ink { color: #94A3B8; }
+  /* 5.70:1 on S5, 7.38:1 on S6. Deep surfaces only. */
+  .spec-on-ink { color: #8FA3BC; }
 
   [dir='rtl'] .spec {
     font-size: 12px;
@@ -332,15 +333,15 @@
     outline: none;
     box-shadow:
       0 0 0 2px #FFFFFF,
-      0 0 0 4px #0F766E;
+      0 0 0 4px #325884;
     border-radius: 999px;
   }
 
   .focus-ring-ink:focus-visible {
     outline: none;
     box-shadow:
-      0 0 0 2px #0F172A,
-      0 0 0 4px #34D399;
+      0 0 0 2px #021024,
+      0 0 0 4px #7DA0CA;
     border-radius: 999px;
   }
 
@@ -348,8 +349,8 @@
   .focus-ring-field:focus-visible,
   .focus-ring-field:focus {
     outline: none;
-    border-color: #0F766E;
-    box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.22);
+    border-color: #325884;
+    box-shadow: 0 0 0 3px rgba(50, 88, 132, 0.22);
   }
 
   /* List marker. A dot, never a dash, so a bullet never reads as a hyphen or
@@ -392,7 +393,15 @@
     font-family: var(--font-mono);
     font-variant-numeric: tabular-nums;
     font-weight: 500;
-    color: theme('colors.teal');
+    /* S4, not S3. The 12px numerals in the leadership grid and the client
+       register are small text, and S3 measures 3.98:1 on a light ground. */
+    color: theme('colors.deep');
+  }
+
+  /* The same numeral on a deep surface. S2 measures 5.43:1 on S5 and 7.03:1
+     on S6, so it stays legible at 12px where S4 would disappear. */
+  .numeral-on-deep {
+    color: theme('colors.cyan');
   }
 }
 
@@ -413,8 +422,8 @@
     block-size: 420px;
     background: radial-gradient(
       52% 52% at 30% 44%,
-      rgba(13, 148, 136, 0.10),
-      rgba(45, 212, 191, 0.05) 46%,
+      rgba(84, 131, 179, 0.14),
+      rgba(125, 160, 202, 0.06) 46%,
       transparent 72%
     );
     pointer-events: none;
@@ -423,8 +432,8 @@
   .headline-light-ink::before {
     background: radial-gradient(
       52% 52% at 30% 44%,
-      rgba(45, 212, 191, 0.16),
-      rgba(13, 148, 136, 0.06) 48%,
+      rgba(125, 160, 202, 0.20),
+      rgba(84, 131, 179, 0.08) 48%,
       transparent 74%
     );
   }
@@ -432,14 +441,14 @@
   /* Ambient bloom behind the hero portrait. Static blur, never transitioned. */
   .hero-bloom {
     background:
-      radial-gradient(58% 52% at 62% 34%, rgba(45, 212, 191, 0.34), transparent 70%),
-      radial-gradient(64% 60% at 34% 76%, rgba(15, 23, 42, 0.30), transparent 72%);
+      radial-gradient(58% 52% at 62% 34%, rgba(125, 160, 202, 0.36), transparent 70%),
+      radial-gradient(64% 60% at 34% 76%, rgba(2, 16, 36, 0.32), transparent 72%);
     filter: blur(46px);
     opacity: 0.7;
   }
 
   .hero-ground {
-    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    background: linear-gradient(180deg, #ffffff 0%, #f6fcff 100%);
   }
 
   /* Fixed attachment gives depth on a desktop pointer with no scroll listener
@@ -464,20 +473,20 @@
   .hero-scrim {
     background: linear-gradient(
       to right,
-      rgba(15, 23, 42, 0.88) 0%,
-      rgba(15, 23, 42, 0.72) 38%,
-      rgba(15, 23, 42, 0.34) 68%,
-      rgba(15, 23, 42, 0.2) 100%
+      rgba(2, 16, 36, 0.90) 0%,
+      rgba(2, 16, 36, 0.76) 38%,
+      rgba(5, 38, 89, 0.40) 68%,
+      rgba(5, 38, 89, 0.24) 100%
     );
   }
 
   [dir='rtl'] .hero-scrim {
     background: linear-gradient(
       to left,
-      rgba(15, 23, 42, 0.88) 0%,
-      rgba(15, 23, 42, 0.72) 38%,
-      rgba(15, 23, 42, 0.34) 68%,
-      rgba(15, 23, 42, 0.2) 100%
+      rgba(2, 16, 36, 0.90) 0%,
+      rgba(2, 16, 36, 0.76) 38%,
+      rgba(5, 38, 89, 0.40) 68%,
+      rgba(5, 38, 89, 0.24) 100%
     );
   }
 
@@ -485,8 +494,8 @@
   .hero-spotlight {
     background: radial-gradient(
       340px circle at var(--mx, 50%) var(--my, 40%),
-      rgba(45, 212, 191, 0.08),
-      rgba(45, 212, 191, 0.03) 42%,
+      rgba(193, 232, 255, 0.10),
+      rgba(125, 160, 202, 0.04) 42%,
       transparent 72%
     );
   }

@@ -22,7 +22,7 @@ export function EmergencyCallout() {
     <section
       id="emergency"
       aria-labelledby="emergency-heading"
-      className="section-rhythm relative isolate overflow-hidden bg-ink text-[#CBD5E1]"
+      className="section-rhythm relative isolate overflow-hidden bg-blue text-navy-50"
     >
       {/* Soft radial lighting behind the headline. Painted, never animated. */}
       <div
@@ -31,7 +31,7 @@ export function EmergencyCallout() {
         style={{
           insetInlineStart: '-160px',
           background:
-            'radial-gradient(46% 50% at 34% 46%, rgba(25,160,222,.20), rgba(53,180,198,.07) 48%, transparent 74%)',
+            'radial-gradient(46% 50% at 34% 46%, rgba(125,160,202,.26), rgba(193,232,255,.08) 48%, transparent 74%)',
         }}
       />
 

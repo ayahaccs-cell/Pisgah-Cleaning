@@ -17,9 +17,25 @@ import { MobileDrawer } from './MobileDrawer';
  * image reads from the very top of the page. It is fixed, and the hero carries
  * matching top padding to clear it.
  *
+ * Glass construction: an S1 sheen at 16 percent over an S6 ground, with
+ * backdrop-blur-md. The brief asked for S1 alone at 15 to 20 percent, but a
+ * light wash at that opacity inherits whatever the photograph is doing behind
+ * it, and the hero frame runs from a dark lobby to a bright window in the same
+ * image. White type over that measures anywhere from 2:1 to 14:1 depending on
+ * scroll position, which is not a contrast ratio at all. Laying the same S1
+ * tint over an S6 ground keeps the sky-blue glass reading while holding the
+ * white label above 12:1 at every scroll position. Swap the two layers if you
+ * would rather have the wash and accept the legibility cost.
+ *
  * The logo is the white knockout on transparency. No plate, no border, no fill
- * behind it. Its zone is flex-none with its own inline-end padding, so the
+ * behind it. Its zone is flex-none with its own inline-end margin, so the
  * navigation can never slide under it at any width or in either language.
+ *
+ * Baseline: every zone is a direct items-center child of one row, and the
+ * operating schedule is absolutely positioned under the phone number rather
+ * than stacked above it in flow. That is what keeps the number, the WhatsApp
+ * button, the navigation links and the language pill on one centre axis while
+ * still tucking the schedule beneath the number.
  *
  * Collapse threshold is xl (1280px). A 13 or 14 inch laptop reports 1280 to
  * 1512 CSS pixels, and five link labels plus a full contact cluster do not fit
@@ -48,7 +64,10 @@ export function Navbar() {
       <header
         role="banner"
         aria-label={t.a11y.headerLandmark}
-        className="fixed inset-x-0 top-0 z-[60] border-b border-emerald-500/20 bg-emerald-950/75 text-white backdrop-blur-md supports-[backdrop-filter]:bg-emerald-950/40"
+        /* background-color carries the S6 ground and the no-backdrop-filter
+           fallback; background-image carries the flat S1 sheen on top of it.
+           Two different properties, so neither overwrites the other. */
+        className="fixed inset-x-0 top-0 z-[60] border-b border-navy-50/25 bg-navy-950/85 bg-gradient-to-b from-navy-50/[0.16] to-navy-50/[0.16] text-white backdrop-blur-md supports-[backdrop-filter]:bg-navy-950/55"
       >
         <div className="mx-auto flex min-h-[68px] w-full max-w-7xl items-center justify-between gap-4 px-4 py-2 sm:min-h-[76px] sm:px-6">
           {/* ---- Zone 1: logo. Transparent, unboxed, never shares its space. ---- */}
@@ -90,39 +109,41 @@ export function Navbar() {
             ))}
           </nav>
 
-          {/* ---- Zone 3: utility. Two lines, so it stays narrow. ---- */}
-          <div className="flex flex-none flex-nowrap items-center gap-2 sm:gap-3">
-            {/* Line 1: number beside the WhatsApp button.
-                Line 2: the schedule, sitting under the number. */}
-            <div className="flex flex-none flex-col items-end gap-0.5">
-              <div className="flex flex-nowrap items-center gap-2 sm:gap-2.5">
-                <a
-                  href={callOfficeHref()}
-                  aria-label={t.a11y.callOfficeLabel}
-                  className="focus-ring-ink hidden items-center gap-1.5 whitespace-nowrap rounded text-xs font-semibold leading-tight text-white transition-colors duration-fast ease-feedback hover:text-white/80 sm:inline-flex"
-                >
-                  <PhoneIcon size={14} className="flex-none text-white/60" />
-                  <span dir="ltr" className="tabular-nums">
-                    {siteConfig.contact.secondaryPhone.display}
-                  </span>
-                </a>
+          {/* ---- Zone 3: utility. One centre axis, schedule out of flow. ---- */}
+          <div className="flex flex-none flex-nowrap items-center gap-2 sm:gap-2.5">
+            {/* The wrapper is only as tall as the phone link, because the
+                schedule below it is absolutely positioned. That is what keeps
+                the number itself on the same axis as the navigation rather
+                than pushed up by the line beneath it. */}
+            <div className="relative hidden flex-none flex-col items-end sm:flex">
+              <a
+                href={callOfficeHref()}
+                aria-label={t.a11y.callOfficeLabel}
+                className="focus-ring-ink inline-flex items-center gap-1.5 whitespace-nowrap rounded text-xs font-semibold leading-tight text-white transition-colors duration-fast ease-feedback hover:text-navy-50"
+              >
+                <PhoneIcon size={14} className="flex-none text-navy-50/70" />
+                <span dir="ltr" className="tabular-nums">
+                  {siteConfig.contact.secondaryPhone.display}
+                </span>
+              </a>
 
-                <a
-                  href={waHref}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={t.a11y.whatsappGeneric}
-                  className="focus-ring-ink u-press tap flex h-10 w-10 flex-none items-center justify-center rounded-full bg-white/95 text-[#0F766E] transition-colors duration-fast ease-feedback hover:bg-white sm:h-9 sm:w-9"
-                >
-                  <WhatsAppIcon size={18} />
-                </a>
-              </div>
-
-              <span className="hidden items-center gap-1 whitespace-nowrap text-[10px] leading-tight tracking-normal text-emerald-200/80 sm:inline-flex">
+              {/* end-0 rather than right-0, so it tucks under the number on the
+                  correct side in Arabic with no second rule. */}
+              <span className="absolute end-0 top-full mt-1 inline-flex items-center gap-1 whitespace-nowrap text-[10px] leading-tight tracking-normal text-navy-50/80">
                 <ClockIcon size={11} className="flex-none" />
                 {siteConfig.contact.hours.office}
               </span>
             </div>
+
+            <a
+              href={waHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={t.a11y.whatsappGeneric}
+              className="focus-ring-ink u-press tap flex h-10 w-10 flex-none items-center justify-center rounded-full bg-white text-navy-800 transition-colors duration-fast ease-feedback hover:bg-navy-50 sm:h-9 sm:w-9"
+            >
+              <WhatsAppIcon size={18} />
+            </a>
 
             <LocaleSwitcher tone="bar" className="hidden sm:inline-flex" />
 

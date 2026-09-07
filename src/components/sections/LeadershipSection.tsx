@@ -13,6 +13,11 @@ import { Reveal } from '@/components/ui/Reveal';
  *
  * Where no photograph has been supplied the card falls back to typographic
  * initials. A stock portrait is never substituted for a named real employee.
+ *
+ * This is the last step of the vertical flow before the footer: an S5 to S6
+ * gradient, so the page arrives at the S6 baseline rather than jumping to it.
+ * Every string on it is set in white or S1, both above 11:1 on either end of
+ * that gradient.
  */
 
 function initialsOf(name: string): string {
@@ -28,20 +33,24 @@ export function LeadershipSection() {
   const { t } = useLocale();
 
   return (
-    <section id="leadership" aria-labelledby="leadership-heading" className="section-rhythm bg-white">
+    <section
+      id="leadership"
+      aria-labelledby="leadership-heading"
+      className="section-rhythm bg-gradient-to-b from-blue to-ink text-navy-50"
+    >
       <div className="container-page">
-        <Reveal className="headline-light grid gap-8 lg:grid-cols-12 lg:items-end">
+        <Reveal className="headline-light headline-light-ink grid gap-8 lg:grid-cols-12 lg:items-end">
           <div className="lg:col-span-6">
-            <p className="spec spec-cyan">{t.leadership.spec}</p>
+            <p className="spec spec-on-ink">{t.leadership.spec}</p>
             <h2
               id="leadership-heading"
-              className="mt-5 font-display text-[clamp(28px,3.6vw,44px)] font-bold leading-[1.04]"
+              className="mt-5 font-display text-[clamp(28px,3.6vw,44px)] font-bold leading-[1.04] text-white"
             >
               {t.leadership.heading}
             </h2>
-            <span aria-hidden="true" className="rule-stroke mt-5" />
+            <span aria-hidden="true" className="rule-stroke-ink mt-5 block h-[1.5px] w-full" />
           </div>
-          <p className="max-w-[52ch] text-[16.5px] leading-relaxed text-muted lg:col-span-6">
+          <p className="max-w-[52ch] text-[16.5px] leading-relaxed lg:col-span-6">
             {t.leadership.intro}
           </p>
         </Reveal>
@@ -51,7 +60,7 @@ export function LeadershipSection() {
             const copy = t.leadership.members[member.id];
             return (
               <Reveal as="li" key={member.id} index={index} className="group">
-                <div className="relative aspect-square overflow-hidden rounded-[12px] bg-paper shadow-diffuse lg:aspect-[3/4]">
+                <div className="relative aspect-square overflow-hidden rounded-[12px] border border-navy-50/15 bg-navy-800 shadow-diffuse-ink lg:aspect-[3/4]">
                   {member.photo ? (
                     <Image
                       src={member.photo}
@@ -63,24 +72,24 @@ export function LeadershipSection() {
                   ) : (
                     <span
                       aria-hidden="true"
-                      className="grid h-full w-full place-items-center font-display text-[clamp(30px,6vw,44px)] font-extrabold text-mist"
+                      className="grid h-full w-full place-items-center font-display text-[clamp(30px,6vw,44px)] font-extrabold text-navy-50/30"
                     >
                       {initialsOf(copy.name)}
                     </span>
                   )}
                 </div>
 
-                <div className="hair-light-t mt-5 flex items-baseline gap-3 pt-4">
-                  <span className="numeral text-[12px] leading-none">
+                <div className="hair-t mt-5 flex items-baseline gap-3 pt-4">
+                  <span className="numeral numeral-on-deep text-[12px] leading-none">
                     {String(index + 1).padStart(2, '0')}
                   </span>
-                  <span className="spec">{copy.role}</span>
+                  <span className="spec spec-on-ink">{copy.role}</span>
                 </div>
 
-                <h3 className="mt-2.5 font-display text-[19px] font-semibold leading-snug">
+                <h3 className="mt-2.5 font-display text-[19px] font-semibold leading-snug text-white">
                   {copy.name}
                 </h3>
-                <p className="mt-2 text-[14.5px] leading-relaxed text-muted">{copy.note}</p>
+                <p className="mt-2 text-[14.5px] leading-relaxed">{copy.note}</p>
               </Reveal>
             );
           })}

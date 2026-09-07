@@ -18,7 +18,7 @@ const BASE =
   'border border-transparent text-center no-underline min-h-[48px] transform-gpu';
 
 /* Focus ring colour follows the surface the button sits on, because no single
-   hue clears 3:1 against both white and Ink Navy. See globals.css. */
+   hue clears 3:1 against both white and the deep navy grounds. See globals.css. */
 const FOCUS: Record<Variant, string> = {
   primary: 'focus-ring-light',
   ghost: 'focus-ring-light',
@@ -30,14 +30,18 @@ const FOCUS: Record<Variant, string> = {
 };
 
 const VARIANTS: Record<Variant, string> = {
+  /* S4 fill, hovering to S5. White on S4 is 7.33:1, on S5 it is 14.71:1, so
+     the button gets more legible under the pointer rather than less. */
   primary: 'bg-deep text-white shadow-deep hover:bg-blue hover:shadow-cyan',
   ghost: 'bg-transparent text-body border-hairline hover:border-teal hover:text-blue',
   glass: 'glass-ghost text-ink hover:bg-white/80',
   whatsapp: 'bg-whatsapp text-[#06301A] shadow-[0_8px_20px_rgba(37,211,102,.28)] hover:bg-[#22C55E]',
-  teal: 'bg-teal text-[#04231F] hover:bg-[#14B8A6]',
+  /* The S3 accent fill, used on deep surfaces. It carries S6 type, never
+     white: S6 on S3 is 4.79:1, white on S3 is only 3.98:1. */
+  teal: 'bg-teal text-ink hover:bg-cyan',
   outline: 'bg-transparent text-white border-white/70 hover:border-white hover:bg-white/10',
-  /* On the green header. White fill, brand green label. */
-  light: 'bg-white text-deep hover:bg-white/90',
+  /* On the glass header. White fill, S5 label, 14.71:1. */
+  light: 'bg-white text-blue hover:bg-navy-50',
 };
 
 const SIZES: Record<Size, string> = {

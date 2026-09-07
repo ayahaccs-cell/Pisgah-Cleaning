@@ -99,7 +99,7 @@ export function StatusDot({ className = '' }: { className?: string }) {
   return (
     <span
       aria-hidden="true"
-      className={`inline-block h-[7px] w-[7px] flex-none rounded-full bg-emerald animate-pulse-ring ${className}`}
+      className={`inline-block h-[7px] w-[7px] flex-none rounded-full bg-cyan animate-pulse-ring ${className}`}
     />
   );
 }

@@ -21,7 +21,7 @@ export function ClientStrip() {
     <section
       id="clients"
       aria-labelledby="clients-heading"
-      className="bg-ink section-rhythm text-[#94A3B8]"
+      className="section-rhythm bg-blue text-faint-soft"
     >
       <div className="container-page grid gap-8 lg:grid-cols-12 lg:gap-12">
         <div className="lg:col-span-4">
@@ -45,7 +45,7 @@ export function ClientStrip() {
                 index === 0 ? '' : 'hair-t'
               }`}
             >
-              <span className="numeral text-[12px] leading-none text-teal/80">
+              <span className="numeral numeral-on-deep text-[12px] leading-none">
                 {String(index + 1).padStart(2, '0')}
               </span>
               <span className="flex min-w-0 flex-col">

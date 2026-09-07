@@ -16,8 +16,8 @@ import { WhatsAppIcon } from '@/components/ui/Icons';
  * demand is measured without publishing rates.
  *
  * Tiers are numbered in IBM Plex Mono and separated by hairlines. There is no
- * icon, no ribbon and no coloured fill on the featured tier: it is marked by a
- * single hairline in Deep Blue and a mono label.
+ * icon, no ribbon and no coloured fill on the featured tier: it is marked by an
+ * S4 hairline and a mono label, and a selected tier by an S3 ring.
  */
 
 export function PackageSelector() {
@@ -25,7 +25,7 @@ export function PackageSelector() {
   const [selected, setSelected] = useState<string | null>(null);
 
   return (
-    <section id="packages" aria-labelledby="packages-heading" className="section-rhythm bg-paper">
+    <section id="packages" aria-labelledby="packages-heading" className="section-rhythm bg-ground-5">
       <div className="container-page">
         <Reveal className="headline-light grid gap-8 lg:grid-cols-12 lg:items-end">
           <div className="lg:col-span-7">

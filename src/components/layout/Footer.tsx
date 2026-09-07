@@ -46,7 +46,7 @@ export function Footer() {
       id="contact"
       role="contentinfo"
       aria-label={t.a11y.footerLandmark}
-      className="bg-ink text-[#94A3B8]"
+      className="bg-ink text-faint-soft"
     >
 
       <div className="container-page grid gap-8 py-10 md:grid-cols-2 lg:grid-cols-4 lg:py-14">
@@ -77,7 +77,7 @@ export function Footer() {
 
         {/* Services */}
         <nav aria-label={t.footer.servicesTitle}>
-          <h2 className="font-mono text-[11px] uppercase track-label text-teal">
+          <h2 className="font-mono text-[11px] uppercase track-label text-cyan">
             {t.footer.servicesTitle}
           </h2>
           <ul className="mt-4 space-y-2.5">
@@ -96,7 +96,7 @@ export function Footer() {
 
         {/* Company */}
         <nav aria-label={t.footer.companyTitle}>
-          <h2 className="font-mono text-[11px] uppercase track-label text-teal">
+          <h2 className="font-mono text-[11px] uppercase track-label text-cyan">
             {t.footer.companyTitle}
           </h2>
           <ul className="mt-4 space-y-2.5">
@@ -115,7 +115,7 @@ export function Footer() {
 
         {/* Contact */}
         <div>
-          <h2 className="font-mono text-[11px] uppercase track-label text-teal">
+          <h2 className="font-mono text-[11px] uppercase track-label text-cyan">
             {t.footer.contactTitle}
           </h2>
           <ul className="mt-4 space-y-3.5 text-[15px]">
@@ -158,7 +158,7 @@ export function Footer() {
               <ClockIcon size={16} className="mt-1 flex-none text-cyan" />
               <span className="flex flex-col">
                 <span>{siteConfig.contact.hours.office}</span>
-                <span className="text-teal">{siteConfig.contact.hours.emergency}</span>
+                <span className="text-cyan">{siteConfig.contact.hours.emergency}</span>
               </span>
             </li>
           </ul>

@@ -17,7 +17,7 @@ import type { Locale } from '@/locales';
  */
 
 type Props = {
-  /** 'bar' sits on the Ink Navy utility strip. 'panel' sits in the drawer. */
+  /** 'bar' sits on the glass header. 'panel' sits in the drawer. */
   tone?: 'bar' | 'panel';
   className?: string;
 };
@@ -30,12 +30,12 @@ const OPTIONS: { code: Locale; label: string }[] = [
 export function LocaleSwitcher({ tone = 'bar', className = '' }: Props) {
   const { locale, t } = useLocale();
 
-  /* 'bar' sits on the brand green header, so the idle state is white at 75
-     percent and the active state is a white pill with the green label. */
-  const shell = tone === 'bar' ? 'border-white/30' : 'border-hairline w-full';
-  const idle = tone === 'bar' ? 'text-white/75 hover:text-white' : 'text-muted';
+  /* 'bar' sits on the deep glass header, so the idle state is S1 at 80 percent
+     and the active state is a white pill with an S5 label at 14.71:1. */
+  const shell = tone === 'bar' ? 'border-navy-50/35' : 'border-hairline w-full';
+  const idle = tone === 'bar' ? 'text-navy-50/80 hover:text-white' : 'text-muted';
   const active =
-    tone === 'bar' ? 'bg-white text-deep font-semibold' : 'bg-deep text-white font-semibold';
+    tone === 'bar' ? 'bg-white text-blue font-semibold' : 'bg-deep text-white font-semibold';
   const height = tone === 'bar' ? 'min-h-[44px]' : 'min-h-[48px] flex-1';
   const focus = tone === 'bar' ? 'focus-ring-ink' : 'focus-ring-light';
 
@@ -52,7 +52,7 @@ export function LocaleSwitcher({ tone = 'bar', className = '' }: Props) {
             {index > 0 && (
               <span
                 aria-hidden="true"
-                className={`w-px self-stretch ${tone === 'bar' ? 'bg-white/30' : 'bg-hairline'}`}
+                className={`w-px self-stretch ${tone === 'bar' ? 'bg-navy-50/35' : 'bg-hairline'}`}
               />
             )}
             <Link

@@ -99,7 +99,7 @@ export function VideoModal({ open, onClose, src, poster, title, closeLabel }: Pr
       aria-modal="true"
       aria-label={title}
       onClick={stopAndClose}
-      className="fixed inset-0 z-[300] flex items-center justify-center bg-black/85 p-4 backdrop-blur-md sm:p-6"
+      className="fixed inset-0 z-[300] flex items-center justify-center bg-ink/90 p-4 backdrop-blur-md sm:p-6"
     >
       <div
         ref={frameRef}

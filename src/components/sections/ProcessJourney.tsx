@@ -48,7 +48,7 @@ export function ProcessJourney() {
   const ctaHref = generateWhatsAppLink('journey', {}, { locale });
 
   return (
-    <section id="process" aria-labelledby="process-heading" className="section-rhythm bg-paper">
+    <section id="process" aria-labelledby="process-heading" className="section-rhythm bg-ground-3">
       <div className="container-page grid gap-8 lg:grid-cols-12 lg:gap-12">
         {/* Heading rail */}
         <Reveal className="headline-light lg:col-span-4">
@@ -97,7 +97,7 @@ export function ProcessJourney() {
                     <span className="numeral text-[clamp(28px,3vw,38px)] leading-none">
                       {String(index + 1).padStart(2, '0')}
                     </span>
-                    <span className="spec">{copy.spec}</span>
+                    <span className="spec spec-cyan">{copy.spec}</span>
                   </div>
 
                   <h3 className={`mt-4 max-w-[24ch] font-display font-bold ${step.title}`}>
@@ -109,7 +109,7 @@ export function ProcessJourney() {
                   </p>
 
                   <div
-                    className={`mt-5 overflow-hidden rounded-2xl border border-hairline-soft bg-mist shadow-diffuse ${step.frame}`}
+                    className={`mt-5 overflow-hidden rounded-2xl border border-teal/25 bg-mist shadow-diffuse ${step.frame}`}
                   >
                     <div className="relative h-full w-full">
                       <Image

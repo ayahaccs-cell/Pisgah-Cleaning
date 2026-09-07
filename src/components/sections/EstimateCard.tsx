@@ -26,7 +26,9 @@ const SCOPE_KEYS: ScopeKey[] = ['routine', 'deep', 'movein'];
 const FIELD =
   'focus-ring-field min-h-[52px] w-full rounded-xl border border-hairline bg-white px-4 py-3 ' +
   'text-[15px] text-ink transition-[border-color,box-shadow] duration-150 ease-feedback ' +
-  'hover:border-faint placeholder:text-faint';
+  /* S3 on hover, S4 on focus. Both are border colour and focus ring, never
+     type, so the 3:1 non-text threshold is the one that applies. */
+  'hover:border-teal placeholder:text-faint';
 
 export function EstimateCard() {
   const { t, locale } = useLocale();
@@ -53,7 +55,7 @@ export function EstimateCard() {
         id="intake"
         role="region"
         aria-labelledby="intake-title"
-        className="rounded-[20px] border border-hairline-soft bg-white p-[clamp(20px,3vw,34px)] shadow-intake"
+        className="rounded-[20px] border border-teal/25 bg-white p-[clamp(20px,3vw,34px)] shadow-intake"
       >
         <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
           <h2 id="intake-title" className="font-display text-[clamp(21px,2.4vw,28px)] font-bold text-ink">

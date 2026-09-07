@@ -73,7 +73,7 @@ export function MobileDrawer({ open, onClose }: Props) {
       <div
         onClick={onClose}
         aria-hidden="true"
-        className={`fixed inset-0 z-[190] bg-ink/55 u-surface-out ${
+        className={`fixed inset-0 z-[190] bg-ink/60 u-surface-out ${
           open ? 'visible opacity-100 u-surface-in' : 'invisible opacity-0'
         }`}
         style={{ transitionProperty: 'opacity, visibility' }}

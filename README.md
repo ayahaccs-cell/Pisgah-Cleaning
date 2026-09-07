@@ -242,6 +242,106 @@ blocks read as one. If you want the crew line smaller than the list, say so and 
 removed from both locales. They were never referenced by a component, and `aria-expanded`
 already carries the state. Parity holds at 202 nodes each side.
 
+## Blue palette overhaul and header baseline (v6)
+
+The teal and emerald palette is gone. Every colour on the site now comes from
+the six supplied blue shades, applied as a vertical flow.
+
+### The six shades
+
+| Token | Hex | Role |
+| --- | --- | --- |
+| `navy-50` | `#C1E8FF` | S1. Header and hero glass, body copy on deep surfaces |
+| `navy-200` | `#7DA0CA` | S2. Accents, focus rings and numerals on deep surfaces |
+| `navy-400` | `#5483B3` | S3. Rules, markers, hairline accents, hover borders |
+| `navy-600` | `#325884` | S4. Primary action fill, accent labels on light ground |
+| `navy-800` | `#052659` | S5. Deep section surfaces and contrasting panels |
+| `navy-950` | `#021024` | S6. Footer, baseline, hero scrim |
+
+The semantic aliases components actually use map onto these: `deep` is S4,
+`blue` is S5, `cyan` is S2, `teal` is S3, `ink` is S6. That indirection is why
+this refactor touched tokens rather than three hundred class names.
+
+### The one deviation from the brief, and why
+
+The brief put S2 `#7DA0CA` and S3 `#5483B3` on the primary action buttons.
+Measured against a white label:
+
+```
+white on S2   2.71:1    fails AA and AA large
+white on S3   3.98:1    fails AA for a 15px button label
+white on S4   7.33:1    passes AA and AAA large
+white on S5  14.71:1    passes AAA
+```
+
+So the button fill steps one shade deeper to S4 and hovers deeper still to S5,
+which is the same rule the teal build used: the primary action gets more
+legible under the pointer, not less. S2 and S3 do everything else the brief
+asked of them - interactive accents, hover borders, active states, chevrons,
+numerals, rules and the emergency call button, which carries S6 type on an S3
+fill at 4.79:1 rather than white at 3.98:1.
+
+A second, smaller deviation: the header glass is an S1 sheen at 16 percent over
+an S6 ground, not S1 alone at 15 to 20 percent. A light wash at that opacity
+inherits whatever the photograph is doing behind it, and the hero frame runs
+from a dark lobby to a bright window inside one image, so white type over it
+would measure anywhere from 2:1 to 14:1 depending on scroll position. The
+layered version keeps the sky-blue glass reading and holds the white label
+above 12:1 everywhere. Both layers are on one line in `Navbar.tsx` if you would
+rather have the wash.
+
+The amber rating stars in the trust bar were left alone. They are not part of
+the palette being replaced, and a rating row reads as a rating because the
+stars are amber. `text-teal` is a one-word change if you want them gone.
+
+### Vertical flow, lightest at the top
+
+Light sections step down through a five-stop ground ramp, and the deep sections
+step from S5 to S6, so the page darkens as it is scrolled without a single
+scroll listener or a page-height gradient.
+
+| Section | Surface |
+| --- | --- |
+| Header | S1 sheen over S6, `backdrop-blur-md` |
+| Hero | S6 scrim releasing into S5 on the far side |
+| Estimate card | white, S3 hairline border |
+| Trust bar | `ground-2` `#F6FCFF` |
+| Landmark contracts | S5 `#052659` |
+| Process stages | `ground-3` `#EFF9FF`, S4 subheadings, S3 frame borders |
+| Divisions | `ground-4` `#E7F6FF`, open panel inverts to the S5 contrasting panel |
+| Residential tiers | `ground-5` `#E0F4FF`, S4 featured border, S3 selected ring |
+| Emergency | S5 |
+| Leadership | S5 to S6 gradient |
+| Footer | S6 `#021024` |
+
+Every text colour was measured against the ground it actually sits on, not
+against white. The tightest pairs on the page: `faint` `#526E8F` on the deepest
+light ground is 4.65:1, and `faint-soft` `#8FA3BC` on S5 is 5.70:1. Both pass
+AA for small text. Body text on deep surfaces is white or S1 throughout, at
+11:1 or better.
+
+Focus rings stay surface-aware, as they were: S4 on light ground (7.33:1) and
+S2 on deep ground (7.03:1 on S6, 5.43:1 on S5). Neither hue clears 3:1 on both,
+which is why there is no single ring colour.
+
+`.numeral` moved from S3 to S4. The 12px numerals in the leadership grid and
+the client register are small text, and S3 measures 3.98:1 on a light ground.
+`.numeral-on-deep` is the S2 variant for deep panels.
+
+### Header baseline
+
+The phone number, the WhatsApp button, the navigation links and the EN /
+العربية pill now sit on one centre axis. The fix is that the operating schedule
+is absolutely positioned under the number (`absolute end-0 top-full`) instead of
+being stacked above it in flow, so the wrapper is only as tall as the phone link
+and `items-center` centres the number itself rather than the pair. `end-0`
+rather than `right-0` means it tucks under the number on the correct side in
+Arabic with no second rule.
+
+Horizontal separation is unchanged from v5.5 and still holds: the logo zone owns
+`me-6 sm:me-8 lg:me-10`, the nav owns `pe-6`, and all three zones are
+`flex-none` children of one `justify-between` row.
+
 ## Assets to replace
 
 Client photography supplied September 2026 is now in place.
