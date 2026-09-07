@@ -342,6 +342,79 @@ Horizontal separation is unchanged from v5.5 and still holds: the logo zone owns
 `me-6 sm:me-8 lg:me-10`, the nav owns `pe-6`, and all three zones are
 `flex-none` children of one `justify-between` row.
 
+## Mobile drawer glass (v6.1)
+
+Scope note first: this pass touched two files, `src/components/layout/MobileDrawer.tsx`
+and the `panel` branch of `src/components/ui/LocaleSwitcher.tsx`. That tone is used in
+the drawer and nowhere else, and the `bar` branch that the desktop header uses is
+byte-identical to v6. Desktop navigation, alignment and spacing are unchanged. The
+component is `MobileDrawer.tsx`, not `MobileNav.tsx`; there is no `Header.tsx` in this
+tree, the header is `Navbar.tsx`.
+
+**Panel.** The solid white sheet is gone. It is now S5 at 85 percent with
+`backdrop-blur-xl`, with a more opaque S5 underneath as the fallback where
+`backdrop-filter` is unsupported, so the panel is never see-through on an older engine.
+The leading edge is `border-s border-navy-50/15`, not `border-l`, so the hairline lands
+on the left in English and on the right in Arabic with no override.
+
+**Backdrop.** `bg-ink/60 backdrop-blur-sm`. S6 rather than black, so the dim matches the
+palette rather than muddying it.
+
+**Logo.** Switched from `company.logo` to `company.logoLight`, the white knockout on
+transparency, which is what the header already uses. No plate, no border, no fill.
+
+**Close button.** A translucent circle: `bg-white/10` with a `border-navy-50/20` hairline
+and a white glyph, hovering to `bg-white/20`.
+
+**Links.** White at 16px, hovering to S1 `#C1E8FF`, with `border-navy-50/15` dividers
+replacing the grey hairlines. Tap targets stay at 52px.
+
+**Contact stack.** Three steps of emphasis rather than two:
+
+1. WhatsApp, brand green
+2. The 24/7 line, S3 fill with S6 type
+3. The office line, transparent with a white hairline
+
+Both numbers are read from `siteConfig.contact`, and each carries `dir="ltr"` so the
+digits do not reverse under RTL. Labels reuse the existing `cta.callNow` and
+`cta.callOffice` keys, so no dictionary key was added and parity stays at 202 nodes.
+
+The schedule sits under the stack in S1 at 80 percent, `text-xs`.
+
+**Language pill.** Active is S2 `#7DA0CA` carrying S6 type; inactive is `bg-white/10`
+with white at 85 percent inside a `border-navy-50/20` shell.
+
+### Contrast on a translucent surface
+
+A translucent panel has no fixed colour, so every ratio was measured against the
+composite in the worst case, which is the drawer opened over a white section: the S6
+backdrop at 60 percent, then the S5 panel at 85 percent on top of that.
+
+```
+composite panel surface   #14315E
+white                     12.88:1   links, headings, button labels
+S1 #C1E8FF                 9.97:1
+S1 at 80 percent           6.95:1   the schedule line
+S2 pill fill               4.75:1   selected language, visible as a shape
+S3 button fill             3.23:1   passes SC 1.4.11 for a control boundary
+```
+
+Two choices follow from those numbers. The 24/7 button carries S6 type rather than
+white, because white on S3 is only 3.98:1. And the language pill's active state is S2
+rather than S3: the brief offered either, but S3 as a fill drops the ink label to 4.79:1
+and the pill itself to 3.23:1 against the panel, while S2 gives 7.03:1 and 4.75:1.
+
+Every focus ring inside the panel is `focus-ring-ink`. The S4 ring that serves light
+grounds measures 2.01:1 against S5 and would disappear here.
+
+### RTL
+
+Verified by rendering the drawer at 390px in both directions. The panel enters from the
+inline end, so it slides in from the right in English and the left in Arabic; the border
+follows to the opposite edge; the logo, close button, link alignment, schedule and pill
+order all mirror; and the two phone numbers stay in Latin order inside their `dir="ltr"`
+spans.
+
 ## Assets to replace
 
 Client photography supplied September 2026 is now in place.
