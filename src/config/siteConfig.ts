@@ -100,11 +100,11 @@ export const siteConfig = {
       country: 'Kingdom of Bahrain',
     } satisfies PostalAddress,
     hours: {
-      /** Confirmed by the client, September 2026. */
-      office: 'Sun to Thu, 07:00 to 19:00',
+      /** Updated by the client, September 2026. */
+      office: 'Sat to Thu, 09:00 to 17:00',
       emergency: '24/7 emergency call-out',
-      /** Schema.org openingHours, for the LocalBusiness payload in the footer. */
-      schema: ['Su-Th 07:00-19:00'],
+      /** Schema.org openingHours, for the LocalBusiness payload. */
+      schema: ['Sa-Th 09:00-17:00'],
     },
     areaServed: 'Kingdom of Bahrain',
     /**

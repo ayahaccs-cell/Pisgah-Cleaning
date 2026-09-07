@@ -191,10 +191,56 @@ divisions, not four.
 
 **Service accordion.** One panel open at a time, Commercial open on load. Each header is a
 real `button` with `aria-expanded` and `aria-controls`; each panel is a labelled `region`.
-Closed panels are unmounted rather than hidden, so the Tab order matches what is on screen.
-There is no height animation, because animating height forces layout every frame and causes
-exactly the shift the accordion was meant to remove. The chevron rotates on the block axis,
-which is direction neutral and needs no RTL flip.
+The chevron rotates on the block axis, which is direction neutral and needs no RTL flip.
+See v5.5 below for the toggle and transition behaviour that supersedes the original
+unmounted-panel approach.
+
+## Header spacing, accordion toggle and card typography (v5.5)
+
+**Operating hours.** Changed at the single source. `siteConfig.contact.hours.office` is now
+`Sat to Thu, 09:00 to 17:00` and `hours.schema` is `['Sa-Th 09:00-17:00']`. The
+`openingHoursSpecification` in `src/lib/seo.ts` was updated to match, so the structured data
+and the rendered header cannot disagree. No component holds a literal time string.
+
+**Header layout.** The bar is `justify-between` with three flex-none zones. The logo zone
+carries its own inline-end margin (`me-6 sm:me-8 lg:me-10`) and the nav its own `pe-6`, so
+the two can never collide at any width or in either language; the old below-`xl` spacer div
+is gone. The utility zone is now a two-line stack: the office number and the WhatsApp button
+on line one, the schedule beneath at `text-[10px]` in `text-emerald-200/80` with
+`tracking-normal`. Both the number and the schedule are hidden below `sm`, where the drawer
+carries them instead.
+
+**Landmark copy.** `clients.heading` is now exactly `15+ landmark contracts across Bahrain.`
+in English and the matching single sentence in Arabic.
+
+**Accordion is a true toggle.** `openId` is `DivisionId | null` and the handler is
+`setOpenId(prev => prev === division.id ? null : division.id)`, so clicking an open header
+or its chevron collapses it and all three panels can be closed at once.
+
+The open and close transition is `grid-template-rows: 0fr` to `1fr` on a wrapper whose child
+clips with `overflow-hidden`. That interpolates smoothly without a JavaScript `scrollHeight`
+measurement and without a hard-coded `max-height` that would clip the longest panel
+(Specialised runs to eight items). The panel now stays mounted, so it is hidden from
+assistive technology with `aria-hidden` and pulled out of the Tab order with `tabIndex={-1}`
+on its only focusable child, which keeps the keyboard order matching the screen exactly as
+the unmounted version did. `prefers-reduced-motion` already zeroes every transition duration
+globally, so the panel snaps open for those users.
+
+The division summary now lives only in the header, unclamping when the panel opens, instead
+of appearing both clamped in the header and in full inside the panel. That removes a
+duplicate reading for screen readers and a reflow at the moment of expansion.
+
+**Tier card typography.** The indicative crew line in `PackageSelector` dropped `font-mono`
+and `tabular-nums` and now matches the standard coverage list directly above it exactly:
+`text-[14.5px] font-normal leading-snug text-muted`. One deviation from the brief, flagged
+for you to overrule: the brief asked for `text-xs`, which is 12px, but the coverage list it
+is being unified with is 14.5px, so matching it at 14.5px is what actually makes the two
+blocks read as one. If you want the crew line smaller than the list, say so and it becomes
+`text-xs` in one edit.
+
+**Dictionary.** `pillars.expandLabel`, `pillars.collapseLabel` and `pillars.leadLabel` were
+removed from both locales. They were never referenced by a component, and `aria-expanded`
+already carries the state. Parity holds at 202 nodes each side.
 
 ## Assets to replace
 

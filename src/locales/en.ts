@@ -90,7 +90,7 @@ export const en = {
   },
 
   clients: {
-    heading: '15+ landmark contracts across Bahrain, renewed year after year since 2008.',
+    heading: '15+ landmark contracts across Bahrain.',
     ratingLabel: 'Accounts held under continuous contract',
     spec: 'ACTIVE ACCOUNTS / KINGDOM OF BAHRAIN',
   },
@@ -125,9 +125,6 @@ export const en = {
     intro:
       'One contract covers daily cleaning, deep machine treatments and the technical work that follows a repair. One supervisor signs for all of it, so there is no vendor to chase when a job crosses a trade.',
     spec: 'THREE DIVISIONS / ONE POINT OF ACCOUNTABILITY',
-    expandLabel: 'Show what this division covers',
-    collapseLabel: 'Hide what this division covers',
-    leadLabel: 'Primary division',
     commercial: {
       title: 'Commercial and facility care',
       summary:

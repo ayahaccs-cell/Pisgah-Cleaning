@@ -105,9 +105,12 @@ export function PackageSelector() {
                   ))}
                 </ul>
 
+                {/* Same sans stack, same size and colour as the coverage list
+                    above, so the two blocks read as one card rather than as a
+                    body list with a machine readout stapled underneath. */}
                 <div className="hair-light-t mt-5 pt-4">
                   <p className="spec">{t.packages.crewLabel}</p>
-                  <p className="mt-1.5 font-mono text-[12.5px] tabular-nums text-body">
+                  <p className="mt-1.5 text-[14.5px] font-normal leading-snug text-muted">
                     {copy.crew} / {copy.duration}
                   </p>
                 </div>

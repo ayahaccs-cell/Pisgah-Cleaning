@@ -137,9 +137,9 @@ export function localBusinessJsonLd(locale: Locale): Record<string, unknown> {
     openingHoursSpecification: [
       {
         '@type': 'OpeningHoursSpecification',
-        dayOfWeek: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday'],
-        opens: '07:00',
-        closes: '19:00',
+        dayOfWeek: ['Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday'],
+        opens: '09:00',
+        closes: '17:00',
       },
     ],
     contactPoint: [

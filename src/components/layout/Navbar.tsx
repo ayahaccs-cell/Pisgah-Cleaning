@@ -50,9 +50,9 @@ export function Navbar() {
         aria-label={t.a11y.headerLandmark}
         className="fixed inset-x-0 top-0 z-[60] border-b border-emerald-500/20 bg-emerald-950/75 text-white backdrop-blur-md supports-[backdrop-filter]:bg-emerald-950/40"
       >
-        <div className="mx-auto flex min-h-[68px] w-full max-w-7xl items-center px-4 py-2 sm:min-h-[76px] sm:px-6">
+        <div className="mx-auto flex min-h-[68px] w-full max-w-7xl items-center justify-between gap-4 px-4 py-2 sm:min-h-[76px] sm:px-6">
           {/* ---- Zone 1: logo. Transparent, unboxed, never shares its space. ---- */}
-          <div className="flex flex-none items-center pe-5 sm:pe-6 xl:pe-8">
+          <div className="flex flex-none items-center me-6 sm:me-8 lg:me-10">
             <a
               href="#top"
               aria-label={siteConfig.company.legalName}
@@ -73,7 +73,7 @@ export function Navbar() {
           {/* ---- Zone 2: navigation. Shrinks before it collides. ---- */}
           <nav
             aria-label={t.nav.primary}
-            className="hidden min-w-0 flex-1 items-center justify-center gap-3 xl:flex xl:gap-5"
+            className="hidden min-w-0 flex-1 items-center justify-center gap-3 pe-6 xl:flex xl:gap-5"
           >
             {NAV_LINKS.map((link) => (
               <a
@@ -90,39 +90,39 @@ export function Navbar() {
             ))}
           </nav>
 
-          {/* Only exists below xl, so the utility zone stays at the inline end
-              once the navigation is hidden. */}
-          <div className="flex-1 xl:hidden" />
-
-          {/* ---- Zone 3: utility. Never wraps over the navigation. ---- */}
+          {/* ---- Zone 3: utility. Two lines, so it stays narrow. ---- */}
           <div className="flex flex-none flex-nowrap items-center gap-2 sm:gap-3">
-            <div className="hidden flex-nowrap items-center gap-3 lg:flex">
-              <span className="inline-flex items-center gap-1.5 whitespace-nowrap text-[11px] leading-tight text-white/80">
-                <ClockIcon size={14} className="flex-none text-white/60" />
+            {/* Line 1: number beside the WhatsApp button.
+                Line 2: the schedule, sitting under the number. */}
+            <div className="flex flex-none flex-col items-end gap-0.5">
+              <div className="flex flex-nowrap items-center gap-2 sm:gap-2.5">
+                <a
+                  href={callOfficeHref()}
+                  aria-label={t.a11y.callOfficeLabel}
+                  className="focus-ring-ink hidden items-center gap-1.5 whitespace-nowrap rounded text-xs font-semibold leading-tight text-white transition-colors duration-fast ease-feedback hover:text-white/80 sm:inline-flex"
+                >
+                  <PhoneIcon size={14} className="flex-none text-white/60" />
+                  <span dir="ltr" className="tabular-nums">
+                    {siteConfig.contact.secondaryPhone.display}
+                  </span>
+                </a>
+
+                <a
+                  href={waHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={t.a11y.whatsappGeneric}
+                  className="focus-ring-ink u-press tap flex h-10 w-10 flex-none items-center justify-center rounded-full bg-white/95 text-[#0F766E] transition-colors duration-fast ease-feedback hover:bg-white sm:h-9 sm:w-9"
+                >
+                  <WhatsAppIcon size={18} />
+                </a>
+              </div>
+
+              <span className="hidden items-center gap-1 whitespace-nowrap text-[10px] leading-tight tracking-normal text-emerald-200/80 sm:inline-flex">
+                <ClockIcon size={11} className="flex-none" />
                 {siteConfig.contact.hours.office}
               </span>
-
-              <a
-                href={callOfficeHref()}
-                aria-label={t.a11y.callOfficeLabel}
-                className="focus-ring-ink inline-flex items-center gap-1.5 whitespace-nowrap rounded border-s border-emerald-400/30 ps-3 text-xs font-semibold leading-tight text-white transition-colors duration-fast ease-feedback hover:text-white/80"
-              >
-                <PhoneIcon size={14} className="flex-none text-white/60" />
-                <span dir="ltr" className="tabular-nums">
-                  {siteConfig.contact.secondaryPhone.display}
-                </span>
-              </a>
             </div>
-
-            <a
-              href={waHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={t.a11y.whatsappGeneric}
-              className="focus-ring-ink u-press tap flex h-10 w-10 flex-none items-center justify-center rounded-full bg-white/95 text-[#0F766E] transition-colors duration-fast ease-feedback hover:bg-white sm:h-11 sm:w-11"
-            >
-              <WhatsAppIcon size={19} />
-            </a>
 
             <LocaleSwitcher tone="bar" className="hidden sm:inline-flex" />
 

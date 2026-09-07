@@ -12,16 +12,19 @@ import { ChevronDown, ChevronRight } from '@/components/ui/Icons';
  *
  * Commercial is open on load because it carries the contract revenue. Opening
  * Residential or Specialised closes whatever was open, so the section never
- * grows past one expanded panel and the page below it stays reachable.
+ * grows past one expanded panel. Clicking the open panel, or its chevron,
+ * collapses it, so all three can be closed at once.
  *
  * The panel is a real button and a real region, wired with aria-expanded and
- * aria-controls. Closed panels are removed from the tree rather than hidden
- * with opacity, so a screen reader and a Tab key both agree with what is on
- * screen.
+ * aria-controls. A closed panel keeps its markup but is hidden from both the
+ * accessibility tree and the Tab order with the inert-style pairing of
+ * aria-hidden and a tabIndex of -1 on its only focusable child, so a screen
+ * reader and a Tab key still agree with what is on screen.
  *
- * There is no height animation. Animating height forces layout on every frame
- * and produces exactly the jarring shift this section was meant to remove, so
- * the panel simply appears and the chevron rotates.
+ * The open and close transition uses grid-template-rows 0fr to 1fr, which the
+ * compositor interpolates without a JavaScript height measurement and without
+ * a hard-coded max-height that would clip the longest panel. Under
+ * prefers-reduced-motion the duration collapses to zero in globals.css.
  */
 
 const LETTERS = { commercial: 'A', residential: 'B', specialised: 'C' } as const;
@@ -30,7 +33,8 @@ type DivisionId = (typeof siteConfig.divisions)[number]['id'];
 
 export function ServicePillars() {
   const { t, locale } = useLocale();
-  const [openId, setOpenId] = useState<DivisionId>('commercial');
+  /* null is a legal state: every panel closed. */
+  const [openId, setOpenId] = useState<DivisionId | null>('commercial');
 
   return (
     <section id="services" aria-labelledby="services-heading" className="section-rhythm bg-white">
@@ -76,7 +80,9 @@ export function ServicePillars() {
                     id={buttonId}
                     aria-expanded={isOpen}
                     aria-controls={panelId}
-                    onClick={() => setOpenId(division.id)}
+                    onClick={() =>
+                      setOpenId((prev) => (prev === division.id ? null : division.id))
+                    }
                     className="focus-ring-light tap flex w-full items-center gap-4 px-5 py-5 text-start sm:gap-6 sm:px-7 sm:py-6"
                   >
                     <span className="numeral flex-none text-[22px] leading-none sm:text-[26px]">
@@ -88,11 +94,17 @@ export function ServicePillars() {
                       <span className="mt-1.5 font-display text-[18px] font-bold leading-snug text-ink sm:text-[21px]">
                         {copy.title}
                       </span>
-                      {!isOpen && (
-                        <span className="mt-1.5 line-clamp-2 text-[14.5px] leading-snug text-muted">
-                          {copy.summary}
-                        </span>
-                      )}
+                      {/* One summary only, in the header. It stays mounted and
+                          simply unclamps when the panel opens, so the text does
+                          not appear twice for a screen reader and nothing
+                          reflows when the panel expands. */}
+                      <span
+                        className={`mt-1.5 text-[14.5px] leading-snug text-muted ${
+                          isOpen ? '' : 'line-clamp-2'
+                        }`}
+                      >
+                        {copy.summary}
+                      </span>
                     </span>
 
                     {/* Rotation is on the block axis, so it needs no RTL flip. */}
@@ -109,43 +121,50 @@ export function ServicePillars() {
                   </button>
                 </h3>
 
-                {isOpen && (
-                  <div
-                    id={panelId}
-                    role="region"
-                    aria-labelledby={buttonId}
-                    className="px-5 pb-6 sm:px-7 sm:pb-7"
-                  >
-                    <span aria-hidden="true" className="hair-light-t mb-5 block" />
+                {/* Height transition without a measurement. The grid track goes
+                    0fr to 1fr, the inner wrapper clips, and nothing reads
+                    scrollHeight or animates a layout property in JavaScript. */}
+                <div
+                  id={panelId}
+                  role="region"
+                  aria-labelledby={buttonId}
+                  aria-hidden={!isOpen}
+                  className={`grid transition-[grid-template-rows] duration-standard ease-entrance ${
+                    isOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
+                  }`}
+                >
+                  <div className="overflow-hidden">
+                    <div className="px-5 pb-6 sm:px-7 sm:pb-7">
+                      <span aria-hidden="true" className="hair-light-t mb-5 block" />
 
-                    <p className="max-w-[62ch] text-[15.5px] leading-relaxed text-muted">
-                      {copy.summary}
-                    </p>
+                      <ul className="grid gap-x-8 gap-y-2.5 sm:grid-cols-2">
+                        {copy.items.map((item) => (
+                          <li
+                            key={item}
+                            className="relative ps-4 text-[14.5px] leading-snug text-muted"
+                          >
+                            <span aria-hidden="true" className="bullet-dot" />
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
 
-                    <ul className="mt-5 grid gap-x-8 gap-y-2.5 sm:grid-cols-2">
-                      {copy.items.map((item) => (
-                        <li
-                          key={item}
-                          className="relative ps-4 text-[14.5px] leading-snug text-muted"
-                        >
-                          <span aria-hidden="true" className="bullet-dot" />
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-
-                    <a
-                      href={href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={t.a11y.whatsappDivision}
-                      className="focus-ring-light u-glide-host mt-6 inline-flex min-h-[48px] items-center gap-2 rounded-full font-display text-[14.5px] font-semibold text-deep transition-colors duration-fast ease-feedback hover:text-blue"
-                    >
-                      {t.cta.scopeRequest}
-                      <ChevronRight size={14} className="u-glide" />
-                    </a>
+                      {/* tabIndex -1 while collapsed, so the Tab order matches
+                          what is visible on screen. */}
+                      <a
+                        href={href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        tabIndex={isOpen ? undefined : -1}
+                        aria-label={t.a11y.whatsappDivision}
+                        className="focus-ring-light u-glide-host mt-6 inline-flex min-h-[48px] items-center gap-2 rounded-full font-display text-[14.5px] font-semibold text-deep transition-colors duration-fast ease-feedback hover:text-blue"
+                      >
+                        {t.cta.scopeRequest}
+                        <ChevronRight size={14} className="u-glide" />
+                      </a>
+                    </div>
                   </div>
-                )}
+                </div>
               </Reveal>
             );
           })}
