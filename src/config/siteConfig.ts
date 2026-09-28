@@ -138,14 +138,35 @@ export const siteConfig = {
    * written permission from that account is on file, at which point a logo path
    * is added here and the strip renders it in place of the name.
    */
+  /**
+   * Retained accounts, supplied by the client September 2026 together with the
+   * marks themselves. The name and the scope line are localised, so only the
+   * id and the artwork live here.
+   *
+   * Every file in /media/clients is a white silhouette on transparency,
+   * prepared from the supplied artwork at a uniform 240 by 72 box so the proof
+   * row needs no per-logo sizing. `proof` marks the six that appear in the
+   * hero strip; the rest carry the register further down the page.
+   *
+   * These are third party trademarks, displayed on the client's instruction.
+   * Written permission per account is the client's to hold, not the site's.
+   */
   clients: [
-    { id: 'cineco', name: 'Cineco Cinemas', detail: 'Seef Mall and Wadi Al Sail', logo: null },
-    { id: 'talabat', name: 'Talabat Fakroo Tower', detail: null, logo: null },
-    { id: 'silah', name: 'Silah Gulf', detail: null, logo: null },
-    { id: 'epix', name: 'Epix Cinemas', detail: 'Dana Mall', logo: null },
-    { id: 'waqf', name: 'Sunni Waqf Directorate', detail: null, logo: null },
-    { id: 'nis', name: 'The New Indian School', detail: null, logo: null },
+    { id: 'waqf', logo: '/media/clients/waqf.png', proof: true },
+    { id: 'silah', logo: '/media/clients/silah.png', proof: true },
+    { id: 'talabat', logo: '/media/clients/talabat.png', proof: true },
+    { id: 'cineco', logo: '/media/clients/cineco.png', proof: true },
+    { id: 'amakin', logo: '/media/clients/amakin.png', proof: true },
+    { id: 'mosques', logo: '/media/clients/mosque.png', proof: false },
+    { id: 'liwan', logo: '/media/clients/liwan.png', proof: false },
+    { id: 'epix', logo: '/media/clients/epix.png', proof: true },
+    { id: 'trax', logo: '/media/clients/trax.png', proof: false },
+    { id: 'fabyland', logo: '/media/clients/fabyland.png', proof: false },
+    { id: 'xtreme', logo: '/media/clients/xtreme.png', proof: false },
   ],
+
+  /** Every mark is prepared to the same box, so this is declared once. */
+  clientLogoBox: { width: 240, height: 72 },
 
   leadership: [
     { id: 'george', photo: null },
@@ -169,6 +190,12 @@ export const siteConfig = {
       width: 905,
       height: 509,
     },
+    /* The single featured operational frame in the hero spotlight card. The
+       video poster was tried here first and rejected: it is a logo on a wall,
+       and the card has to show the work. This is the rotary extraction frame,
+       cropped to portrait by the card. Replace with a dedicated shot when one
+       is taken and nothing else changes. */
+    heroSpotlight: '/media/process-02-mobilisation.jpg',
     process: {
       survey: '/media/process-01-survey.jpg',
       mobilisation: '/media/process-02-mobilisation.jpg',

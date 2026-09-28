@@ -195,10 +195,15 @@ for (const file of files) {
 console.log(`  3. siteConfig references resolved: ${cChecked}`);
 
 /* --- 4. every /media asset referenced exists ----------------------- */
-const MEDIA = /['"`](\/media\/[A-Za-z0-9._-]+)['"`]/g;
+/* The path segment now allows a subdirectory, because the client marks live
+   in /media/clients. Without that the eleven logo paths in siteConfig would
+   have gone unchecked and a typo would have shipped as a silent 404. */
+const MEDIA = /['"`](\/media\/[A-Za-z0-9._-]+(?:\/[A-Za-z0-9._-]+)*)['"`]/g;
 const seen = new Set();
 
-for (const file of files) {
+/* siteConfig is scanned alongside the components, so an asset referenced only
+   from configuration is checked the same way as one written into a component. */
+for (const file of [...files, join(ROOT, 'src/config/siteConfig.ts')]) {
   const source = readFileSync(file, 'utf8');
   for (const match of source.matchAll(MEDIA)) {
     const asset = match[1];

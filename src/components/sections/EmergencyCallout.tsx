@@ -22,7 +22,7 @@ export function EmergencyCallout() {
     <section
       id="emergency"
       aria-labelledby="emergency-heading"
-      className="section-rhythm relative isolate overflow-hidden bg-blue text-sage-50"
+      className="section-rhythm relative isolate overflow-hidden bg-obsidian text-faint-soft"
     >
       {/* Soft radial lighting behind the headline. Painted, never animated. */}
       <div
@@ -31,7 +31,7 @@ export function EmergencyCallout() {
         style={{
           insetInlineStart: '-160px',
           background:
-            'radial-gradient(46% 50% at 34% 46%, rgba(107,144,113,.34), rgba(227,238,212,.10) 48%, transparent 74%)',
+            'radial-gradient(46% 50% at 34% 46%, rgba(13,122,95,.30), rgba(13,122,95,.08) 48%, transparent 76%)',
         }}
       />
 
@@ -44,7 +44,7 @@ export function EmergencyCallout() {
 
           <h2
             id="emergency-heading"
-            className="mt-6 max-w-[20ch] font-display text-[clamp(28px,4vw,46px)] font-bold leading-[1.03] text-white"
+            className="mt-6 max-w-[20ch] font-display text-[clamp(28px,4vw,46px)] leading-[1.03] text-white"
           >
             {t.emergency.heading}
           </h2>
@@ -63,7 +63,7 @@ export function EmergencyCallout() {
             href={callPrimaryHref()}
             dir="ltr"
             aria-label={t.a11y.callPrimary}
-            className="focus-ring-ink mt-4 block rounded font-display text-[clamp(32px,4.6vw,48px)] font-extrabold leading-none tabular-nums text-cyan underline-offset-[6px] transition-[text-underline-offset] duration-fast ease-feedback hover:underline hover:underline-offset-[10px]"
+            className="focus-ring-ink mt-4 block rounded font-display text-[clamp(32px,4.6vw,48px)] leading-none tabular-nums text-white underline-offset-[6px] transition-[text-underline-offset] duration-fast ease-feedback hover:underline hover:underline-offset-[10px]"
           >
             {siteConfig.contact.primaryPhone.display}
           </a>

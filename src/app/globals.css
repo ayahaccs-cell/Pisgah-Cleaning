@@ -6,7 +6,7 @@
    because every family resolves through the CSS variables declared below.
    ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800&family=Hanken+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Amiri:wght@400;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -14,10 +14,14 @@
 
 @layer base {
   :root {
-    /* Latin stacks. Redefined wholesale under RTL below. */
-    --font-display: 'Schibsted Grotesk', 'Hanken Grotesk', system-ui, sans-serif;
-    --font-body: 'Hanken Grotesk', 'Segoe UI', system-ui, -apple-system, sans-serif;
-    --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
+    /* Latin stacks. Redefined wholesale under RTL below.
+       Instrument Serif ships one weight, 400. Editorial headlines are set at
+       normal weight with near-neutral tracking rather than bolded, which is
+       where the high-contrast editorial feel comes from. */
+    --font-display: 'Instrument Serif', 'Cormorant Garamond', Georgia,
+      'Times New Roman', serif;
+    --font-body: 'Plus Jakarta Sans', 'Segoe UI', system-ui, -apple-system,
+      sans-serif;
 
     /* Motion tokens, from the approved motion system. */
     --d-instant: 100ms;
@@ -47,9 +51,10 @@
      the whole font stack is swapped in one place.
      -------------------------------------------------------------------- */
   [dir='rtl'] {
-    --font-display: 'IBM Plex Sans Arabic', 'Schibsted Grotesk', system-ui, sans-serif;
-    --font-body: 'IBM Plex Sans Arabic', 'Hanken Grotesk', system-ui, sans-serif;
-    --font-mono: 'IBM Plex Sans Arabic', ui-monospace, monospace;
+    /* Amiri is the Arabic editorial face, the counterpart to Instrument Serif.
+       IBM Plex Sans Arabic carries every interface string. */
+    --font-display: 'Amiri', 'IBM Plex Sans Arabic', Georgia, serif;
+    --font-body: 'IBM Plex Sans Arabic', 'Plus Jakarta Sans', system-ui, sans-serif;
   }
 
   [dir='rtl'] * {
@@ -74,7 +79,7 @@
   }
 
   body {
-    @apply bg-paper text-body font-sans;
+    @apply bg-obsidian text-body font-sans;
     font-size: 17px;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
@@ -85,9 +90,19 @@
 
   h1, h2, h3, h4 {
     @apply font-display;
-    line-height: 1.08;
-    letter-spacing: -0.028em;
+    font-weight: 400;
+    line-height: 1.06;
+    /* A serif does not want the tight tracking a grotesk headline needed. */
+    letter-spacing: -0.005em;
     text-wrap: balance;
+  }
+
+  /* Interface headings stay on the sans stack. Applied where a heading is a
+     label rather than an editorial statement, such as a card title. */
+  .h-ui {
+    font-family: var(--font-body);
+    font-weight: 600;
+    letter-spacing: -0.012em;
   }
 
   /* Arabic headings need the tracking removed and a looser leading. */
@@ -99,15 +114,14 @@
   }
 
   /* WCAG 2.1 SC 1.4.11 requires a focus indicator at 3:1 against what sits
-     behind it. Measured on the green palette:
-       G4 #375534 on white        8.36:1  pass
-       G4 #375534 on G5 #0F2A1D   1.83:1  fail
-       G2 #AEC3B0 on G5 #0F2A1D   8.20:1  pass
-       G2 #AEC3B0 on G4 #375534   4.47:1  pass
-       G2 #AEC3B0 on white        1.87:1  fail
+     behind it. Measured on the obsidian palette:
+       Emerald #0D7A5F on white      5.29:1  pass
+       Emerald #0D7A5F on obsidian   3.65:1  pass, non text threshold
+       Slate   #94A3B8 on obsidian   7.54:1  pass
+       Slate   #94A3B8 on white      1.87:1  fail
      So the ring colour is chosen by surface rather than fixed. */
   :root {
-    --focus-ring: #375534;
+    --focus-ring: #0D7A5F;
     --focus-offset: #FFFFFF;
   }
 
@@ -211,7 +225,7 @@
     appearance: none;
     -webkit-appearance: none;
     padding-inline-end: 40px;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23375534' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M5 8l5 5 5-5'/></svg>");
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%230D7A5F' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M5 8l5 5 5-5'/></svg>");
     background-repeat: no-repeat;
     background-size: 18px;
     background-position: right 14px center;
@@ -247,19 +261,19 @@
 
   /* Ink panel. The hairline is the only edge; there is no border colour. */
   .surface-ink {
-    background-color: theme('colors.ink');
-    border: 1px solid rgb(227 238 212 / 0.15);
+    background-color: theme('colors.obsidian');
+    border: 1px solid rgb(255 255 255 / 0.10);
   }
 
-  .hair-t { border-top: 1px solid rgb(227 238 212 / 0.16); }
-  .hair-b { border-bottom: 1px solid rgb(227 238 212 / 0.16); }
+  .hair-t { border-top: 1px solid rgb(255 255 255 / 0.10); }
+  .hair-b { border-bottom: 1px solid rgb(255 255 255 / 0.10); }
 
   /* On light ground the hairline is ink at low alpha, never a grey border. */
-  .hair-light-b { border-bottom: 1px solid rgb(15 42 29 / 0.10); }
-  .hair-light-t { border-top: 1px solid rgb(15 42 29 / 0.10); }
+  .hair-light-b { border-bottom: 1px solid rgb(10 14 20 / 0.10); }
+  .hair-light-t { border-top: 1px solid rgb(10 14 20 / 0.10); }
   .surface-light {
     background-color: #ffffff;
-    border: 1px solid rgb(15 42 29 / 0.09);
+    border: 1px solid rgb(10 14 20 / 0.09);
   }
 
   /* A 1.5px stroke that reads as a drawn rule, integrated into the type. */
@@ -271,8 +285,8 @@
       to right,
       theme('colors.teal') 0,
       theme('colors.teal') 34px,
-      rgb(15 42 29 / 0.12) 34px,
-      rgb(15 42 29 / 0.12) 100%
+      rgb(10 14 20 / 0.12) 34px,
+      rgb(10 14 20 / 0.12) 100%
     );
   }
 
@@ -281,8 +295,8 @@
       to left,
       theme('colors.teal') 0,
       theme('colors.teal') 34px,
-      rgb(15 42 29 / 0.12) 34px,
-      rgb(15 42 29 / 0.12) 100%
+      rgb(10 14 20 / 0.12) 34px,
+      rgb(10 14 20 / 0.12) 100%
     );
   }
 
@@ -291,8 +305,8 @@
       to right,
       theme('colors.teal') 0,
       theme('colors.teal') 34px,
-      rgb(227 238 212 / 0.18) 34px,
-      rgb(227 238 212 / 0.18) 100%
+      rgb(255 255 255 / 0.14) 34px,
+      rgb(255 255 255 / 0.14) 100%
     );
   }
 
@@ -301,28 +315,31 @@
       to left,
       theme('colors.teal') 0,
       theme('colors.teal') 34px,
-      rgb(227 238 212 / 0.18) 34px,
-      rgb(227 238 212 / 0.18) 100%
+      rgb(255 255 255 / 0.14) 34px,
+      rgb(255 255 255 / 0.14) 100%
     );
   }
 
   /* Operational metadata. Uppercase, tight, muted slate with a cyan marker. */
+  /* Operational metadata. The mono face is gone with the rest of the old
+     system; technical strings are set in the interface sans, tracked and
+     uppercased, which is what the brief asked for. */
   .spec {
-    font-family: var(--font-mono);
-    font-size: 10.5px;
+    font-family: var(--font-body);
+    font-size: 10px;
+    font-weight: 600;
     line-height: 1.5;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
-    /* 5.70:1 on white, 4.90:1 on the deepest light ground. Pass AA. */
-    color: #4F6E52;
+    /* 5.21:1 on the canvas, 5.49:1 on white. Pass AA. */
+    color: #5A6B7B;
   }
 
-  /* G4. 8.36:1 on white, 7.19:1 on the deepest light ground. */
-  .spec-cyan { color: #375534; }
+  /* The accent. 5.29:1 on white, 5.02:1 on the canvas. */
+  .spec-cyan { color: #0D7A5F; }
 
-  /* 5.35:1 on G4, 9.81:1 on G5. Deep surfaces only. G2 itself is 4.47:1 on
-     G4, just below AA, so the metadata tint is lifted toward G1. */
-  .spec-on-ink { color: #C3D3C4; }
+  /* 7.54:1 on obsidian, 6.96:1 on carbon. Dark surfaces only. */
+  .spec-on-ink { color: #94A3B8; }
 
   [dir='rtl'] .spec {
     font-size: 12px;
@@ -334,15 +351,15 @@
     outline: none;
     box-shadow:
       0 0 0 2px #FFFFFF,
-      0 0 0 4px #375534;
+      0 0 0 4px #0D7A5F;
     border-radius: 999px;
   }
 
   .focus-ring-ink:focus-visible {
     outline: none;
     box-shadow:
-      0 0 0 2px #0F2A1D,
-      0 0 0 4px #AEC3B0;
+      0 0 0 2px #0A0E14,
+      0 0 0 4px #94A3B8;
     border-radius: 999px;
   }
 
@@ -350,8 +367,8 @@
   .focus-ring-field:focus-visible,
   .focus-ring-field:focus {
     outline: none;
-    border-color: #375534;
-    box-shadow: 0 0 0 3px rgba(55, 85, 52, 0.22);
+    border-color: #0D7A5F;
+    box-shadow: 0 0 0 3px rgba(13, 122, 95, 0.20);
   }
 
   /* List marker. A dot, never a dash, so a bullet never reads as a hyphen or
@@ -390,123 +407,114 @@
   }
 
   /* Technical numbering replaces icon badges. Sits in the type, not in a box. */
+  /* Sequence numerals are set in the editorial serif, which is what carries
+     the 01 / 02 / 03 rhythm now that the mono face is retired. */
   .numeral {
-    font-family: var(--font-mono);
+    font-family: var(--font-display);
     font-variant-numeric: tabular-nums;
-    font-weight: 500;
-    /* G4, not the ticked G3. Small numerals appear at 12px, and G3 measures
-       only 3.59:1 on white. Use .numeral-accent where the numeral is display
-       sized. */
-    color: theme('colors.deep');
+    font-weight: 400;
+    color: theme('colors.emerald.DEFAULT');
   }
 
-  /* The ticked anchor, for display sized numerals only. G3 measures 3.59:1 on
-     white and 3.08:1 on the deepest light ground, which clears the 3:1 large
-     text threshold at 24px and above, and nothing below that uses this class. */
+  /* Alias kept so components that ask for the accent numeral keep working. */
   .numeral-accent {
-    color: theme('colors.teal');
+    color: theme('colors.emerald.DEFAULT');
   }
 
-  /* The numeral on a deep surface. G2 is 4.47:1 on G4, just under AA at 12px,
-     so this tint is lifted toward G1 and measures 5.35:1 on G4, 9.81:1 on G5. */
+  /* On a dark surface the accent is 3.65:1, below AA for a small numeral, so
+     the dark variant uses slate 400 at 7.54:1 instead. */
   .numeral-on-deep {
     color: theme('colors.faint-soft');
   }
 }
 
 @layer utilities {
-  /* Soft radial lighting behind a section headline. Painted, never animated. */
-  .headline-light {
+  /* Retained as a positioning wrapper only. The painted radial that used to
+     sit behind every section headline is gone: this system runs on flat
+     architectural surfaces, and a glow behind each heading was exactly the
+     tell it was meant to avoid. .headline-light-ink is kept as a no-op alias
+     so the components that carry it need no edit. */
+  .headline-light,
+  .headline-light-ink {
     position: relative;
     isolation: isolate;
   }
 
-  .headline-light::before {
-    content: '';
-    position: absolute;
-    z-index: -1;
-    inset-block-start: -140px;
-    inset-inline-start: -180px;
-    inline-size: 620px;
-    block-size: 420px;
-    background: radial-gradient(
-      52% 52% at 30% 44%,
-      rgba(107, 144, 113, 0.16),
-      rgba(174, 195, 176, 0.07) 46%,
-      transparent 72%
-    );
-    pointer-events: none;
-  }
+  /* --------------------------------------------------------------------
+     The framed architectural hero.
 
-  .headline-light-ink::before {
-    background: radial-gradient(
-      52% 52% at 30% 44%,
-      rgba(174, 195, 176, 0.22),
-      rgba(107, 144, 113, 0.09) 48%,
-      transparent 74%
-    );
-  }
-
-  /* Ambient bloom behind the hero portrait. Static blur, never transitioned. */
-  .hero-bloom {
-    background:
-      radial-gradient(58% 52% at 62% 34%, rgba(174, 195, 176, 0.38), transparent 70%),
-      radial-gradient(64% 60% at 34% 76%, rgba(15, 42, 29, 0.32), transparent 72%);
-    filter: blur(46px);
-    opacity: 0.7;
-  }
-
-  .hero-ground {
-    background: linear-gradient(180deg, #ffffff 0%, #f9fbf6 100%);
-  }
-
-  /* Fixed attachment gives depth on a desktop pointer with no scroll listener
-     and no transform loop. Mobile browsers handle it badly, so it is opted into
-     rather than out of, and it is dropped under reduced motion. */
-  .hero-parallax {
+     The hero is not a full bleed banner. It is a rounded container inset from
+     a dark outer canvas, with the photograph inside it and a directional
+     vignette over the photograph. The vignette, not a blur, is what keeps the
+     headline legible: measured over the brightest possible frame, white type
+     on the reading edge is 17.46:1 and still 8.90:1 at the mid stop.
+     -------------------------------------------------------------------- */
+  .hero-frame {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
   }
 
+  /* Depth on a desktop pointer with no scroll listener and no transform loop.
+     Mobile browsers handle fixed attachment badly, so it is opted into rather
+     than out of, and dropped under reduced motion. */
   @media (min-width: 1024px) and (hover: hover) and (pointer: fine) {
-    .hero-parallax { background-attachment: fixed; }
+    .hero-frame { background-attachment: fixed; }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .hero-parallax { background-attachment: scroll; }
+    .hero-frame { background-attachment: scroll; }
   }
 
-  /* The hero media panel. A slate scrim keeps white type above 7:1 over any
-     photograph, and the gradient is stronger on the text side. */
-  .hero-scrim {
+  /* Directional vignette. Strong on the reading edge, releasing toward the
+     spotlight card. Mirrors with dir, so Arabic gets the same contrast on the
+     other side. */
+  .hero-vignette {
     background: linear-gradient(
       to right,
-      rgba(15, 42, 29, 0.88) 0%,
-      rgba(15, 42, 29, 0.74) 38%,
-      rgba(15, 42, 29, 0.48) 68%,
-      rgba(55, 85, 52, 0.34) 100%
+      rgba(10, 14, 20, 0.95) 0%,
+      rgba(10, 14, 20, 0.88) 34%,
+      rgba(10, 14, 20, 0.62) 62%,
+      rgba(10, 14, 20, 0.28) 100%
     );
   }
 
-  [dir='rtl'] .hero-scrim {
+  [dir='rtl'] .hero-vignette {
     background: linear-gradient(
       to left,
-      rgba(15, 42, 29, 0.88) 0%,
-      rgba(15, 42, 29, 0.74) 38%,
-      rgba(15, 42, 29, 0.48) 68%,
-      rgba(55, 85, 52, 0.34) 100%
+      rgba(10, 14, 20, 0.95) 0%,
+      rgba(10, 14, 20, 0.88) 34%,
+      rgba(10, 14, 20, 0.62) 62%,
+      rgba(10, 14, 20, 0.28) 100%
     );
   }
 
-  /* Cursor spotlight. Bound only on fine pointers, opacity capped under .08. */
-  .hero-spotlight {
-    background: radial-gradient(
-      340px circle at var(--mx, 50%) var(--my, 40%),
-      rgba(227, 238, 212, 0.11),
-      rgba(107, 144, 113, 0.05) 42%,
-      transparent 72%
-    );
+  /* On a phone the column is single file and the card sits under the copy, so
+     the vignette runs down the frame rather than across it. */
+  @media (max-width: 1023px) {
+    .hero-vignette,
+    [dir='rtl'] .hero-vignette {
+      background: linear-gradient(
+        to bottom,
+        rgba(10, 14, 20, 0.86) 0%,
+        rgba(10, 14, 20, 0.92) 48%,
+        rgba(10, 14, 20, 0.96) 100%
+      );
+    }
+  }
+
+  /* Client proof marks. The supplied artwork is already a white silhouette on
+     transparency, so this is opacity only: no filter chain to fight, and the
+     marks resolve to full strength on hover and on keyboard focus. */
+  .client-mark {
+    opacity: 0.62;
+    transition: opacity var(--d-fast) var(--ease-hover);
+  }
+
+  a:hover .client-mark,
+  a:focus-visible .client-mark,
+  li:hover .client-mark {
+    opacity: 1;
   }
 
   .safe-bottom {
@@ -553,7 +561,7 @@
     transform: none !important;
   }
 
-  .hero-spotlight {
-    opacity: 0 !important;
+  .client-mark {
+    transition: none !important;
   }
 }

@@ -26,14 +26,14 @@ export function PackageSelector() {
   const [selected, setSelected] = useState<string | null>(null);
 
   return (
-    <section id="packages" aria-labelledby="packages-heading" className="section-rhythm bg-ground-5">
+    <section id="packages" aria-labelledby="packages-heading" className="section-rhythm bg-canvas">
       <div className="container-page">
         <Reveal className="headline-light grid gap-8 lg:grid-cols-12 lg:items-end">
           <div className="lg:col-span-7">
             <p className="spec spec-cyan">{t.packages.spec}</p>
             <h2
               id="packages-heading"
-              className="mt-5 font-display text-[clamp(28px,3.6vw,44px)] font-bold leading-[1.04]"
+              className="mt-5 font-display text-[clamp(28px,3.6vw,44px)] leading-[1.04]"
             >
               {t.packages.heading}
             </h2>
@@ -64,11 +64,11 @@ export function PackageSelector() {
                 as="article"
                 key={tier.id}
                 index={index}
-                className={`group u-lift flex w-[82%] flex-none snap-start flex-col overflow-hidden rounded-2xl bg-white shadow-diffuse transition-shadow hover:shadow-diffuse-lg sm:w-auto ${
+                className={`group u-lift flex w-[82%] flex-none snap-start flex-col overflow-hidden rounded-2xl bg-white shadow-card transition-shadow hover:shadow-lifted sm:w-auto ${
                   tier.featured
-                    ? 'border border-teal ring-1 ring-inset ring-teal/20'
-                    : 'border border-cyan/40'
-                } ${isSelected ? 'ring-2 ring-teal' : ''}`}
+                    ? 'border border-emerald ring-1 ring-inset ring-emerald/20'
+                    : 'border border-hairline'
+                } ${isSelected ? 'ring-2 ring-emerald' : ''}`}
               >
                 <div className="relative aspect-[4/3] w-full overflow-hidden bg-mist">
                   <Image
@@ -92,7 +92,7 @@ export function PackageSelector() {
 
                 <span aria-hidden="true" className="hair-light-t mt-4 block" />
 
-                <h3 className="mt-4 font-display text-[19px] font-bold leading-snug">
+                <h3 className="h-ui mt-4 text-[18px] leading-snug">
                   {copy.name}
                 </h3>
 
@@ -125,7 +125,7 @@ export function PackageSelector() {
                     onClick={() => setSelected(tier.id)}
                     onFocus={() => setSelected(tier.id)}
                     aria-label={t.a11y.whatsappPackage}
-                    className="focus-ring-light u-press flex min-h-[48px] w-full items-center justify-center gap-2 rounded-full bg-deep px-4 text-center font-display text-[14.5px] font-semibold text-white shadow-deep hover:bg-ink hover:shadow-cyan tap"
+                    className="focus-ring-light u-press flex min-h-[48px] w-full items-center justify-center gap-2 rounded-full bg-emerald px-4 text-center text-[14.5px] font-semibold text-white hover:bg-emerald-deep tap"
                   >
                     <WhatsAppIcon size={16} />
                     {t.cta.inspection}

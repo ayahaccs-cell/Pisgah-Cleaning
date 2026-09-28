@@ -50,15 +50,20 @@ export function EstimateCard() {
   }, [t, category, scope, phone, locale]);
 
   return (
-    <div className="container-page relative z-[40] -mt-14 sm:-mt-16 lg:-mt-20">
+    /* The old build floated this card up over a full bleed hero. The hero is a
+       rounded frame now, and a white card straddling its clipped corner read
+       as a mistake, so the card opens the light canvas instead of overlapping
+       the dark one. */
+    <div className="bg-canvas pb-2 pt-12 sm:pt-14">
+      <div className="container-page">
       <section
         id="intake"
         role="region"
         aria-labelledby="intake-title"
-        className="rounded-[20px] border border-cyan/50 bg-white p-[clamp(20px,3vw,34px)] shadow-intake"
+        className="rounded-[20px] border border-hairline bg-white p-[clamp(20px,3vw,34px)] shadow-intake"
       >
         <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
-          <h2 id="intake-title" className="font-display text-[clamp(21px,2.4vw,28px)] font-bold text-ink">
+          <h2 id="intake-title" className="font-display text-[clamp(23px,2.6vw,30px)] leading-tight text-ink">
             {t.intake.title}
           </h2>
           <p className="spec max-w-[46ch]">{t.intake.note}</p>
@@ -125,7 +130,7 @@ export function EstimateCard() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label={t.a11y.whatsappEstimate}
-              className="focus-ring-light u-press tap flex min-h-[52px] w-full items-center justify-center whitespace-nowrap rounded-xl bg-deep px-7 font-display text-[15px] font-semibold text-white shadow-deep transition-colors duration-fast ease-feedback hover:bg-ink xl:w-auto"
+              className="focus-ring-light u-press tap flex min-h-[52px] w-full items-center justify-center whitespace-nowrap rounded-xl bg-emerald px-7 text-[15px] font-semibold text-white transition-colors duration-fast ease-feedback hover:bg-emerald-deep xl:w-auto"
             >
               {t.intake.submit}
             </a>
@@ -145,6 +150,7 @@ export function EstimateCard() {
           ))}
         </ul>
       </section>
+      </div>
     </div>
   );
 }

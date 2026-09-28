@@ -5,7 +5,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 /**
  * Video modal.
  *
- * Opens over a blurred dark backdrop, plays the supplied file with native
+ * Opens over a solid obsidian scrim, plays the supplied file with native
  * controls, and stops playback on every exit path: the close button, the
  * Escape key, and a tap on the backdrop.
  *
@@ -99,7 +99,7 @@ export function VideoModal({ open, onClose, src, poster, title, closeLabel }: Pr
       aria-modal="true"
       aria-label={title}
       onClick={stopAndClose}
-      className="fixed inset-0 z-[300] flex items-center justify-center bg-ink/90 p-4 backdrop-blur-md sm:p-6"
+      className="fixed inset-0 z-[300] flex items-center justify-center bg-obsidian/94 p-4 sm:p-6"
     >
       <div
         ref={frameRef}

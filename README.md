@@ -515,6 +515,142 @@ ratio at all; the ground is what makes it one.
 
 `themeColor` in `app/layout.tsx` is now `#0F2A1D`.
 
+## Architectural redesign (v8)
+
+A presentation layer redesign against the JPC reference. Routing, localisation,
+the WhatsApp survey engine, the video modal and every verified contact string
+are untouched; what changed is the surface.
+
+### What was preserved, deliberately
+
+`/` and `/ar` as two real server rendered routes. The dictionary architecture and
+the `typeof en` contract on `ar.ts`. `generateWhatsAppLink` and every reference
+token. The zero pricing rule. The contact block, the schedule and the JSON-LD
+built from it. The video modal and its focus trap. `MobilePinnedBar.tsx` is
+absent from the tree and is still listed in `scripts/prune-legacy.mjs`, so a
+stale checkout that reintroduces it self-heals before the build runs.
+
+### Palette
+
+| Token | Hex | Role |
+| --- | --- | --- |
+| `obsidian` | `#0A0E14` | outer canvas, framed hero, client register, emergency band, footer, drawer |
+| `carbon` | `#121820` | the two elevated dark surfaces: pill nav and spotlight card |
+| `canvas` | `#F8F9FA` | light section ground |
+| `white` | `#FFFFFF` | cards on the light ground |
+| `ink` | `#0F172A` | type on light surfaces |
+| `emerald` | `#0D7A5F` | primary fill, accent labels, markers, chevrons |
+| `emerald-deep` | `#0A5F4A` | the hover state |
+| `slate 400` | `#94A3B8` | metadata on dark surfaces |
+
+**No deviation was needed this time.** The previous three palettes all put a
+mid-tone on the primary button and none of them carried a label at 4.5:1. This
+accent does: white on `#0D7A5F` is 5.29:1, and the hover steps darker to
+7.64:1. The brand colour is on the button exactly as specified.
+
+Measured, against the ground each colour actually sits on:
+
+```
+white on emerald        5.29:1   primary button label       pass AA
+white on emerald-deep   7.64:1   hover
+emerald on white        5.29:1   accent labels on light     pass AA
+emerald on canvas       5.02:1                              pass AA
+emerald on emerald-soft 4.61:1   the open accordion card    pass AA
+ink on canvas          16.94:1                              pass AAA
+white on obsidian      19.34:1                              pass AAA
+slate 400 on obsidian   7.54:1   metadata on dark           pass AA
+slate 400 on carbon     6.96:1                              pass AA
+emerald on obsidian     3.65:1   NON TEXT ONLY on dark
+```
+
+That last line is the one constraint: the accent is a border, a stroke or a
+control boundary on dark surfaces, never a label. Focus rings stay surface
+aware for the same reason.
+
+### Typography
+
+Instrument Serif for editorial headlines, Plus Jakarta Sans for every interface
+string, Amiri and IBM Plex Sans Arabic for the same two roles under RTL. The
+mono face is retired; `.spec` metadata is now tracked uppercase Plus Jakarta
+Sans, and sequence numerals are set in the serif.
+
+Instrument Serif ships one weight. Every `font-bold` and `font-extrabold` was
+removed from display headings, because a browser asked for a bold it does not
+have will synthesise one, and a smeared serif is worse than no serif. Card
+titles and other interface headings moved to `.h-ui`, which is the sans at 600.
+
+### The framed hero
+
+The obsidian canvas runs edge to edge; the photograph sits inside a rounded
+container inset from it, with the pill navigation overlapping its top edge.
+Desktop is a 58 / 42 split. Legibility comes from a directional vignette, not
+a blur: white type measures 17.46:1 on the reading edge and 8.90:1 at the mid
+stop, against the brightest frame the photograph could present.
+
+Mobile is not that grid scaled down. The vignette runs top to bottom, the
+column is single file, and the three blocks are reordered so the spotlight card
+sits between the buttons and the logo grid, which is the order the brief
+specified for a phone but not for a desktop. One DOM tree, order utilities,
+no duplicated markup.
+
+### Glassmorphism, restricted
+
+Blur now exists in exactly two utilities, `.glass-pill` and `.glass-spotlight`,
+both declared in `tailwind.config.ts` and each named for the single element it
+dresses. Every other blur surface in the codebase was removed: the drawer is a
+solid obsidian panel, the video scrim is solid, the old `.glass-badge`,
+`.glass-panel`, `.glass-ghost` and `.glass-dark` utilities are gone, and the
+painted radial that sat behind every section headline is gone with them. Both
+remaining utilities ship an opaque fallback for engines without
+`backdrop-filter`.
+
+### Client proof
+
+Eleven accounts, supplied with their marks. Each mark was prepared as a white
+silhouette on transparency at a uniform 240 by 72 box, so the strip needs no
+per-logo sizing and no filter chain at render time: the component sets opacity
+and nothing else.
+
+Three needed more than a straight alpha whiten, and each was checked by eye
+rather than by rule. Epix is a light wordmark on a dark slab, so the pale
+pixels are kept and the plate dropped. Trax has a white X knocked out of a red
+box, so near-white is made transparent first and the X survives as a counter.
+Xtreme Bowling is multi-colour 3D lettering that flattened into an unreadable
+blob, so it is rendered from its dark outlines only.
+
+The hero strip carries six wordmarks. The register carries all eleven with a
+localised name and scope line, because six marks read as one row only when they
+share a horizontal axis, and the Waqf emblem and the mosque glyph do not.
+
+Names and scopes are localised in both dictionaries; only the id and the
+artwork live in `siteConfig`. These are third party trademarks displayed on the
+client's instruction, and written permission per account is the client's to
+hold.
+
+`scripts/validate-dictionary.mjs` was extended for this: the asset rule now
+accepts a subdirectory and also scans `siteConfig.ts`, so a typo in any of the
+eleven logo paths fails the build instead of shipping a silent 404. Proven with
+a regression probe; asset coverage went from 14 paths to 25.
+
+### Section rhythm
+
+Dark at the edges, light through the operational middle.
+
+| Section | Surface |
+| --- | --- |
+| Hero, framed | obsidian, with the pill and spotlight in carbon |
+| Estimate card | canvas, white card |
+| Trust bar | canvas |
+| Client register | obsidian |
+| Process, divisions, tiers | canvas, white cards, emerald accents |
+| Emergency | obsidian |
+| Leadership | canvas |
+| Footer | obsidian |
+
+The estimate card no longer floats up over the hero. It used to overlap a full
+bleed banner; against a rounded frame a white card straddling the clipped
+corner read as a mistake, so it opens the light canvas instead.
+
 ## Assets to replace
 
 Client photography supplied September 2026 is now in place.

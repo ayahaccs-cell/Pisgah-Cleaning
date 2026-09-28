@@ -40,11 +40,17 @@ export const en = {
   },
 
   hero: {
-    headline: 'Cleaning Made Simple',
+    /* Two lines, broken deliberately. The component renders headlineA above
+       headlineB so the break does not depend on the viewport width. */
+    headlineA: 'Commercial Cleaning & Facility Care',
+    headlineB: "for Bahrain's Landmark Properties.",
     narrative:
-      "Since 2008 we have held the floors of Bahrain's landmark malls, cinemas, schools, mosques, and villas that cannot afford a closed day. Directly employed, uniformed Pisgah W.L.L. crews with zero subcontractors.",
-    videoTitle: 'Sneak Peek',
-    videoSub: 'Inside a Pisgah Shift',
+      "Maintained by one accountable team. Directly employed, inducted Pisgah W.L.L. crews serving Bahrain's commercial facilities and private estates since 2008. No day-labour, no subcontractors.",
+    scrollHint: 'Or scroll to explore',
+    proofLabel: 'Retained on landmark contracts across Bahrain',
+    videoBadge: 'Supervised mobilisation',
+    videoTitle: 'Inside a Pisgah Shift',
+    videoSub: 'A supervised night shift, end to end',
     videoPending: 'Awaiting media.heroVideos[0].url',
     videoModalTitle: 'Inside a Pisgah Shift',
   },
@@ -93,6 +99,32 @@ export const en = {
     heading: '15+ landmark contracts across Bahrain.',
     ratingLabel: 'Accounts held under continuous contract',
     spec: 'ACTIVE ACCOUNTS / KINGDOM OF BAHRAIN',
+    names: {
+      waqf: 'Sunni Waqf Directorate',
+      silah: 'Silah Gulf',
+      talabat: 'Talabat',
+      cineco: 'Cineco Cinemas',
+      amakin: 'Amakin',
+      mosques: 'Mosques across Bahrain',
+      liwan: 'Liwan Cinema',
+      epix: 'Epix Cinema',
+      trax: 'Trax Karting',
+      fabyland: 'Fabyland',
+      xtreme: 'Xtreme Bowling',
+    },
+    scopes: {
+      waqf: 'Offices in Manama',
+      silah: 'NBB Tower and Batelco Tower',
+      talabat: '18 stores across Bahrain',
+      cineco: 'Juffair Oasis, Seef Mall, Wadi Al Sail',
+      amakin: 'Salmaniya Hospital parking',
+      mosques: '50+ mosques, daily cleaning',
+      liwan: 'Al Liwan Complex',
+      epix: 'Dana Mall',
+      trax: 'Indoor circuit facility',
+      fabyland: 'Dana Mall',
+      xtreme: 'Dana Mall',
+    },
   },
 
   journey: {

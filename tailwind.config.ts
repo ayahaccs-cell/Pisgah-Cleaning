@@ -5,45 +5,42 @@ import plugin from 'tailwindcss/plugin';
  * Pisgah design tokens.
  *
  * ---------------------------------------------------------------------------
- * Botanical green palette, approved September 2026. Five shades, applied as a
- * vertical flow: lightest at the top of the page, deepest at the bottom.
+ * Obsidian architectural system, approved September 2026. Dark sections frame
+ * the page at the top and bottom; the operational middle runs on a warm light
+ * canvas. The rhythm is deliberate: prestige at the edges, hygiene in the
+ * working sections.
  *
- *   G1  #E3EED4   sage-50    pale mint canvas. Section grounds, pill fills,
- *                            soft card backdrops, body copy on deep surfaces
- *   G2  #AEC3B0   sage-200   soft mineral sage. Card outlines, dividers,
- *                            inactive icon strokes, fills on deep surfaces
- *   G3  #6B9071   sage-400   the ticked primary anchor. Header tint, chevrons,
- *                            badge numerals, markers, rules, active states
- *   G4  #375534   sage-600   rich moss. Primary button fill, deep section
- *                            surfaces, accent labels on light ground
- *   G5  #0F2A1D   sage-800   deep forest. Footer, drawer, hero scrim, baseline
+ *   obsidian  #0A0E14   outer canvas, framed hero, client proof, footer, drawer
+ *   carbon    #121820   elevated dark surfaces: the pill nav and the spotlight
+ *   canvas    #F8F9FA   light section ground
+ *   white     #FFFFFF   cards on the light ground
+ *   ink       #0F172A   type on light surfaces
+ *   emerald   #0D7A5F   the accent. Primary fill, accent labels, markers
+ *   slate 400 #94A3B8   metadata on dark surfaces
  *
  * Contrast, measured rather than assumed (WCAG 2.1):
- *   white on G4        8.36:1   primary button label            pass AAA
- *   white on G5       15.34:1                                   pass AAA
- *   G1 on G4           6.95:1   body copy on deep surfaces      pass AA
- *   G1 on G5          12.74:1                                   pass AAA
- *   G5 on G2           8.20:1   the pale accent button on deep  pass AAA
- *   G4 on white        8.36:1   accent labels on light ground   pass AA
- *   G3 on white        3.59:1   NON TEXT AND LARGE TEXT ONLY
- *   G3 on G5           4.27:1   below AA for small text
- *   white on G3        3.59:1   never used
- *   G5 on G3           4.27:1   never used for a button label
+ *   white on emerald       5.29:1   primary button label      pass AA
+ *   emerald on white       5.29:1   accent labels on light    pass AA
+ *   emerald on canvas      5.02:1                             pass AA
+ *   white on emerald-deep  7.64:1   the hover state
+ *   ink on canvas         16.94:1                             pass AAA
+ *   white on obsidian     19.34:1                             pass AAA
+ *   white on carbon       17.84:1                             pass AAA
+ *   slate 400 on obsidian  7.54:1   metadata on dark          pass AA
+ *   slate 400 on carbon    6.96:1                             pass AA
+ *   emerald on obsidian    3.65:1   NON TEXT ONLY on dark. Borders, icon
+ *                                   strokes and focus rings, never a label.
  *
- * The deviation worth naming: G3 is the ticked brand anchor, and the brief put
- * it on the primary buttons. No label clears 4.5:1 on it. White measures
- * 3.59:1, and even G5, the darkest shade in the palette, reaches only 4.27:1,
- * which is a five percent shortfall rather than a rounding error. So the
- * primary fill steps one shade deeper to G4 and hovers deeper still to G5, and
- * G3 does everything else the brief asked of it: the translucent header tint,
- * chevrons, active badges, markers, rules, borders and the large display
- * numerals, all of which are either non-text or above the 24px large-text
- * threshold where the 3:1 rule applies. Change `deep` below to '#6B9071' if
- * you would rather have the ticked colour on the fill and accept 4.27:1.
+ * Unlike the three palettes before it, this accent needs no deviation: the
+ * supplied emerald carries a white label at 5.29:1, so the primary button is
+ * filled with the brand colour exactly as specified and hovers darker.
  *
- * Font families resolve through CSS variables that are redefined under
- * [dir="rtl"] in globals.css, so the Arabic stack swaps in automatically for
- * every utility without a single conditional class in a component.
+ * Typography. Instrument Serif ships a single 400 weight, so editorial
+ * headlines are set at normal weight with near-neutral tracking rather than
+ * bolded, which is what gives them the high-contrast editorial feel. Plus
+ * Jakarta Sans carries every interface string. Under RTL the display stack
+ * swaps to Amiri and the body stack to IBM Plex Sans Arabic, both in one place
+ * in globals.css, so no component carries a conditional font class.
  * ---------------------------------------------------------------------------
  */
 const config: Config = {
@@ -51,56 +48,44 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        /* The five palette shades, addressable by name. */
-        sage: {
-          50: '#E3EED4',
-          200: '#AEC3B0',
-          400: '#6B9071',
-          600: '#375534',
-          800: '#0F2A1D',
-        },
+        /* The dark architecture. */
+        obsidian: '#0A0E14',
+        carbon: '#121820',
 
-        /* The vertical ground ramp, white stepping toward G1. Each light
-           section sits one step deeper than the one above it, which produces
-           the gradual descent without a scroll listener or a page-height
-           gradient. */
-        ground: {
-          1: '#FFFFFF',
-          2: '#F9FBF6',
-          3: '#F3F8ED',
-          4: '#EEF4E4',
-          5: '#E8F1DC',
+        /* The light canvas and its cards. */
+        canvas: '#F8F9FA',
+
+        /* The accent ramp. */
+        emerald: {
+          DEFAULT: '#0D7A5F',
+          deep: '#0A5F4A',   // hover. 7.64:1 with white
+          soft: '#E6F2EE',   // tint for pills and markers on the light canvas
         },
 
         /* Semantic aliases. Components address these, so a palette revision
            happens here and nowhere else. */
-        ink: '#0F2A1D',        // G5, deepest surfaces, body type, button hover
-        deep: '#375534',       // G4, primary action fill, accent labels
-        blue: '#375534',       // G4, deep section surfaces. Kept as an alias so
-                               // the section components did not need renaming
-        cyan: '#AEC3B0',       // G2, fills and strokes on deep surfaces
-        teal: '#6B9071',       // G3, the ticked anchor. Rules, markers,
-                               // chevrons, active states, display numerals
-        graphite: '#3F5B41',
-        mist: '#D5E2D6',       // borders and image placeholders
-        paper: '#F9FBF6',      // ground 2, the page default
+        ink: '#0F172A',        // type on light surfaces
+        deep: '#0D7A5F',       // primary action fill
+        blue: '#0A5F4A',       // primary hover, darker not lighter
+        cyan: '#94A3B8',       // metadata and strokes on dark surfaces
+        teal: '#0D7A5F',       // rules, markers, accent hairlines
+        graphite: '#475569',
+        mist: '#E2E6EA',       // image placeholders
+        paper: '#F8F9FA',      // the light section ground
         whatsapp: '#25D366',   // brand mark, deliberately outside the palette
-        body: '#0F2A1D',       // 15.34:1 on white
-        muted: '#3F5B41',      // 7.54:1 on white, 6.48:1 on the deepest ground
-        faint: '#4F6E52',      // 5.70:1 on white, 4.90:1 on the deepest ground
-        'faint-soft': '#C3D3C4', // 5.35:1 on G4, 9.81:1 on G5. Deep only. G2
-                                 // itself is 4.47:1 on G4, just below AA, so
-                                 // the metadata tint is lifted toward G1
-        hairline: '#D3E0D4',
-        'hairline-soft': '#E7EEE7',
+        body: '#0F172A',       // 16.94:1 on the canvas
+        muted: '#475569',      // 7.19:1 on the canvas
+        faint: '#5A6B7B',      // 5.21:1 on the canvas, 5.49:1 on white
+        'faint-soft': '#94A3B8', // 7.54:1 on obsidian, 6.96:1 on carbon
+        hairline: '#E2E6EA',
+        'hairline-soft': '#EEF1F3',
       },
       fontFamily: {
         display: ['var(--font-display)'],
         sans: ['var(--font-body)'],
-        mono: ['var(--font-mono)'],
       },
       fontSize: {
-        eyebrow: ['0.6875rem', { lineHeight: '1.4', letterSpacing: '0.15em' }],
+        eyebrow: ['0.625rem', { lineHeight: '1.4', letterSpacing: '0.16em' }],
       },
       maxWidth: {
         container: '1200px',
@@ -108,27 +93,28 @@ const config: Config = {
       },
       borderRadius: {
         card: '16px',
-        frame: '22px',
+        frame: '28px',
+        'frame-lg': '32px',
       },
       boxShadow: {
-        nav: '0 10px 30px rgba(15,42,29,.10), 0 2px 6px rgba(15,42,29,.06)',
-        card: '0 1px 2px rgba(15,42,29,.05), 0 2px 8px rgba(15,42,29,.05)',
-        lifted: '0 14px 34px rgba(15,42,29,.12), 0 3px 8px rgba(15,42,29,.07)',
-        intake:
-          '0 30px 70px rgba(15,42,29,.13), 0 10px 24px rgba(15,42,29,.08), 0 1px 2px rgba(15,42,29,.05)',
-        badge: '0 12px 32px rgba(15,42,29,.15), 0 2px 6px rgba(15,42,29,.08)',
-        frame: '0 30px 70px rgba(15,42,29,.22), 0 6px 18px rgba(15,42,29,.10)',
-        deep: '0 8px 22px rgba(55,85,52,.30)',
-        cyan: '0 12px 28px rgba(107,144,113,.38)',
-        drawer: '0 0 50px rgba(15,42,29,.24)',
-        /* Multi-stop diffuse elevation. Three offsets at low alpha read as
-           depth; a single large blur reads as a default Tailwind shadow. */
+        /* Architectural elevation. Flat, tight, no coloured glows. */
+        card: '0 1px 2px rgba(10,14,20,.05), 0 2px 8px rgba(10,14,20,.05)',
+        lifted: '0 12px 28px rgba(10,14,20,.10), 0 2px 6px rgba(10,14,20,.06)',
+        intake: '0 24px 56px rgba(10,14,20,.10), 0 4px 12px rgba(10,14,20,.06)',
+        frame: '0 40px 90px rgba(10,14,20,.45)',
+        pill: '0 8px 28px rgba(10,14,20,.38)',
+        spotlight: '0 24px 60px rgba(10,14,20,.55)',
+        drawer: '0 0 50px rgba(10,14,20,.50)',
         diffuse:
-          '0 1px 1px rgba(15,42,29,.04), 0 4px 8px rgba(15,42,29,.04), 0 12px 24px rgba(15,42,29,.05)',
+          '0 1px 1px rgba(10,14,20,.04), 0 4px 8px rgba(10,14,20,.04), 0 12px 24px rgba(10,14,20,.05)',
         'diffuse-lg':
-          '0 1px 1px rgba(15,42,29,.05), 0 6px 14px rgba(15,42,29,.06), 0 18px 36px rgba(15,42,29,.07), 0 40px 72px rgba(15,42,29,.06)',
-        'diffuse-ink':
-          '0 1px 1px rgba(0,0,0,.20), 0 8px 20px rgba(0,0,0,.22), 0 28px 56px rgba(0,0,0,.20)',
+          '0 1px 1px rgba(10,14,20,.05), 0 6px 14px rgba(10,14,20,.06), 0 18px 36px rgba(10,14,20,.07)',
+        'diffuse-ink': '0 20px 48px rgba(0,0,0,.45)',
+        /* Kept as aliases so no component breaks; both are flat now. */
+        nav: '0 8px 28px rgba(10,14,20,.38)',
+        badge: '0 12px 28px rgba(10,14,20,.14)',
+        deep: '0 6px 18px rgba(13,122,95,.24)',
+        cyan: '0 10px 24px rgba(13,122,95,.30)',
       },
       spacing: {
         rhythm: 'clamp(80px, 9vw, 120px)',
@@ -151,48 +137,45 @@ const config: Config = {
       },
       keyframes: {
         pulseRing: {
-          '0%': { boxShadow: '0 0 0 0 rgba(107,144,113,.60)' },
-          '70%': { boxShadow: '0 0 0 7px rgba(107,144,113,0)' },
-          '100%': { boxShadow: '0 0 0 0 rgba(107,144,113,0)' },
+          '0%': { boxShadow: '0 0 0 0 rgba(13,122,95,.55)' },
+          '70%': { boxShadow: '0 0 0 7px rgba(13,122,95,0)' },
+          '100%': { boxShadow: '0 0 0 0 rgba(13,122,95,0)' },
         },
       },
       animation: {
         'pulse-ring': 'pulseRing 2.4s cubic-bezier(0.16, 1, 0.3, 1) infinite',
       },
       ringColor: {
-        focus: '#375534',       // 8.36:1 on white
-        'focus-ink': '#AEC3B0', // 8.20:1 on G5, 4.47:1 on G4
+        focus: '#0D7A5F',       // 5.29:1 on white
+        'focus-ink': '#94A3B8', // 7.54:1 on obsidian
       },
     },
   },
   plugins: [
     plugin(({ addUtilities, addComponents }) => {
       addUtilities({
-        /* Glassmorphism, always paired with a solid fallback colour so text
-           stays legible where backdrop-filter is unsupported. */
-        '.glass-badge': {
-          backgroundColor: 'rgba(255,255,255,.68)',
-          border: '1px solid rgba(255,255,255,.88)',
-          backdropFilter: 'blur(14px) saturate(1.3)',
-          WebkitBackdropFilter: 'blur(14px) saturate(1.3)',
+        /* ------------------------------------------------------------------
+           Glassmorphism is restricted by design rule to exactly two places:
+           the floating pill navigation and the hero spotlight card. These two
+           utilities are the only blur surfaces in the system, and they are
+           named for the single element each one dresses. Nothing else in the
+           codebase may use backdrop-filter.
+           ------------------------------------------------------------------ */
+        '.glass-pill': {
+          backgroundColor: 'rgba(18,24,32,.92)',
+          backdropFilter: 'blur(12px) saturate(1.2)',
+          WebkitBackdropFilter: 'blur(12px) saturate(1.2)',
+          '@supports (backdrop-filter: blur(1px))': {
+            backgroundColor: 'rgba(18,24,32,.82)',
+          },
         },
-        '.glass-panel': {
-          backgroundColor: 'rgba(255,255,255,.86)',
-          border: '1px solid rgba(255,255,255,.95)',
-          backdropFilter: 'blur(18px) saturate(1.35)',
-          WebkitBackdropFilter: 'blur(18px) saturate(1.35)',
-        },
-        '.glass-ghost': {
-          backgroundColor: 'rgba(255,255,255,.62)',
-          border: '1px solid rgba(255,255,255,.9)',
-          backdropFilter: 'blur(12px) saturate(1.25)',
-          WebkitBackdropFilter: 'blur(12px) saturate(1.25)',
-        },
-        '.glass-dark': {
-          backgroundColor: 'rgba(15,42,29,.58)',
-          border: '1px solid rgba(227,238,212,.22)',
-          backdropFilter: 'blur(12px)',
-          WebkitBackdropFilter: 'blur(12px)',
+        '.glass-spotlight': {
+          backgroundColor: 'rgba(18,24,32,.95)',
+          backdropFilter: 'blur(14px) saturate(1.15)',
+          WebkitBackdropFilter: 'blur(14px) saturate(1.15)',
+          '@supports (backdrop-filter: blur(1px))': {
+            backgroundColor: 'rgba(18,24,32,.90)',
+          },
         },
         /* Composite only. Never animate layout properties. */
         '.transform-gpu': { transform: 'translateZ(0)' },
@@ -200,15 +183,12 @@ const config: Config = {
           touchAction: 'manipulation',
           WebkitTapHighlightColor: 'transparent',
         },
-        /* Latin tracking utilities that are neutralised under RTL by globals.css. */
-        '.track-label': { letterSpacing: '0.13em' },
-        '.track-eyebrow': { letterSpacing: '0.15em' },
+        /* Latin tracking utilities that are neutralised under RTL. */
+        '.track-label': { letterSpacing: '0.14em' },
+        '.track-eyebrow': { letterSpacing: '0.16em' },
       });
 
       addComponents({
-        /* One container for every section, so headers, card edges and text
-           columns land on the same grid. max-w-7xl with the 4 / 6 / 8 padding
-           scale. */
         '.container-page': {
           width: '100%',
           maxWidth: '80rem',

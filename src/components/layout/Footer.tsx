@@ -46,7 +46,7 @@ export function Footer() {
       id="contact"
       role="contentinfo"
       aria-label={t.a11y.footerLandmark}
-      className="bg-ink text-faint-soft"
+      className="bg-obsidian text-faint-soft"
     >
 
       <div className="container-page grid gap-8 py-10 md:grid-cols-2 lg:grid-cols-4 lg:py-14">
@@ -60,7 +60,7 @@ export function Footer() {
             sizes="180px"
             className="h-auto w-[180px]"
           />
-          <p className="mt-5 max-w-[34ch] font-display text-xl font-medium text-white">
+          <p className="mt-5 max-w-[34ch] font-display text-[22px] leading-snug text-white">
             {t.footer.promise}
           </p>
           <Button
@@ -77,7 +77,7 @@ export function Footer() {
 
         {/* Services */}
         <nav aria-label={t.footer.servicesTitle}>
-          <h2 className="font-mono text-[11px] uppercase track-label text-cyan">
+          <h2 className="spec spec-on-ink">
             {t.footer.servicesTitle}
           </h2>
           <ul className="mt-4 space-y-2.5">
@@ -96,7 +96,7 @@ export function Footer() {
 
         {/* Company */}
         <nav aria-label={t.footer.companyTitle}>
-          <h2 className="font-mono text-[11px] uppercase track-label text-cyan">
+          <h2 className="spec spec-on-ink">
             {t.footer.companyTitle}
           </h2>
           <ul className="mt-4 space-y-2.5">
@@ -115,12 +115,12 @@ export function Footer() {
 
         {/* Contact */}
         <div>
-          <h2 className="font-mono text-[11px] uppercase track-label text-cyan">
+          <h2 className="spec spec-on-ink">
             {t.footer.contactTitle}
           </h2>
           <ul className="mt-4 space-y-3.5 text-[15px]">
             <li className="flex items-start gap-2.5">
-              <PhoneIcon size={16} className="mt-1 flex-none text-cyan" />
+              <PhoneIcon size={16} className="mt-1 flex-none text-emerald" />
               <span className="flex flex-col">
                 <a
                   href={callPrimaryHref()}
@@ -141,7 +141,7 @@ export function Footer() {
               </span>
             </li>
             <li className="flex items-start gap-2.5">
-              <MailIcon size={16} className="mt-1 flex-none text-cyan" />
+              <MailIcon size={16} className="mt-1 flex-none text-emerald" />
               <a
                 href={mailHref()}
                 aria-label={t.a11y.emailLabel}
@@ -151,14 +151,14 @@ export function Footer() {
               </a>
             </li>
             <li className="flex items-start gap-2.5">
-              <PinIcon size={16} className="mt-1 flex-none text-cyan" />
+              <PinIcon size={16} className="mt-1 flex-none text-emerald" />
               <address className="not-italic leading-relaxed">{formatAddress()}</address>
             </li>
             <li className="flex items-start gap-2.5">
-              <ClockIcon size={16} className="mt-1 flex-none text-cyan" />
+              <ClockIcon size={16} className="mt-1 flex-none text-emerald" />
               <span className="flex flex-col">
                 <span>{siteConfig.contact.hours.office}</span>
-                <span className="text-cyan">{siteConfig.contact.hours.emergency}</span>
+                <span className="text-white">{siteConfig.contact.hours.emergency}</span>
               </span>
             </li>
           </ul>
@@ -168,7 +168,7 @@ export function Footer() {
       {/* Credentials */}
       <div className="border-t border-white/10">
         <div className="container-page flex flex-wrap items-center justify-between gap-x-6 gap-y-2 py-5">
-          <p className="font-mono text-[11.5px]">
+          <p className="text-[12px]">
             {`© ${year} ${siteConfig.company.legalName}`}
             {siteConfig.company.crNumber
               ? ` · ${t.footer.crLabel} ${siteConfig.company.crNumber}`

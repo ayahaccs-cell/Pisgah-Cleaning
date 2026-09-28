@@ -14,7 +14,7 @@ type Variant = 'primary' | 'ghost' | 'glass' | 'whatsapp' | 'teal' | 'outline' |
 type Size = 'md' | 'lg' | 'block';
 
 const BASE =
-  'u-press tap inline-flex items-center justify-center gap-2.5 rounded-full font-display font-semibold ' +
+  'u-press tap inline-flex items-center justify-center gap-2.5 rounded-full font-sans font-semibold ' +
   'border border-transparent text-center no-underline min-h-[48px] transform-gpu';
 
 /* Focus ring colour follows the surface the button sits on, because no single
@@ -30,20 +30,22 @@ const FOCUS: Record<Variant, string> = {
 };
 
 const VARIANTS: Record<Variant, string> = {
-  /* G4 fill, hovering to G5. White on G4 is 8.36:1, on G5 it is 15.34:1, so
-     the button gets more legible under the pointer rather than less. */
-  primary: 'bg-deep text-white shadow-deep hover:bg-ink hover:shadow-cyan',
-  ghost: 'bg-transparent text-body border-hairline hover:border-teal hover:text-deep',
-  glass: 'glass-ghost text-ink hover:bg-white/80',
+  /* The supplied emerald, used exactly as specified. White on it is 5.29:1,
+     and the hover steps darker to 7.64:1, so the button gets more legible
+     under the pointer rather than less. */
+  primary: 'bg-emerald text-white hover:bg-emerald-deep',
+  ghost: 'bg-transparent text-body border-hairline hover:border-emerald hover:text-emerald',
+  /* No blur. Glassmorphism is reserved for the pill nav and the spotlight
+     card, so the light variant is a plain white surface. */
+  glass: 'bg-white text-ink border-hairline hover:bg-canvas',
   whatsapp: 'bg-whatsapp text-[#06301A] shadow-[0_8px_20px_rgba(37,211,102,.28)] hover:bg-[#22C55E]',
-  /* The pale G2 fill, used on deep surfaces. It carries G5 type at 8.20:1, and
-     the fill itself reads 8.20:1 against G5 and 4.47:1 against G4, so it is
-     visible as a shape on either deep ground. The ticked G3 is not used as a
-     button fill: no label clears 4.5:1 on it. */
-  teal: 'bg-cyan text-ink hover:bg-sage-50',
+  /* The emphasis fill on a dark surface. White on emerald is 5.29:1, and the
+     fill itself is 3.65:1 against obsidian, which clears the 3:1 threshold for
+     a control boundary. */
+  teal: 'bg-emerald text-white hover:bg-emerald-deep',
   outline: 'bg-transparent text-white border-white/70 hover:border-white hover:bg-white/10',
-  /* On the glass header. White fill, G4 label, 8.36:1. */
-  light: 'bg-white text-deep hover:bg-sage-50',
+  /* A white pill on a dark surface. Emerald label at 5.29:1. */
+  light: 'bg-white text-emerald hover:bg-canvas',
 };
 
 const SIZES: Record<Size, string> = {

@@ -34,9 +34,9 @@ export function TrustBar() {
   const { t } = useLocale();
 
   return (
-    <section aria-label={t.trust.ratingTitle} className="bg-paper pb-10 pt-8 sm:pb-14 sm:pt-10">
+    <section aria-label={t.trust.ratingTitle} className="bg-canvas pb-10 pt-10 sm:pb-14 sm:pt-14">
       <div className="container-page">
-        <div className="grid items-center gap-7 rounded-2xl border border-hairline-soft bg-white px-5 py-6 shadow-diffuse sm:px-7 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1.1fr)_auto_minmax(0,0.9fr)] lg:gap-10">
+        <div className="grid items-center gap-7 rounded-2xl border border-hairline bg-white px-5 py-6 shadow-card sm:px-7 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1.1fr)_auto_minmax(0,0.9fr)] lg:gap-10">
           {/* Rating */}
           <div>
             <div className="flex items-center gap-1" aria-hidden="true">
@@ -49,7 +49,7 @@ export function TrustBar() {
                 <StarIcon key={index} size={15} className="text-[#F59E0B]" />
               ))}
             </div>
-            <p className="mt-2.5 max-w-[28ch] font-display text-[15.5px] font-semibold leading-snug text-ink">
+            <p className="h-ui mt-2.5 max-w-[28ch] text-[15.5px] leading-snug text-ink">
               {t.trust.ratingTitle}
             </p>
             <p className="spec mt-1.5">{t.trust.ratingSub}</p>

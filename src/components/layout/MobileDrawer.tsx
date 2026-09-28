@@ -11,7 +11,7 @@ import { ClockIcon, PhoneIcon, WhatsAppIcon } from '@/components/ui/Icons';
 import { NAV_LINKS } from './Navbar';
 
 /**
- * Slide-out menu. Frosted deep forest glass.
+ * Slide-out menu. A solid obsidian panel.
  *
  * Enters from the inline end, which is the right in LTR and the left in RTL.
  * The panel is positioned with inset-inline-end and translated on a sign that
@@ -19,25 +19,17 @@ import { NAV_LINKS } from './Navbar';
  * leading edge is border-s, not border-l, so the hairline lands on the left in
  * English and on the right in Arabic with no override.
  *
- * Surface: G5 at 85 percent with backdrop-blur-xl, over a G5 scrim at 60
- * percent that carries its own light blur. A more opaque G5 sits underneath as
- * the fallback where backdrop-filter is unsupported, so the panel is never
- * see-through on an older engine.
+ * Surface: solid obsidian. The blur is gone. Glassmorphism in this system is
+ * restricted by design rule to the pill navigation and the hero spotlight
+ * card, and a translucent drawer was the third place it had crept into.
  *
- * Contrast, measured against the worst case, which is the drawer opened over a
- * white section:
+ * A solid panel is also the honest choice here: it needs no composite
+ * arithmetic to prove its contrast, because nothing shows through it. White
+ * on obsidian is 19.34:1, slate 400 is 7.54:1, and the emerald chip is 3.65:1
+ * against the panel, which clears the 3:1 threshold for a control.
  *
- *   composite panel surface   #1D372B
- *   white                     12.86:1
- *   G1 #E3EED4                10.68:1
- *   G1 at 80 percent           7.41:1
- *   G2 fill vs the panel       6.88:1
- *   G3 accent vs the panel     3.58:1   passes SC 1.4.11 for a control, and
- *                                       is therefore used on strokes and
- *                                       indicators rather than on type
- *
- * Every ring inside the panel is focus-ring-ink, because the G4 ring that
- * serves light grounds measures 1.83:1 against G5 and would vanish here.
+ * Every ring inside the panel is focus-ring-ink, because the emerald ring that
+ * serves light grounds is only 3.65:1 against obsidian.
  *
  * Nothing here is shared with the desktop header except NAV_LINKS and the
  * LocaleSwitcher 'panel' tone, and that tone is used in this file and nowhere
@@ -99,7 +91,7 @@ export function MobileDrawer({ open, onClose }: Props) {
       <div
         onClick={onClose}
         aria-hidden="true"
-        className={`fixed inset-0 z-[190] bg-ink/60 backdrop-blur-sm u-surface-out ${
+        className={`fixed inset-0 z-[190] bg-obsidian/70 u-surface-out ${
           open ? 'visible opacity-100 u-surface-in' : 'invisible opacity-0'
         }`}
         style={{ transitionProperty: 'opacity, visibility' }}
@@ -112,7 +104,7 @@ export function MobileDrawer({ open, onClose }: Props) {
         aria-modal="true"
         aria-label={t.nav.mobile}
         aria-hidden={!open}
-        className={`fixed inset-y-0 end-0 z-[200] flex w-[min(88%,360px)] flex-col overflow-y-auto border-s border-sage-200/15 bg-ink/95 p-[18px] text-white shadow-drawer backdrop-blur-xl u-surface-out transform-gpu supports-[backdrop-filter]:bg-ink/85 ${
+        className={`fixed inset-y-0 end-0 z-[200] flex w-[min(88%,360px)] flex-col overflow-y-auto border-s border-white/10 bg-obsidian p-[18px] text-white shadow-drawer u-surface-out transform-gpu ${
           open ? 'u-surface-in' : ''
         }`}
         style={{ transform: open ? 'translateX(0)' : hidden }}
@@ -133,7 +125,7 @@ export function MobileDrawer({ open, onClose }: Props) {
             type="button"
             onClick={onClose}
             aria-label={t.a11y.closeMenuLabel}
-            className="focus-ring-ink u-press tap flex h-11 w-11 flex-none items-center justify-center rounded-full border border-sage-200/20 bg-white/10 text-lg leading-none text-white transition-colors duration-fast ease-feedback hover:bg-white/20"
+            className="focus-ring-ink u-press tap flex h-11 w-11 flex-none items-center justify-center rounded-full border border-white/15 bg-white/10 text-lg leading-none text-white transition-colors duration-fast ease-feedback hover:bg-white/20"
           >
             &#10005;
           </button>
@@ -154,9 +146,8 @@ export function MobileDrawer({ open, onClose }: Props) {
             {t.cta.whatsapp}
           </Button>
 
-          {/* The pale G2 fill carrying G5 type at 8.20:1, exactly as on the
-              emergency section button. The ticked G3 is not used as a fill
-              anywhere a label sits on it. */}
+          {/* The emerald fill carrying a white label at 5.29:1, the same
+              pairing as the emergency section button. */}
           <Button
             href={callPrimaryHref()}
             variant="teal"
@@ -186,21 +177,21 @@ export function MobileDrawer({ open, onClose }: Props) {
           </Button>
         </div>
 
-        <p className="mt-4 inline-flex items-center gap-2 text-xs leading-tight text-sage-50/80">
-          <ClockIcon size={14} className="flex-none text-teal" />
+        <p className="mt-4 inline-flex items-center gap-2 text-xs leading-tight text-faint-soft">
+          <ClockIcon size={14} className="flex-none text-emerald" />
           {siteConfig.contact.hours.office}
         </p>
 
         <nav
           aria-label={t.nav.mobile}
-          className="mt-5 flex flex-col border-t border-sage-200/15 pt-1"
+          className="mt-5 flex flex-col border-t border-white/10 pt-1"
         >
           {NAV_LINKS.map((link) => (
             <a
               key={link.key}
               href={link.href}
               onClick={onClose}
-              className="focus-ring-ink flex min-h-[52px] items-center rounded border-b border-sage-200/10 py-3 font-display text-base font-medium text-white transition-colors duration-fast ease-feedback hover:text-sage-50"
+              className="focus-ring-ink flex min-h-[52px] items-center rounded border-b border-white/10 py-3 text-base font-medium text-white transition-colors duration-fast ease-feedback hover:text-emerald"
             >
               {t.nav[link.key]}
             </a>

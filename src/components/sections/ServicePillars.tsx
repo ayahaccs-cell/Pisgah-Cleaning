@@ -43,13 +43,13 @@ export function ServicePillars() {
   const [openId, setOpenId] = useState<DivisionId | null>('commercial');
 
   return (
-    <section id="services" aria-labelledby="services-heading" className="section-rhythm bg-ground-4">
+    <section id="services" aria-labelledby="services-heading" className="section-rhythm bg-canvas">
       <div className="container-page">
         <Reveal className="headline-light max-w-[62ch]">
           <p className="spec spec-cyan">{t.pillars.spec}</p>
           <h2
             id="services-heading"
-            className="mt-5 font-display text-[clamp(28px,3.6vw,44px)] font-bold leading-[1.04]"
+            className="mt-5 font-display text-[clamp(28px,3.6vw,44px)] leading-[1.04]"
           >
             {t.pillars.heading}
           </h2>
@@ -76,8 +76,8 @@ export function ServicePillars() {
                 index={index}
                 className={`scroll-mt-28 overflow-hidden rounded-2xl border transition-[background-color,border-color,box-shadow] duration-standard ease-entrance ${
                   isOpen
-                    ? 'border-teal/55 bg-sage-50/60 shadow-diffuse-lg'
-                    : 'border-hairline bg-white shadow-diffuse hover:border-teal/45 hover:bg-sage-50/30'
+                    ? 'border-emerald/45 bg-emerald-soft shadow-lifted'
+                    : 'border-hairline bg-white shadow-card hover:border-emerald/35'
                 }`}
               >
                 <h3>
@@ -104,7 +104,7 @@ export function ServicePillars() {
 
                     <span className="flex min-w-0 flex-1 flex-col">
                       <span className="spec spec-cyan">{copy.spec}</span>
-                      <span className="mt-1.5 font-display text-[18px] font-bold leading-snug text-ink sm:text-[21px]">
+                      <span className="h-ui mt-1.5 text-[18px] leading-snug text-ink sm:text-[21px]">
                         {copy.title}
                       </span>
                       {/* One summary only, in the header. It stays mounted and
@@ -125,8 +125,8 @@ export function ServicePillars() {
                       aria-hidden="true"
                       className={`grid h-9 w-9 flex-none place-items-center rounded-full border transition-transform duration-standard ease-entrance ${
                         isOpen
-                          ? 'rotate-180 border-teal/50 bg-teal/[0.14] text-teal'
-                          : 'border-hairline bg-white text-deep'
+                          ? 'rotate-180 border-emerald/45 bg-white text-emerald'
+                          : 'border-hairline bg-white text-emerald'
                       }`}
                     >
                       <ChevronDown size={17} />
@@ -170,7 +170,7 @@ export function ServicePillars() {
                         rel="noopener noreferrer"
                         tabIndex={isOpen ? undefined : -1}
                         aria-label={t.a11y.whatsappDivision}
-                        className="focus-ring-light u-glide-host mt-6 inline-flex min-h-[48px] items-center gap-2 rounded-full font-display text-[14.5px] font-semibold text-deep transition-colors duration-fast ease-feedback hover:text-ink"
+                        className="focus-ring-light u-glide-host mt-6 inline-flex min-h-[48px] items-center gap-2 rounded-full text-[14.5px] font-semibold text-emerald transition-colors duration-fast ease-feedback hover:text-emerald-deep"
                       >
                         {t.cta.scopeRequest}
                         <ChevronRight size={14} className="u-glide" />

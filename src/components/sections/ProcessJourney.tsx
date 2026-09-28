@@ -48,7 +48,7 @@ export function ProcessJourney() {
   const ctaHref = generateWhatsAppLink('journey', {}, { locale });
 
   return (
-    <section id="process" aria-labelledby="process-heading" className="section-rhythm bg-ground-3">
+    <section id="process" aria-labelledby="process-heading" className="section-rhythm bg-canvas">
       <div className="container-page grid gap-8 lg:grid-cols-12 lg:gap-12">
         {/* Heading rail */}
         <Reveal className="headline-light lg:col-span-4">
@@ -56,7 +56,7 @@ export function ProcessJourney() {
             <p className="spec spec-cyan">{t.journey.spec}</p>
             <h2
               id="process-heading"
-              className="mt-5 font-display text-[clamp(28px,3.6vw,44px)] font-bold leading-[1.04]"
+              className="mt-5 font-display text-[clamp(28px,3.6vw,44px)] leading-[1.04]"
             >
               {t.journey.heading}
             </h2>
@@ -100,7 +100,7 @@ export function ProcessJourney() {
                     <span className="spec spec-cyan">{copy.spec}</span>
                   </div>
 
-                  <h3 className={`mt-4 max-w-[24ch] font-display font-bold ${step.title}`}>
+                  <h3 className={`h-ui mt-4 max-w-[24ch] ${step.title}`}>
                     {copy.title}
                   </h3>
 
@@ -109,7 +109,7 @@ export function ProcessJourney() {
                   </p>
 
                   <div
-                    className={`mt-5 overflow-hidden rounded-2xl border border-cyan/40 bg-mist shadow-diffuse ${step.frame}`}
+                    className={`mt-5 overflow-hidden rounded-2xl border border-hairline bg-mist shadow-card ${step.frame}`}
                   >
                     <div className="relative h-full w-full">
                       <Image
