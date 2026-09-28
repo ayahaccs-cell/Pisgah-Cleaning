@@ -25,9 +25,13 @@ import { ParallaxBackdrop } from '@/components/ui/ParallaxBackdrop';
  * columns on a phone and tucks under the buttons, inside the copy column, from
  * lg up, where the card spans both rows and centres against them.
  *
- * The composition is centred in the frame below the pill, not dropped to its
- * floor: the content wrapper is a flex row with a minimum height and
- * items-center, and the top padding is what carries the pill.
+ * From lg the frame is a full height canvas, not whatever the content adds up
+ * to: clamp(640px, 100svh - 5rem, 860px). Shrinking the headline in v14 let the
+ * frame collapse upward and leave dead space under it; the minimum height is
+ * what stops that. The grid inside fills the frame, with two rows: the first
+ * takes all the spare height and centres the copy and the card in it, below the
+ * pill, and the second is the client row, pinned to the bottom edge. Below lg
+ * none of this applies and the frame is as tall as its content, as before.
  *
  * The backdrop moves slower than the page. See ParallaxBackdrop for why that
  * is a scroll listener and not background-attachment: fixed, and for why the
@@ -105,7 +109,7 @@ export function HeroSection() {
              the overlay over it, then the content. The frame itself carries an
              obsidian fill so there is no flash of empty frame before the
              photograph decodes. ---- */}
-        <div className="relative isolate mx-auto w-full max-w-7xl overflow-hidden rounded-[24px] bg-obsidian shadow-frame lg:rounded-[32px]">
+        <div className="relative isolate mx-auto w-full max-w-7xl overflow-hidden rounded-[24px] bg-obsidian shadow-frame lg:flex lg:min-h-[clamp(640px,calc(100svh-5rem),860px)] lg:rounded-[32px]">
           {/* Object position steers which slice of the photograph survives the
               crop. On a phone the frame is narrow and tall, so only about a
               quarter of the photograph's width shows; 42 percent puts the
@@ -126,10 +130,10 @@ export function HeroSection() {
             className="absolute inset-0 bg-black/60 lg:bg-transparent lg:bg-gradient-to-r lg:from-black/85 lg:via-black/55 lg:to-transparent lg:rtl:bg-gradient-to-l"
           />
 
-          <div className="relative flex px-4 pb-8 pt-[92px] sm:px-8 sm:pb-12 sm:pt-[112px] lg:min-h-[640px] lg:items-center lg:px-12 lg:pb-14 lg:pt-[120px]">
-            <div className="grid w-full grid-cols-[minmax(0,3fr)_minmax(0,2fr)] items-center gap-x-4 gap-y-7 sm:gap-x-8 lg:grid-cols-[minmax(0,60fr)_minmax(0,40fr)] lg:gap-x-12 lg:gap-y-7">
+          <div className="relative flex px-4 pb-8 pt-[92px] sm:px-8 sm:pb-12 sm:pt-[112px] lg:min-h-[640px] lg:flex-1 lg:items-stretch lg:px-12 lg:pb-6 lg:pt-[120px]">
+            <div className="grid w-full grid-cols-[minmax(0,3fr)_minmax(0,2fr)] items-center gap-x-4 gap-y-7 sm:gap-x-8 lg:grid-cols-[minmax(0,60fr)_minmax(0,40fr)] lg:grid-rows-[1fr_auto] lg:gap-x-12 lg:gap-y-7">
               {/* ---- 1. Headline, subhead, actions ---- */}
-              <div className="min-w-0 lg:col-start-1 lg:row-start-1 lg:self-end">
+              <div className="min-w-0 lg:col-start-1 lg:row-start-1 lg:self-center">
                 <h1 className="max-w-[480px] text-start text-lg font-bold leading-tight tracking-tight text-white sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl">
                   {t.hero.headline}
                 </h1>
@@ -172,7 +176,7 @@ export function HeroSection() {
                       Portrait 4:5. A phone gets 150px, a small tablet 165px, a
                       desktop 240px and a wide desktop 260px, pushed to the
                       inline end of its column. It is never full width. ---- */}
-              <div className="flex min-w-0 justify-center lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:justify-end lg:self-center">
+              <div className="flex min-w-0 justify-center lg:col-start-2 lg:row-start-1 lg:justify-end lg:self-center">
                 <button
                   type="button"
                   onClick={onVideo}
@@ -205,7 +209,7 @@ export function HeroSection() {
                       carries no url, so an unconfigured card still says
                       something. Tracking is zeroed under RTL by the global
                       rule, so the Arabic label keeps its joins. */}
-                  <span className="block py-1 pt-1.5 text-center text-[10px] font-semibold uppercase tracking-widest text-white/90">
+                  <span className="block py-1 pt-1.5 text-center text-[10px] font-semibold uppercase tracking-widest text-white/90 lg:text-xs lg:font-medium lg:normal-case lg:tracking-wide">
                     {videoNotice ? t.hero.videoPending : t.hero.videoTitle}
                   </span>
                 </button>
@@ -215,7 +219,7 @@ export function HeroSection() {
 
                       Second grid row. Spans both columns on a phone; from lg
                       it sits in the copy column directly under the buttons. ---- */}
-              <div className="col-span-2 min-w-0 border-t border-white/10 pt-5 lg:col-span-1 lg:col-start-1 lg:row-start-2 lg:self-start">
+              <div className="col-span-2 min-w-0 border-t border-white/10 pt-5 lg:col-span-1 lg:col-start-1 lg:row-start-2 lg:self-end lg:pb-4 lg:pt-8">
                 <p className="spec text-slate-300">{t.hero.proofLabel}</p>
                 <ul className="mt-4 grid grid-cols-3 items-center gap-x-4 gap-y-4 sm:grid-cols-6 lg:flex lg:flex-wrap lg:gap-x-4 lg:gap-y-4 xl:gap-x-6">
                   {proofClients.map((client) => (

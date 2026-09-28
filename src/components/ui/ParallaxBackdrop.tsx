@@ -49,6 +49,19 @@ type Props = {
    * of the frame. 0.18 reads as depth without the image visibly sliding.
    */
   speed?: number;
+  /**
+   * From lg up, how far below the frame's top edge the photograph starts at
+   * rest, as a fraction of the frame height. The layer still overhangs the
+   * frame by the full OVERHANG, so travel is unchanged; the photograph simply
+   * begins part way down the layer, and its top edge fades into the frame's
+   * obsidian instead of ending in a hard line.
+   *
+   * This exists for framing. Without it, the top fifth of the photograph sits
+   * above the frame at rest, and the operator's head is in that fifth, so on a
+   * desktop it disappears behind the navigation pill. Insetting the photograph
+   * brings the head down into view without touching speed or overhang.
+   */
+  desktopInset?: number;
 };
 
 /* The layer is taller than the frame and starts above it, so travel can never
@@ -72,7 +85,12 @@ type Props = {
 const OVERHANG = 0.26;
 const BLEED = 0.04;
 
-export function ParallaxBackdrop({ src, imageClassName = '', speed = 0.18 }: Props) {
+export function ParallaxBackdrop({
+  src,
+  imageClassName = '',
+  speed = 0.18,
+  desktopInset = 0.07,
+}: Props) {
   const layerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -129,6 +147,10 @@ export function ParallaxBackdrop({ src, imageClassName = '', speed = 0.18 }: Pro
     };
   }, [speed]);
 
+  /* Where the photograph's top edge sits inside the layer from lg, as a share
+     of the layer's own height: the overhang, plus the inset, over the layer. */
+  const photoTop = ((OVERHANG + desktopInset) / (1 + OVERHANG + BLEED)) * 100;
+
   return (
     <div
       ref={layerRef}
@@ -139,17 +161,25 @@ export function ParallaxBackdrop({ src, imageClassName = '', speed = 0.18 }: Pro
         height: `${(1 + OVERHANG + BLEED) * 100}%`,
       }}
     >
-      {/* The photograph fills its layer edge to edge. priority because this is
+      {/* The photograph fills its box edge to edge. On a phone the box is the
+          whole layer. From lg it starts part way down and fades in at its top
+          edge (.parallax-photo-fade), so the inset reads as the dark ceiling
+          continuing upward rather than as a boundary. priority because this is
           the largest paint on the first screen. */}
-      <Image
-        src={src}
-        alt=""
-        fill
-        priority
-        quality={80}
-        sizes="(max-width: 1280px) 100vw, 1280px"
-        className={`h-full w-full object-cover ${imageClassName}`}
-      />
+      <div
+        className="parallax-photo-fade absolute inset-x-0 bottom-0 top-0 lg:top-[var(--photo-top)]"
+        style={{ ['--photo-top' as string]: `${photoTop.toFixed(3)}%` }}
+      >
+        <Image
+          src={src}
+          alt=""
+          fill
+          priority
+          quality={80}
+          sizes="(max-width: 1280px) 100vw, 1280px"
+          className={`h-full w-full object-cover ${imageClassName}`}
+        />
+      </div>
     </div>
   );
 }

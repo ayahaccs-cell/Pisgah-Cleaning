@@ -469,6 +469,17 @@
      black/60 on a phone, and from lg a gradient of black/85, black/55 and clear
      that flips with dir. */
 
+  /* The top edge of the hero photograph from lg up. See ParallaxBackdrop: the
+     photograph starts part way down its layer, and this fades its first 14
+     percent from clear to opaque so the inset reads as the ceiling continuing
+     upward. Below lg the photo fills the layer and nothing is masked. */
+  @media (min-width: 1024px) {
+    .parallax-photo-fade {
+      -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 14%);
+      mask-image: linear-gradient(to bottom, transparent 0, #000 14%);
+    }
+  }
+
   /* Client proof marks. The supplied artwork is already a white silhouette on
      transparency, so this is opacity only: no filter chain to fight, and the
      marks resolve to full strength on hover and on keyboard focus. */

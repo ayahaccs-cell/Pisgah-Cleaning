@@ -1200,6 +1200,46 @@ Parallax listener and constants, the uncropped process frames, the accordion
 sync, all v12 and v13 copy, the client order (Mosques last), the five scope
 cards and their dark buttons, locale parity (211 nodes each side).
 
+## Desktop hero: full height, pinned client row, framed subject (v15)
+
+Every change below is `lg:` and up. Below 1024px the rendered page is pixel
+identical to v14: a before and after screenshot diff at 390, 375, 768 and 1023
+wide, in English and Arabic, and of the mobile drawer in both, returned zero
+differing pixels. From 1024 up it differs by design.
+
+- **Height.** The frame carries `lg:min-h-[clamp(640px,calc(100svh-5rem),860px)]`,
+  so it fills the screen on a laptop, is never under 640, and stops growing at
+  860 on a large monitor. Shrinking the headline in v14 had let the frame
+  collapse to its content. The content wrapper stretches to the frame with
+  `lg:flex-1`, and the grid inside it has two rows, `1fr` and `auto`.
+- **Client row.** It is the `auto` row, with `self-end`, `pt-8` and `pb-4`, so it
+  sits 24px above the frame's bottom edge with the whole first row of space above
+  it. The copy and the video card are centred in the first row, which puts the
+  composition in the visual middle below the pill.
+- **Photograph framing.** Cover on a taller-than-frame layer has no vertical
+  freedom, so `object-center-top` would have changed nothing. The cause was
+  arithmetic: the layer overhangs the frame by 26 percent for parallax, which
+  puts the top fifth of the photograph above the frame at rest, and the
+  operator's head is in that fifth. From lg the photograph now starts 7 percent
+  of the frame height below the top edge of its layer (`desktopInset`), and its
+  top 14 percent fades from clear to opaque into the frame's obsidian, so the
+  inset reads as the dark ceiling continuing upward. The head now sits clear
+  of the pill, with roughly 40px of ceiling between them at 1366 wide and 85px at 1440.
+- **Parallax unchanged.** `OVERHANG` 0.26, `speed` 0.18, `BLEED` 0.04 and the
+  whole listener are byte for byte v14. The layer covers the frame at both ends
+  of travel at every width tested. The inset band is a designed fade, and it
+  cannot be seen while scrolling: the frame's top edge leaves the viewport faster
+  than the photograph's top edge moves down.
+- **Video label.** `hero.videoTitle` was already "Work in motion" in `en.ts`; the
+  capitals came from `uppercase` on the span. That class is now overridden with
+  `lg:normal-case` and the tracking eased from `widest` to `wide`, at 12px medium.
+  The Arabic string has no case and is unchanged. Under lg the label is still
+  uppercase, because the brief froze mobile; delete `uppercase` and
+  `tracking-widest` from that span to change it everywhere.
+- **Contrast** re-measured against the new framing, brightest 2 percent of pixels
+  behind each element at both ends of parallax travel: headline 10.0:1, subhead
+  6.8:1, pill labels 5.9:1, client label 5.5:1 (1024, 1440, English and Arabic).
+
 ## Assets to replace
 
 Client photography supplied September 2026 is now in place.
