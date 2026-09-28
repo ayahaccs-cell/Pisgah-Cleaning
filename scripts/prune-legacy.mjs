@@ -26,6 +26,9 @@ const RETIRED = [
   'src/components/layout/MobilePinnedBar.tsx',
   'src/components/sections/TrustBar.tsx',
   'src/components/sections/EmergencyCallout.tsx',
+  'public/media/tier-2bhk.jpg',
+  'public/media/tier-3bhk.jpg',
+  'public/media/tier-4bhk.jpg',
   'public/media/process-03-signoff.jpg',
 
   // v5: placeholder imagery replaced by client photography
@@ -34,6 +37,13 @@ const RETIRED = [
   'public/media/journey-survey.jpg',
   'public/media/journey-mobilisation.jpg',
   'public/media/journey-signoff.jpg',
+
+  // v13: every process and scope frame now has a dedicated file. The four
+  // below were either rephotographed or renamed to a role-specific name.
+  'public/media/process-01-survey.jpg',
+  'public/media/process-03-handover.jpg',
+  'public/media/tier-studio.jpg',
+  'public/media/tier-1bhk.jpg',
 ];
 
 const removed = [];

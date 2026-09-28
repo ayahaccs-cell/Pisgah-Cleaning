@@ -51,7 +51,8 @@ export function ServicePillars() {
    * which keeps the two components uncoupled and makes every division a real,
    * shareable URL.
    *
-   * hashchange, not a scroll listener. The site still has none.
+   * hashchange, not scroll position. The only scroll listener on the site
+   * is the hero parallax, and it is documented where it lives.
    */
   const syncToHash = useCallback(() => {
     const id = window.location.hash.replace('#', '');

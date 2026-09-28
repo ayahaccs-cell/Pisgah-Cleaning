@@ -35,10 +35,8 @@ export type Division = {
 };
 
 export type PackageTier = {
-  id: 'studio' | 'oneBhk' | 'twoBhk' | 'threeBhk' | 'fourBhk';
+  id: 'apartments' | 'commercial' | 'upholstery' | 'carpet' | 'deepClean';
   ref: string;
-  /** Marks the tier that carries the outlined border. Never a coloured fill. */
-  featured: boolean;
 };
 
 export type LeadershipMember = {
@@ -130,12 +128,20 @@ export const siteConfig = {
     { id: 'specialised', ref: 'WEB-SRV-SPECIALISED' },
   ] as const satisfies readonly Division[],
 
+  /**
+   * Service scopes, replacing the five residential size tiers.
+   *
+   * The `featured` flag is gone with them. It rendered a "most requested" label,
+   * which was a claim about demand that nothing on file supports; the five
+   * scopes are five different jobs rather than five rungs of one ladder, so
+   * there is no top of the list to mark.
+   */
   packages: [
-    { id: 'studio', ref: 'WEB-PKG-STUDIO', featured: false },
-    { id: 'oneBhk', ref: 'WEB-PKG-1BHK', featured: false },
-    { id: 'twoBhk', ref: 'WEB-PKG-2BHK', featured: true },
-    { id: 'threeBhk', ref: 'WEB-PKG-3BHK', featured: false },
-    { id: 'fourBhk', ref: 'WEB-PKG-4BHK', featured: false },
+    { id: 'apartments', ref: 'WEB-PKG-APT' },
+    { id: 'commercial', ref: 'WEB-PKG-COM' },
+    { id: 'upholstery', ref: 'WEB-PKG-UPH' },
+    { id: 'carpet', ref: 'WEB-PKG-CRP' },
+    { id: 'deepClean', ref: 'WEB-PKG-DEEP' },
   ] as const satisfies readonly PackageTier[],
 
   /**
@@ -162,12 +168,16 @@ export const siteConfig = {
     { id: 'talabat', logo: '/media/clients/talabat.png', proof: true },
     { id: 'cineco', logo: '/media/clients/cineco.png', proof: true },
     { id: 'amakin', logo: '/media/clients/amakin.png', proof: true },
-    { id: 'mosques', logo: '/media/clients/mosque.png', proof: false },
     { id: 'liwan', logo: '/media/clients/liwan.png', proof: false },
     { id: 'epix', logo: '/media/clients/epix.png', proof: true },
     { id: 'trax', logo: '/media/clients/trax.png', proof: false },
     { id: 'fabyland', logo: '/media/clients/fabyland.png', proof: false },
     { id: 'xtreme', logo: '/media/clients/xtreme.png', proof: false },
+    /* Last, deliberately. The register is read top down and the corporate and
+       commercial accounts are what a facilities manager is scanning for; the
+       mosque contract is the largest by count and the least like the rest, so
+       it closes the list rather than interrupting it. */
+    { id: 'mosques', logo: '/media/clients/mosque.png', proof: false },
   ],
 
   /** Every mark is prepared to the same box, so this is declared once. */
@@ -199,22 +209,41 @@ export const siteConfig = {
        has its own file rather than borrowing a process frame, so the two can
        be art directed independently. */
     heroSpotlight: '/media/hero-spotlight.jpg',
+    /* Stage 01 and stage 03 were rephotographed in September 2026: a branded
+       checklist being filled during a walkthrough, and a two-person close-of-
+       work check at a mirror. Both arrived portrait and were cropped to the
+       same 4:3 box the mobilisation frame already used, because the three
+       frames share one height cap in the timeline and a portrait source
+       letterboxes badly inside it.
+
+       Stage 02 is untouched, on instruction. */
     process: {
-      survey: '/media/process-01-survey.jpg',
+      survey: '/media/process-01.jpg',
       mobilisation: '/media/process-02-mobilisation.jpg',
-      handover: '/media/process-03-handover.jpg',
+      handover: '/media/process-03.jpg',
     },
-    /* One shot per residential tier. Tiers still awaiting their own photograph
-       reuse the carpet extraction frame, which is marked below. */
-    tiers: {
-      studio: '/media/tier-studio.jpg',
-      oneBhk: '/media/tier-1bhk.jpg',
-      twoBhk: '/media/tier-2bhk.jpg',
-      threeBhk: '/media/tier-3bhk.jpg',
-      fourBhk: '/media/tier-4bhk.jpg',
+    /* One frame per service scope, each on its own file rather than borrowing a
+       process frame. Four are now genuinely role specific. Deep cleaning is the
+       exception noted below. */
+    scopes: {
+      apartments: '/media/scope-residential.jpg',
+      commercial: '/media/scope-commercial.jpg',
+      upholstery: '/media/scope-upholstery.jpg',
+      carpet: '/media/scope-carpet.jpg',
+      deepClean: '/media/scope-deepclean.jpg',
     },
-    /* Tier slots still showing the stand-in frame. Replace and remove the id. */
-    tiersAwaitingPhotography: ['oneBhk', 'twoBhk', 'threeBhk', 'fourBhk'] as string[],
+    /**
+     * Scopes whose frame is not yet a dedicated shot. Replace the path above
+     * and delete the id from this list.
+     *
+     *   deepClean  shares its source negative with the hero spotlight card.
+     *              The two sit far apart on the page and the hero crop is
+     *              wider and vignetted, so it does not read as a repeat, but
+     *              it is still one photograph doing two jobs. Wanted: a
+     *              post-renovation or move-out reset with high-dusting or
+     *              grease work visible.
+     */
+    scopesAwaitingPhotography: ['deepClean'] as string[],
   },
 
   /**

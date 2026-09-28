@@ -18,7 +18,8 @@ type Variant =
   | 'teal'
   | 'outline'
   | 'light'
-  | 'ghost-glass';
+  | 'ghost-glass'
+  | 'dark';
 type Size = 'md' | 'lg' | 'block';
 
 const BASE =
@@ -36,6 +37,7 @@ const FOCUS: Record<Variant, string> = {
   outline: 'focus-ring-ink',
   light: 'focus-ring-ink',
   'ghost-glass': 'focus-ring-ink',
+  dark: 'focus-ring-light',
 };
 
 const VARIANTS: Record<Variant, string> = {
@@ -63,6 +65,15 @@ const VARIANTS: Record<Variant, string> = {
      13:1. One notch, and the button is still unmistakably a ghost. */
   'ghost-glass':
     'border-white/40 bg-white/10 text-white backdrop-blur-sm hover:bg-white/20 hover:border-white/55',
+  /* The obsidian pill. Deliberately the same fill, border and hover as the
+     button on the five scope cards, so the process CTA and the card CTAs read
+     as one family rather than two darks that happen to look alike. The cards
+     keep their own inline classes because they set a smaller label; only the
+     surface treatment is shared. White on obsidian is 19:1, and the hover
+     steps to carbon at 16.4:1. This is the quiet member of the family:
+     obviously pressable, but it does not compete with the emerald primaries
+     elsewhere on a light page. */
+  dark: 'bg-obsidian text-white border-white/20 hover:bg-carbon',
 };
 
 const SIZES: Record<Size, string> = {

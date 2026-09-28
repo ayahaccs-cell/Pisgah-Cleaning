@@ -8,6 +8,7 @@ import { callPrimaryHref, generateWhatsAppLink } from '@/lib/whatsapp';
 import { Button } from '@/components/ui/Button';
 import { VideoModal } from '@/components/ui/VideoModal';
 import { ChevronDown, PhoneIcon, PlayIcon } from '@/components/ui/Icons';
+import { ParallaxBackdrop } from '@/components/ui/ParallaxBackdrop';
 
 /**
  * The framed architectural hero.
@@ -26,9 +27,13 @@ import { ChevronDown, PhoneIcon, PlayIcon } from '@/components/ui/Icons';
  * runs top to bottom instead of across, and the spotlight card becomes a normal
  * width inline card between the buttons and the client proof grid.
  *
- * Contrast: the vignette holds white type at 17.46:1 on the reading edge and
- * 8.90:1 at the mid stop, measured against the brightest frame the photograph
- * could present. That is why there is no blur behind the copy. The gradient
+ * The backdrop moves slower than the page. See ParallaxBackdrop for why that
+ * is a scroll listener and not background-attachment: fixed.
+ *
+ * Contrast: the vignette holds white type at 15.7:1 on the reading edge and
+ * 5.5:1 at the mid stop, measured against the brightest frame the photograph
+ * could present. Parallax does not change those numbers, because the vignette
+ * is pinned to the frame and the photograph slides underneath it. That is why there is no blur behind the copy. The gradient
  * does the work, and glassmorphism stays on the two surfaces allowed to carry
  * it, one of which is the spotlight card below.
  *
@@ -78,11 +83,14 @@ export function HeroSection() {
         aria-label={t.a11y.heroLandmark}
         className="bg-obsidian px-3 pb-6 pt-3 sm:px-5 sm:pb-8 sm:pt-4"
       >
-        {/* ---- The frame. Rounded, clipped, inset from the outer canvas. ---- */}
-        <div
-          className="hero-frame relative isolate mx-auto w-full max-w-7xl overflow-hidden rounded-[24px] shadow-frame lg:rounded-[32px]"
-          style={{ backgroundImage: `url(${siteConfig.media.intro.src})` }}
-        >
+        {/* ---- The frame. Rounded, clipped, inset from the outer canvas.
+
+             Three stacked layers, painted in DOM order: the parallax backdrop,
+             the vignette over it, then the content. The frame itself carries an
+             obsidian fill so there is no flash of empty frame before the
+             photograph decodes. ---- */}
+        <div className="relative isolate mx-auto w-full max-w-7xl overflow-hidden rounded-[24px] bg-obsidian shadow-frame lg:rounded-[32px]">
+          <ParallaxBackdrop src={siteConfig.media.intro.src} />
           <div aria-hidden="true" className="hero-vignette absolute inset-0" />
 
           <div className="relative px-5 pb-10 pt-[104px] sm:px-8 sm:pb-14 sm:pt-[124px] lg:px-12 lg:pb-16 lg:pt-[148px]">
@@ -98,9 +106,11 @@ export function HeroSection() {
             <div className="flex flex-col gap-10 lg:grid lg:grid-cols-[58fr_42fr] lg:items-center lg:gap-x-12 lg:gap-y-10">
               {/* ---- 1. Headline, subhead, actions ---- */}
               <div className="order-1 min-w-0 lg:order-none">
-                <h1 className="mx-auto max-w-[20ch] text-center text-2xl font-bold tracking-tight text-white sm:text-3xl lg:mx-0 lg:text-start lg:text-4xl xl:text-5xl">
-                  {t.hero.headlineA}
-                  <span className="block">{t.hero.headlineB}</span>
+                {/* Three words where there were nine. The scale steps up a
+                    notch at every breakpoint so a one-line headline still
+                    holds the column it used to fill with four. */}
+                <h1 className="mx-auto max-w-[16ch] text-center text-3xl font-bold tracking-tight text-white sm:text-4xl lg:mx-0 lg:text-start lg:text-5xl xl:text-6xl">
+                  {t.hero.headline}
                 </h1>
 
                 <p className="mx-auto mt-3 max-w-md text-center text-xs leading-relaxed text-white/80 sm:text-sm lg:mx-0 lg:mt-6 lg:max-w-[54ch] lg:text-start lg:text-[17px]">
@@ -137,13 +147,14 @@ export function HeroSection() {
                     </span>
                   </span>
 
+                  {/* Title only. The category badge and the descriptive line
+                      both came off; what is left is the frame, the play button
+                      and the name of the thing. videoPending takes the title
+                      slot when siteConfig carries no url, so an unconfigured
+                      card still says something. */}
                   <span className="mt-3 block px-1 pb-1">
-                    <span className="spec spec-on-ink">{t.hero.videoBadge}</span>
-                    <span className="h-ui mt-1.5 block text-[15px] leading-snug text-white">
-                      {t.hero.videoTitle}
-                    </span>
-                    <span className="mt-1 block text-[12.5px] leading-snug text-white/65">
-                      {videoNotice ? t.hero.videoPending : t.hero.videoSub}
+                    <span className="h-ui block text-[14px] uppercase leading-snug tracking-[0.12em] text-white">
+                      {videoNotice ? t.hero.videoPending : t.hero.videoTitle}
                     </span>
                   </span>
                 </button>

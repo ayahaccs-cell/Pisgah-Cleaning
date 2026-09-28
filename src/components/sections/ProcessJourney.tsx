@@ -67,7 +67,7 @@ export function ProcessJourney() {
               <Button
                 href={ctaHref}
                 external
-                variant="primary"
+                variant="dark"
                 className="u-glide-host"
                 aria-label={t.a11y.whatsappGeneric}
               >
@@ -107,18 +107,26 @@ export function ProcessJourney() {
                     {copy.body}
                   </p>
 
-                  <div
-                    className="mt-5 aspect-[16/10] max-h-64 w-full overflow-hidden rounded-xl border border-hairline bg-mist shadow-card"
-                  >
-                    <div className="relative h-full w-full">
-                      <Image
-                        src={step.image}
-                        alt=""
-                        fill
-                        sizes="(max-width: 1024px) 100vw, 55vw"
-                        className="object-cover transition-transform duration-standard ease-entrance group-hover:scale-[1.02]"
-                      />
-                    </div>
+                  {/* No fixed ratio. The box takes the photograph's own
+                      proportions and only caps how tall it may get, so a shot
+                      whose whole point is the room does not lose its ceiling.
+                      All three share that one cap, at every width, which is
+                      what keeps the steps uniform now that the ratio no longer
+                      does. All three sources are 4:3, so nothing is cropped at
+                      phone widths at all; the cap only bites on a desktop.
+
+                      Intrinsic width and height rather than `fill`, because a
+                      filled image needs a parent with a definite height and
+                      this parent no longer has one. */}
+                  <div className="mt-5 overflow-hidden rounded-xl border border-hairline bg-mist shadow-card">
+                    <Image
+                      src={step.image}
+                      alt=""
+                      width={1200}
+                      height={900}
+                      sizes="(max-width: 1024px) 100vw, 55vw"
+                      className="h-auto max-h-[360px] w-full object-contain transition-transform duration-standard ease-entrance group-hover:scale-[1.02] sm:object-cover"
+                    />
                   </div>
                 </div>
               </Reveal>
@@ -130,7 +138,7 @@ export function ProcessJourney() {
           <Button
             href={ctaHref}
             external
-            variant="primary"
+            variant="dark"
             size="block"
             className="u-glide-host"
             aria-label={t.a11y.whatsappGeneric}

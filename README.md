@@ -838,6 +838,275 @@ All three steps share one box: `aspect-[16/10] max-h-64 w-full`, `rounded-xl`,
 hairline border. The per-step width taper is gone; the inward indent still
 carries the sequence, and the titles are now one size rather than three.
 
+## Parallax, safe area and natural photo frames (v11)
+
+### Hero parallax
+
+The backdrop moves at 0.18 of scroll speed inside the frame, so the photograph
+lags the headline and the frame reads as having depth.
+
+`ParallaxBackdrop.tsx` holds the whole mechanism, and it is **the only scroll
+listener on the site**. Every other entrance runs on IntersectionObserver
+specifically so that nothing reads scroll position on the main thread; parallax
+cannot be expressed that way, because it needs a continuous value rather than a
+threshold. So the listener exists, and it is built to cost as little as one can:
+
+- **passive**, so it never blocks the compositor;
+- **coalesced into one requestAnimationFrame** - sixty scroll events between two
+  frames produce exactly one write, verified in a browser probe;
+- **attached only while the frame is on screen**, subscribed and unsubscribed by
+  an IntersectionObserver, so scrolling the rest of the page does no parallax
+  work at all;
+- **composite-only** - one `getBoundingClientRect` read and one `translate3d`
+  write per frame. No layout, no paint.
+
+`background-attachment: fixed` was removed rather than kept as a desktop path.
+iOS Safari does not honour it inside a clipped, rounded container, which is
+exactly what this hero is, and where it is honoured it repaints the layer every
+frame instead of compositing it.
+
+Under `prefers-reduced-motion` no listener is attached and no transform is
+written: the backdrop is a static cover image.
+
+**Geometry.** The layer is 152 percent of the frame height, offset up by 26
+percent, so travel can never expose an edge. Overhang has to exceed speed, and
+the first attempt at 20 percent against a speed of 0.18 left only two percent
+margin at full travel - about 11px on a 560px frame, inside the range where a
+rounded corner's antialiasing shows a hairline. At 26 percent the margin is
+eight percent. Probed at 1440 and 390 wide across the full scroll range: the
+layer covers the frame at every position.
+
+**Vignette.** The far end is lighter, as asked. The reading band is not. A
+uniform lightening to `0.90 / 0.70 / transparent` put the ghost button border at
+2.9:1 against its own fill, under the 3:1 SC 1.4.11 wants for a control
+boundary, so the release was moved outward instead of applied across the width.
+Final stops `0.94 / 0.88 at 38 percent / 0.66 at 64 percent / 0.24`, where white
+is 17.1:1 at the start and 14.2:1 at 38 percent, and the ghost border holds
+3.1:1.
+
+### Mobile drawer safe area
+
+Height is `100dvh`, not `100vh` and not `100%`. On a phone those differ by the
+height of the browser toolbar, and `vh` reports the toolbar-collapsed figure, so
+a sheet sized in `vh` puts its bottom row under Safari's chrome until you
+scroll. `dvh` tracks the live viewport.
+
+That is only half of it. The home indicator on a notched phone sits *inside* the
+dynamic viewport, so the bottom padding is
+`calc(2.5rem + env(safe-area-inset-bottom, 0px))` rather than a flat value. The
+language switcher and the schedule are the two things that were being clipped,
+and they are the two things at the bottom of that column.
+
+Link rows compressed to 48px at `py-2` / `sm:py-2.5`. Six links plus the logo,
+two contact pills, the schedule and the language switcher now fit one small
+phone viewport without scrolling, which is the point of compressing them.
+
+### Process frames
+
+The fixed ratio is gone. `aspect-[16/10]` was cropping ceilings, floors and side
+equipment out of photographs whose whole subject is the room. The box now takes
+each photograph's own proportions and only caps how tall it may get:
+`h-auto max-h-[360px] object-contain`, `sm:max-h-[420px] sm:object-cover`. All
+three share that cap, which is what keeps the steps uniform now that the ratio
+no longer does.
+
+The images moved from `fill` to intrinsic `width`/`height`, because a filled
+image needs a parent with a definite height and this parent deliberately no
+longer has one.
+
+### Already in place from v10, verified not regressed
+
+The `Clients` tab between `Specialised` and `How We Work`; the accordion sync on
+`hashchange` plus a delegated click; the centred mobile hero at `text-2xl
+sm:text-3xl` with its four ordered blocks; both hero actions as matching ghost
+pills.
+
+## Copy pass and scope card overhaul (v12)
+
+A content release. Nothing shipped in v11 was touched: the parallax listener
+and its overhang constant, the drawer's `100dvh` plus safe-area padding, the
+natural `object-contain` process frames, the drawer glass, the centred logo and
+the accordion sync are all verified in place.
+
+### Hero
+
+Headline is now one line, "Commercial & Estate Maintenance.", and the subhead
+one sentence. Three words where there were nine, so the scale steps up a notch
+at every breakpoint (`text-3xl sm:text-4xl lg:text-5xl xl:text-6xl`) and the
+measure narrows to 16ch: a short headline set small in a large frame reads as
+an accident, and the stacked three-line block is what holds the column the old
+four-line headline used to fill.
+
+The video card is down to a title. The category badge and the descriptive line
+are both gone, along with their dictionary keys. `videoPending` now takes the
+title slot when `siteConfig` carries no video url, so an unconfigured card
+still says something rather than rendering an empty line.
+
+The client strip label is "Our clients", still on `.spec spec-on-ink`, which is
+the system class for exactly the style the brief describes: uppercase, tracked,
+600, slate 400 on a dark ground.
+
+### Ongoing partnerships
+
+New eyebrow, headline and status line. The mosque contract moved to the bottom
+of the register: it is the largest account by count and the least like the rest,
+so it closes the list rather than interrupting the run of corporate and
+commercial names a facilities manager is scanning for.
+
+### Five service scopes
+
+The five residential size tiers are gone. They were five rungs of one ladder;
+these are five different jobs. Ids, WhatsApp reference tokens and image mapping
+all changed with them:
+
+| Card | Id | Ref | Frame |
+| --- | --- | --- | --- |
+| 01 Residential Apartments | `apartments` | `WEB-PKG-APT` | borrowed |
+| 02 Commercial Facilities | `commercial` | `WEB-PKG-COM` | borrowed |
+| 03 Sofa & Upholstery Care | `upholstery` | `WEB-PKG-UPH` | its own |
+| 04 Carpet Shampooing & Extraction | `carpet` | `WEB-PKG-CRP` | its own |
+| 05 Specialized Deep Cleaning | `deepClean` | `WEB-PKG-DEEP` | borrowed |
+
+Two of the five have genuinely matching photography. `tier-studio.jpg` is a sofa
+being treated and `tier-1bhk.jpg` is a rotary machine on a rug, so those go to
+Upholstery and Carpet exactly. The other three carried the same duplicated
+carpet frame, which would have put a rug machine on a card about office towers;
+they borrow a process frame with the right subject instead, and
+`media.scopesAwaitingPhotography` now names the three and the shot each one
+needs. The three duplicate files were deleted and added to `prune-legacy.mjs`.
+
+`crew` and `duration` collapsed into one `deployment` string, because "custom
+team deployed per site scale" is not a crew count and a duration.
+
+**Two things were removed rather than restyled.** The "priced after survey,
+never over the phone" line under every button is gone: the section heading and
+the intro now say it once at the top instead of five times down the row. And the
+`featured` flag is gone with the tiers, along with its "most requested" label,
+which was a claim about demand that nothing on file supports. The selected card
+still takes an accent ring, because that is state rather than a claim.
+
+Card buttons read "Book Survey" on an obsidian fill with a white hairline. White
+on `#0A0E14` is 19.34:1, and the fill against the white card is the same
+figure, so the boundary is unmistakable without the border doing any work. It
+reads as the quiet member of the button family: obviously pressable, and not
+competing with the emerald primaries elsewhere on the page.
+
+### Dictionary
+
+Eight keys retired across both locales: `hero.headlineA`, `hero.headlineB`,
+`hero.videoBadge`, `hero.videoSub`, `packages.priceLine`,
+`packages.featuredLabel`, `packages.crewLabel`, and the whole `packages.tiers`
+tree, replaced by `packages.scopes`. Parity holds at 211 nodes each side, and
+the sweep confirms none of the retired keys is referenced anywhere.
+
+`cta.inspection` is now "Book Survey"; `a11y.whatsappPackage` no longer says
+"complimentary inspection for this tier".
+
+## Process copy and dedicated scope photography (v13)
+
+Two jobs: retire the last of the copy that reads like a brochure and give every
+image slot on the page a file of its own.
+
+### The Pisgah Standard, stages 01 to 03
+
+The three steps were written as claims about a method. They are now written as
+what a contractor says on the phone: what happens, who is there, and what you
+get at the end of it.
+
+| Stage | Spec | Title |
+| --- | --- | --- |
+| 01 | ON-SITE ASSESSMENT | Site Walkthrough & Custom Scope |
+| 02 | DIRECT DEPLOYMENT | Assigned Crews & Equipment Setup |
+| 03 | DAILY VERIFICATION | Supervisor Inspection & Sign-Off |
+
+The specs changed shape as well as wording. They used to be measurements
+(`45 TO 90 MIN ON SITE`, `NAMED CREW / FIXED ROSTER`) which invited the reader
+to hold us to a stopwatch on a survey that varies by building. They are now
+labels for the stage, which is what a spec line is for.
+
+Both locales moved together. Arabic is a translation of the new English, not of
+the old, so `تقييم ميداني` sits over stage 01 rather than the retired minute
+count. Parity holds at 211 nodes each side.
+
+`journey.cta` is now "Schedule Site Survey" (`حدد موعد معاينة الموقع`). It is an
+instruction rather than a possessive, and it names the thing being scheduled.
+
+### A dark variant, rather than a fourth dark button
+
+The CTA was an emerald `primary`. On a light section that already carries the
+emerald numerals and spec rules, it was the loudest object on the screen for an
+action that sits at the end of a three-stage read.
+
+`Button` gains a `dark` variant: `bg-obsidian text-white border-white/20
+hover:bg-carbon`. That is the same surface treatment the five scope card buttons
+already use inline, so the two now read as one family. White on `#0A0E14` is
+19.34:1, and the hover to carbon holds 16.4:1. The scope cards keep their own
+classes because they set a smaller label; only the surface is shared. Both the
+sticky desktop rail and the mobile block button switched.
+
+### Process imagery
+
+Stage 01 and stage 03 were rephotographed. Stage 02 is untouched, on
+instruction.
+
+| Stage | File | Frame |
+| --- | --- | --- |
+| 01 | `process-01.jpg` | Gloved hands filling a Pisgah-branded checklist in a furnished living room |
+| 02 | `process-02-mobilisation.jpg` | Unchanged. Kitchen unit, cabinet interiors |
+| 03 | `process-03.jpg` | Two-person close-of-work check, squeegee on a bedroom mirror |
+
+Both new files arrived portrait, 1125x1398 and 784x1353, and both were cropped
+to the 4:3 box the mobilisation frame already uses. That is a deviation from the
+"render naturally without forced cropping" instruction and it is deliberate: the
+three frames share one height cap in the timeline, and a 0.58 portrait dropped
+into a `w-full h-auto max-h-[360px] object-contain` box letterboxes to side bars
+wider than the photograph. Cropping to the common ratio was the only way to keep
+the three steps uniform, which is the older decision this brief asked not to
+regress.
+
+The cap is now a flat `max-h-[360px]` at every width, as specified; the
+`sm:max-h-[420px]` step from v11 is gone. With all three sources at 4:3, nothing
+crops at phone widths at all - a 350px column gives a 262px frame, under the cap
+- and the cap only bites on a desktop, where `object-cover` keeps the middle 73
+percent.
+
+Both files carried EXIF orientation and were transposed before cropping. Read
+cold they report landscape and would have been cut across the wrong axis. This
+is the third photography drop where that has been true.
+
+### Scope card photography
+
+All five cards now have a dedicated file. None borrows a process frame.
+
+| Card | File | Frame |
+| --- | --- | --- |
+| 01 Residential Apartments | `scope-residential.jpg` | Wet marble extraction, empty villa room |
+| 02 Commercial Facilities | `scope-commercial.jpg` | Numatic scrubber-dryer in a cinema lobby |
+| 03 Sofa & Upholstery Care | `scope-upholstery.jpg` | Rotary polisher and spray on a green velvet sofa |
+| 04 Carpet Shampooing & Extraction | `scope-carpet.jpg` | Rotary machine on a patterned rug |
+| 05 Specialized Deep Cleaning | `scope-deepclean.jpg` | Single-disc rotary, empty room |
+
+The container was already `aspect-[4/3]` with `object-cover` inside a
+`rounded-2xl overflow-hidden` card, which is what the brief asks for, so the
+frames did not change; only the sources did. Every file is cut to 1200x900 so
+the five cards align across the row at any breakpoint.
+
+Five photographs were supplied for seven slots. Cards 04 and 05 are therefore
+cut from earlier drops rather than from this one. Card 04 is a genuine match and
+needs nothing. Card 05 shares its source negative with the hero spotlight card;
+the two sit far apart on the page and the hero crop is wider and vignetted, so
+it does not read as a repeat, but it is still one photograph doing two jobs.
+`media.scopesAwaitingPhotography` is down from three ids to one, `deepClean`,
+with the shot it needs named in the comment beside it.
+
+### Retired
+
+`process-01-survey.jpg`, `process-03-handover.jpg`, `tier-studio.jpg` and
+`tier-1bhk.jpg` were deleted and added to `scripts/prune-legacy.mjs`, so a
+checkout that unpacks this release over the last one heals itself. The
+dictionary keys `journey.steps.survey`, `.mobilisation` and `.signoff` are
+unchanged; they name the step, not the file.
+
 ## Assets to replace
 
 Client photography supplied September 2026 is now in place.
@@ -845,11 +1114,15 @@ Client photography supplied September 2026 is now in place.
 | File | Used by | Source |
 | --- | --- | --- |
 | `intro-hero.jpg` | Hero background | Tower lobby, vacuuming, WTC through the window |
-| `process-01-survey.jpg` | Journey step 01 | Office desk detail |
-| `process-02-mobilisation.jpg` | Journey step 02 | Carpet extraction with the rotary machine |
-| `process-03-signoff.jpg` | Journey step 03 | Upholstery rotary and spray |
-| `tier-studio.jpg` | Studio tier | Upholstery rotary, portrait crop |
-| `tier-1bhk.jpg`, `tier-2bhk.jpg`, `tier-3bhk.jpg`, `tier-4bhk.jpg` | Remaining tiers | **Stand-in.** All four reuse the carpet extraction frame until tier-specific shots exist. The ids are listed in `siteConfig.media.tiersAwaitingPhotography`; remove an id once its real photograph is dropped in. |
+| `hero-spotlight.jpg` | Hero spotlight card | Single-disc rotary, empty room. Shares its negative with `scope-deepclean.jpg`. |
+| `process-01.jpg` | Journey step 01 | Branded checklist being filled, living room |
+| `process-02-mobilisation.jpg` | Journey step 02 | Kitchen unit, cabinet interiors |
+| `process-03.jpg` | Journey step 03 | Squeegee on a bedroom mirror, two operators |
+| `scope-residential.jpg` | Scope card 01 | Wet marble extraction, empty villa room |
+| `scope-commercial.jpg` | Scope card 02 | Scrubber-dryer in a cinema lobby |
+| `scope-upholstery.jpg` | Scope card 03 | Rotary and spray on a velvet sofa |
+| `scope-carpet.jpg` | Scope card 04 | Rotary machine on a patterned rug |
+| `scope-deepclean.jpg` | Scope card 05 | **Shared frame.** Cut from the same negative as `hero-spotlight.jpg`. Listed in `siteConfig.media.scopesAwaitingPhotography`; remove the id once a post-renovation or move-out reset is shot. |
 | `og-cover.jpg` | Social share card | Generated from the brand palette. Replace with a photograph. |
 | `pisgah-shift.mp4` | Sneak Peek modal | Client footage, re-encoded to web H.264. |
 | `pisgah-shift-poster.jpg` | Modal poster frame | Pulled from the video at 3 seconds. |
@@ -863,3 +1136,4 @@ Client photography supplied September 2026 is now in place.
 - Client logo permissions for Cineco, Talabat Fakroo Tower, Silah Gulf, Epix Cinemas, Sunni Waqf Directorate and The New Indian School.
 - Leadership photographs.
 - WhatsApp Business registration on the primary line, with an away message outside office hours.
+- One more photograph: a post-renovation or move-out deep clean, with high-dusting or grease work visible, to free scope card 05 from the hero spotlight negative.

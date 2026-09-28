@@ -33,7 +33,7 @@ export const en = {
 
   cta: {
     bookNow: 'Book Now',
-    inspection: 'Book Complimentary Inspection',
+    inspection: 'Book Survey',
     scopeRequest: 'Request Site Scope',
     whatsapp: 'Chat on WhatsApp',
     callOffice: 'Call Office',
@@ -41,17 +41,14 @@ export const en = {
   },
 
   hero: {
-    /* Two lines, broken deliberately. The component renders headlineA above
-       headlineB so the break does not depend on the viewport width. */
-    headlineA: 'Commercial Cleaning & Facility Care',
-    headlineB: "for Bahrain's Landmark Properties.",
-    narrative:
-      "Maintained by one accountable team. Directly employed, inducted Pisgah W.L.L. crews serving Bahrain's commercial facilities and private estates since 2008. No day-labour, no subcontractors.",
+    headline: 'Commercial & Estate Maintenance.',
+    narrative: "Precision care for Bahrain's finest properties.",
     scrollHint: 'Or scroll to explore',
-    proofLabel: 'Retained on landmark contracts across Bahrain',
-    videoBadge: 'Supervised mobilisation',
-    videoTitle: 'Inside a Pisgah Shift',
-    videoSub: 'A supervised night shift, end to end',
+    proofLabel: 'Our clients',
+    /* The card carries a title and nothing else now. videoPending stands in
+       for the title when siteConfig has no video url, so the slot still says
+       something rather than rendering an empty line. */
+    videoTitle: 'Work in motion',
     videoPending: 'Awaiting media.heroVideos[0].url',
     videoModalTitle: 'Inside a Pisgah Shift',
   },
@@ -85,9 +82,9 @@ export const en = {
 
 
   clients: {
-    heading: '15+ landmark contracts across Bahrain.',
-    ratingLabel: 'Accounts held under continuous contract',
-    spec: 'ACTIVE ACCOUNTS / KINGDOM OF BAHRAIN',
+    heading: "Trusted with Bahrain's major commercial and private spaces.",
+    ratingLabel: 'Properties serviced under ongoing direct agreements',
+    spec: 'ONGOING PARTNERSHIPS / BAHRAIN',
     names: {
       waqf: 'Sunni Waqf Directorate',
       silah: 'Silah Gulf',
@@ -121,22 +118,22 @@ export const en = {
     intro:
       'Three stages run before you owe us anything. We walk the building, we put the scope in writing, then every visit closes on a signed sheet.',
     spec: 'OPERATING PROCEDURE / THREE STAGES',
-    cta: 'Book My Survey',
+    cta: 'Schedule Site Survey',
     steps: {
       survey: {
-        title: 'Site survey and written scope',
-        body: 'We walk the building with your facilities lead, count fixtures and hard-floor area, and record your operating hours. Nothing is quoted from a phone call.',
-        spec: '45 TO 90 MIN ON SITE',
+        title: 'Site Walkthrough & Custom Scope',
+        body: 'We walk the property alongside your facility lead to assess layout, floor area, and operational hours. We never issue estimates over the phone without seeing the site first.',
+        spec: 'ON-SITE ASSESSMENT',
       },
       mobilisation: {
-        title: 'Supervised mobilisation',
-        body: 'Named crews, inducted to your site rules, with our own single-disc scrubbers, extractors and transport dispatched on a fixed roster.',
-        spec: 'NAMED CREW / FIXED ROSTER',
+        title: 'Assigned Crews & Equipment Setup',
+        body: "Permanent, uniformed Pisgah staff briefed on your facility's safety rules. Teams arrive on a set schedule with our own industrial scrubbers, extractors, and cleaning materials.",
+        spec: 'DIRECT DEPLOYMENT',
       },
       signoff: {
-        title: 'Supervisor-signed handover',
-        body: 'Every visit closes on a supervisor-signed inspection sheet, and the scope is reviewed with you on a schedule rather than on complaint.',
-        spec: 'SIGNED INSPECTION SHEET',
+        title: 'Supervisor Inspection & Sign-Off',
+        body: 'Every shift closes with an on-site supervisor review against your agreed checklist. Work is signed off directly with your team so standards remain consistent.',
+        spec: 'DAILY VERIFICATION',
       },
     },
   },
@@ -192,45 +189,63 @@ export const en = {
   },
 
   packages: {
-    heading: 'Five tiers, priced after we see the property.',
+    heading: 'Scoped after site inspection.',
     intro:
-      'Find the tier that matches your home, then we survey it. Coverage and crew size are published here. The figure is not, because a three bedroom villa is never the same job twice.',
-    spec: 'RESIDENTIAL / SURVEY BEFORE SCOPE',
-    priceLine: 'Priced after survey - never over the phone.',
-    tierLabel: 'Package tier',
+      'Find the scale that fits your property below, then let us walk the site. Every layout is different, a three-bedroom villa or a commercial office space requires a custom scope before we talk numbers.',
+    spec: 'PRICED ON INSPECTION',
+    tierLabel: 'Service scope',
     coverageLabel: 'Standard coverage',
-    crewLabel: 'Indicative crew',
-    featuredLabel: 'Most requested',
-    tiers: {
-      studio: {
-        name: 'Studio / Single Room',
-        covers: ['1 main room', '1 bathroom', 'Open kitchenette', 'Balcony'],
-        crew: '1 cleaner',
-        duration: '2 to 3 hrs',
+    deploymentLabel: 'Deployment',
+    scopes: {
+      apartments: {
+        name: 'Residential Apartments',
+        covers: [
+          'Studio to 3+ bedrooms available',
+          'Living hall and dining areas',
+          'Kitchen and bathrooms included',
+          'Custom configurations on request',
+        ],
+        deployment: '1 to 3 cleaners / 3 to 5 hrs',
       },
-      oneBhk: {
-        name: '1 BHK Apartment',
-        covers: ['1 bedroom', 'Living hall', '1 to 2 bathrooms', 'Standard kitchen'],
-        crew: '1 to 2 cleaners',
-        duration: '3 to 4 hrs',
+      commercial: {
+        name: 'Commercial Facilities',
+        covers: [
+          'Multi-floor office spaces and towers',
+          'Common areas and reception lobbies',
+          'Restrooms and pantries',
+          'Scheduled facility care',
+        ],
+        deployment: 'Custom team deployed per site scale',
       },
-      twoBhk: {
-        name: '2 BHK Apartment',
-        covers: ['2 bedrooms', 'Living hall and dining', '2 bathrooms', 'Closed kitchen'],
-        crew: '2 cleaners',
-        duration: '4 to 5 hrs',
+      upholstery: {
+        name: 'Sofa & Upholstery Care',
+        covers: [
+          'Fabric and leather deep extraction',
+          'Stain treatment and sanitization',
+          'Sectionals, sofas, and armchairs',
+          'Dining chair detailing',
+        ],
+        deployment: '1 specialized technician / 2 to 3 hrs',
       },
-      threeBhk: {
-        name: '3 BHK Apartment / Villa',
-        covers: ['3 bedrooms', 'Living hall and dining', '3 bathrooms', 'Kitchen and balconies'],
-        crew: '2 to 3 cleaners',
-        duration: '5 to 6 hrs',
+      carpet: {
+        name: 'Carpet Shampooing & Extraction',
+        covers: [
+          'Rotary deep shampooing',
+          'High-suction moisture extraction',
+          'Rug restoration and refresh',
+          'Odor and spot neutralization',
+        ],
+        deployment: '1 to 2 technicians / Scale-dependent',
       },
-      fourBhk: {
-        name: '4 BHK / Luxury Villa',
-        covers: ['4+ bedrooms', 'Multiple halls', "Maid's room", '4+ bathrooms and large kitchen'],
-        crew: '3 to 4 cleaners',
-        duration: 'Full day',
+      deepClean: {
+        name: 'Specialized Deep Cleaning',
+        covers: [
+          'Post-renovation or move-in and move-out',
+          'High-dusting and fixture detailing',
+          'Heavy-duty grease and scale removal',
+          'Full interior sanitization reset',
+        ],
+        deployment: '2 to 4 cleaners / Full-day shift allocation',
       },
     },
   },
@@ -308,7 +323,7 @@ export const en = {
     whatsappGeneric: 'Open WhatsApp to request a site survey',
     whatsappEstimate: 'Open WhatsApp with your property and service selections filled in',
     whatsappDivision: 'Open WhatsApp to request a site scope for this division',
-    whatsappPackage: 'Open WhatsApp to book a complimentary inspection for this tier',
+    whatsappPackage: 'Open WhatsApp to book a survey for this service scope',
     whatsappConsultation: 'Open WhatsApp to book a site walkthrough',
     playVideoLabel: 'Play the Pisgah site video',
     closeVideoLabel: 'Close the video',
