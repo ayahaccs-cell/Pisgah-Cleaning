@@ -1240,6 +1240,47 @@ differing pixels. From 1024 up it differs by design.
   behind each element at both ends of parallax travel: headline 10.0:1, subhead
   6.8:1, pill labels 5.9:1, client label 5.5:1 (1024, 1440, English and Arabic).
 
+## Desktop hero: left stack matching the reference (v16)
+
+Desktop only. Below 1024px the render is pixel identical to v15: a screenshot
+diff at 390, 375, 768 and 1023 wide, in English and Arabic, and of the drawer in
+both, returned zero differing pixels. The one string change that touches mobile
+copy, the headline newline, collapses to a space below lg and cannot show.
+
+- **One left stack, right side open.** From lg the grid has five rows: spacer,
+  copy, card, taller spacer, client row. Top to bottom in the left column:
+  headline, subhead, the two pills and "Or scroll to explore", the video card,
+  then the client row on the bottom edge. The 2fr and 3fr spacers seat the group
+  in the upper middle below the pill. The centre and right of the frame carry
+  only the photograph.
+- **Headline.** `text-4xl` at lg, `text-5xl` at xl, `leading-[1.1]`, and the
+  line break after the ampersand is a newline in the dictionary string
+  (`Commercial &\nEstate Maintenance.` and `صيانة تجارية\nوعناية بالعقارات.`),
+  honoured from lg by `whitespace-pre-line`. Below lg the newline collapses to a
+  space, exactly as the old string did. The headline's max width is 560px rather
+  than 480, because 48px bold "Estate Maintenance." does not fit 480; the
+  subhead and pills keep their own widths.
+- **Video card.** Landscape 16:10, 260px wide and 280px from xl, no padding,
+  thumbnail on top with a centred play button and a dark bar underneath carrying
+  "Work in motion" in sentence case. The thumbnail is anchored to the top of the
+  frame (`object-[32%_6%]`) so the operator's head is not cut off by the landscape
+  crop.
+- **Photograph.** `lg:object-[center_top]` as asked. Horizontally that puts the
+  operator's head at 57 percent of the frame, which is where it sits in the
+  reference; vertically it changes nothing, since the layer is height limited.
+  The v15 inset still keeps his head clear of the pill. Parallax constants and
+  listener are unchanged.
+- **Overlay.** `lg:from-black/85 lg:via-black/45 lg:to-transparent`, flipped for
+  Arabic. The middle stop was 55.
+- **Height.** Floor raised to 700px: `clamp(700px, 100svh - 5rem, 860px)`.
+- **Contrast**, brightest 2 percent of pixels behind each element at both ends of
+  parallax travel, 1024 to 1780 wide: headline 9.1:1, subhead 6.9:1, pills 5.4:1,
+  client label 4.8:1. The label is slate 200 from lg, not the slate 400 in the
+  brief, which measured under 4:1 once the row moved to the bottom of the frame.
+  Arabic: 6.4, 5.2, 6.2 and 5.8.
+- **Arabic.** The stack mirrors to the inline end. The photograph does not
+  mirror, so the operator sits behind the Arabic headline; it still measures 6.4:1.
+
 ## Assets to replace
 
 Client photography supplied September 2026 is now in place.

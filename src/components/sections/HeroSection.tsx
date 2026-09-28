@@ -18,20 +18,24 @@ import { ParallaxBackdrop } from '@/components/ui/ParallaxBackdrop';
  * navigation overlaps the top of that frame, which is why the content column
  * carries its own top padding rather than the document carrying it.
  *
- * One grid, two columns at every width. Sixty percent copy, forty percent
- * spotlight card, on a phone as well as on a desktop, so the mobile hero is the
- * desktop composition made smaller rather than a different page stacked into a
- * single file. The client proof row is the second grid row: it spans both
- * columns on a phone and tucks under the buttons, inside the copy column, from
- * lg up, where the card spans both rows and centres against them.
+ * One grid at every width. Below lg it is two columns, sixty percent copy and
+ * forty percent spotlight card, with the client row as a second row spanning
+ * both: the desktop composition made smaller rather than a different page.
+ *
+ * From lg it is a single left aligned stack with the centre and right of the
+ * frame left open for the photograph, top to bottom: headline (broken after the
+ * ampersand by a newline in the dictionary string, honoured only from lg by
+ * whitespace-pre-line), subhead, the two actions, the landscape video card, and
+ * the client row pinned to the bottom edge. The grid has five rows: a spacer, the
+ * copy, the card, a taller spacer, and the client row. The 2fr to 3fr spacers
+ * seat the group in the upper middle, below the pill, rather than dead centre,
+ * which is how the reference composition sits.
  *
  * From lg the frame is a full height canvas, not whatever the content adds up
- * to: clamp(640px, 100svh - 5rem, 860px). Shrinking the headline in v14 let the
+ * to: clamp(700px, 100svh - 5rem, 860px). Shrinking the headline in v14 let the
  * frame collapse upward and leave dead space under it; the minimum height is
- * what stops that. The grid inside fills the frame, with two rows: the first
- * takes all the spare height and centres the copy and the card in it, below the
- * pill, and the second is the client row, pinned to the bottom edge. Below lg
- * none of this applies and the frame is as tall as its content, as before.
+ * what stops that. Below lg none of this applies and the frame is as tall as its
+ * content, as before.
  *
  * The backdrop moves slower than the page. See ParallaxBackdrop for why that
  * is a scroll listener and not background-attachment: fixed, and for why the
@@ -39,7 +43,7 @@ import { ParallaxBackdrop } from '@/components/ui/ParallaxBackdrop';
  * twice that.
  *
  * Contrast. The overlay is a flat black/60 on a phone and a left to right
- * gradient, black/85 through black/55 to clear, from lg up. It runs the full
+ * gradient, black/85 through black/45 to clear, from lg up. It runs the full
  * height of the frame, so there is no band where a bright patch of photograph
  * could sit behind type unprotected. Parallax does not change the maths: the
  * overlay is pinned to the frame and the photograph slides underneath it.
@@ -51,7 +55,10 @@ import { ParallaxBackdrop } from '@/components/ui/ParallaxBackdrop';
  * 60 percent rather than 55 for one reason: at 55 the 10px pill labels measured
  * 4.3:1 and 3.9:1, under the 4.5 that text that small needs. The client label is
  * slate 300 rather than the usual slate 400 for the same reason, 5.4:1 against
- * 2.7:1.
+ * 2.7:1. From lg it is slate 200, because the row now sits low on the frame over
+ * brighter seating: 4.8:1 at worst, against 4.0 for slate 300. Desktop worst
+ * cases, 1024 to 1780 wide: headline 9.1:1, subhead 6.9:1, pills 5.4:1, client
+ * label 4.8:1; in Arabic 6.4:1, 5.2:1, 6.2:1 and 5.8:1.
  *
  * Both actions are compact ghost pills of equal weight. That is a deliberate
  * trade: the hero has no single filled primary, so the strongest fill on the
@@ -109,7 +116,7 @@ export function HeroSection() {
              the overlay over it, then the content. The frame itself carries an
              obsidian fill so there is no flash of empty frame before the
              photograph decodes. ---- */}
-        <div className="relative isolate mx-auto w-full max-w-7xl overflow-hidden rounded-[24px] bg-obsidian shadow-frame lg:flex lg:min-h-[clamp(640px,calc(100svh-5rem),860px)] lg:rounded-[32px]">
+        <div className="relative isolate mx-auto w-full max-w-7xl overflow-hidden rounded-[24px] bg-obsidian shadow-frame lg:flex lg:min-h-[clamp(700px,calc(100svh-5rem),860px)] lg:rounded-[32px]">
           {/* Object position steers which slice of the photograph survives the
               crop. On a phone the frame is narrow and tall, so only about a
               quarter of the photograph's width shows; 42 percent puts the
@@ -118,7 +125,7 @@ export function HeroSection() {
               and 20 percent puts him between the copy and the card. */}
           <ParallaxBackdrop
             src={siteConfig.media.intro.src}
-            imageClassName="object-[42%_50%] lg:object-[20%_50%]"
+            imageClassName="object-[42%_50%] lg:object-[center_top]"
           />
 
           {/* Full frame overlay. Flat on a phone; from lg a gradient that
@@ -127,14 +134,14 @@ export function HeroSection() {
               through the clear end of the gradient. RTL flips the direction. */}
           <div
             aria-hidden="true"
-            className="absolute inset-0 bg-black/60 lg:bg-transparent lg:bg-gradient-to-r lg:from-black/85 lg:via-black/55 lg:to-transparent lg:rtl:bg-gradient-to-l"
+            className="absolute inset-0 bg-black/60 lg:bg-transparent lg:bg-gradient-to-r lg:from-black/85 lg:via-black/45 lg:to-transparent lg:rtl:bg-gradient-to-l"
           />
 
-          <div className="relative flex px-4 pb-8 pt-[92px] sm:px-8 sm:pb-12 sm:pt-[112px] lg:min-h-[640px] lg:flex-1 lg:items-stretch lg:px-12 lg:pb-6 lg:pt-[120px]">
-            <div className="grid w-full grid-cols-[minmax(0,3fr)_minmax(0,2fr)] items-center gap-x-4 gap-y-7 sm:gap-x-8 lg:grid-cols-[minmax(0,60fr)_minmax(0,40fr)] lg:grid-rows-[1fr_auto] lg:gap-x-12 lg:gap-y-7">
+          <div className="relative flex px-4 pb-8 pt-[92px] sm:px-8 sm:pb-12 sm:pt-[112px] lg:min-h-[700px] lg:flex-1 lg:items-stretch lg:px-12 lg:pb-6 lg:pt-[120px]">
+            <div className="grid w-full grid-cols-[minmax(0,3fr)_minmax(0,2fr)] items-center gap-x-4 gap-y-7 sm:gap-x-8 lg:grid-cols-[minmax(0,60fr)_minmax(0,40fr)] lg:grid-rows-[minmax(0,2fr)_auto_auto_minmax(0,3fr)_auto] lg:gap-x-12 lg:gap-y-0">
               {/* ---- 1. Headline, subhead, actions ---- */}
-              <div className="min-w-0 lg:col-start-1 lg:row-start-1 lg:self-center">
-                <h1 className="max-w-[480px] text-start text-lg font-bold leading-tight tracking-tight text-white sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl">
+              <div className="min-w-0 lg:col-start-1 lg:row-start-2">
+                <h1 className="max-w-[480px] text-start text-lg font-bold leading-tight tracking-tight text-white sm:text-xl md:text-2xl lg:max-w-[560px] lg:whitespace-pre-line lg:text-4xl lg:leading-[1.1] xl:text-5xl">
                   {t.hero.headline}
                 </h1>
 
@@ -176,20 +183,20 @@ export function HeroSection() {
                       Portrait 4:5. A phone gets 150px, a small tablet 165px, a
                       desktop 240px and a wide desktop 260px, pushed to the
                       inline end of its column. It is never full width. ---- */}
-              <div className="flex min-w-0 justify-center lg:col-start-2 lg:row-start-1 lg:justify-end lg:self-center">
+              <div className="flex min-w-0 justify-center lg:col-start-1 lg:row-start-3 lg:mt-6 lg:justify-start lg:self-start">
                 <button
                   type="button"
                   onClick={onVideo}
                   aria-label={t.a11y.playVideoLabel}
-                  className="focus-ring-ink group glass-spotlight tap relative flex aspect-[4/5] w-full max-w-[150px] flex-col overflow-hidden rounded-xl border border-white/15 p-2 text-start shadow-lg transition-colors duration-fast ease-feedback hover:border-white/30 sm:max-w-[165px] lg:max-w-[240px] lg:rounded-2xl lg:p-3 lg:shadow-2xl xl:max-w-[260px]"
+                  className="focus-ring-ink group glass-spotlight tap relative flex aspect-[4/5] w-full max-w-[150px] flex-col overflow-hidden rounded-xl border border-white/15 p-2 text-start shadow-lg transition-colors duration-fast ease-feedback hover:border-white/30 sm:max-w-[165px] lg:aspect-[16/10] lg:max-w-[260px] lg:rounded-2xl lg:p-0 lg:shadow-2xl xl:max-w-[280px]"
                 >
-                  <span className="relative block min-h-0 w-full flex-1 overflow-hidden rounded-lg bg-obsidian lg:rounded-xl">
+                  <span className="relative block min-h-0 w-full flex-1 overflow-hidden rounded-lg bg-obsidian lg:rounded-none">
                     <Image
                       src={siteConfig.media.heroSpotlight}
                       alt=""
                       fill
                       sizes="(max-width: 640px) 150px, (max-width: 1280px) 220px, 240px"
-                      className="object-cover object-[32%_50%] transition-transform duration-standard ease-entrance group-hover:scale-[1.03]"
+                      className="object-cover object-[32%_50%] transition-transform duration-standard ease-entrance group-hover:scale-[1.03] lg:object-[32%_6%]"
                     />
                     <span
                       aria-hidden="true"
@@ -209,7 +216,7 @@ export function HeroSection() {
                       carries no url, so an unconfigured card still says
                       something. Tracking is zeroed under RTL by the global
                       rule, so the Arabic label keeps its joins. */}
-                  <span className="block py-1 pt-1.5 text-center text-[10px] font-semibold uppercase tracking-widest text-white/90 lg:text-xs lg:font-medium lg:normal-case lg:tracking-wide">
+                  <span className="block py-1 pt-1.5 text-center text-[10px] font-semibold uppercase tracking-widest text-white/90 lg:bg-obsidian/85 lg:py-2.5 lg:text-xs lg:font-medium lg:normal-case lg:tracking-wide">
                     {videoNotice ? t.hero.videoPending : t.hero.videoTitle}
                   </span>
                 </button>
@@ -219,8 +226,8 @@ export function HeroSection() {
 
                       Second grid row. Spans both columns on a phone; from lg
                       it sits in the copy column directly under the buttons. ---- */}
-              <div className="col-span-2 min-w-0 border-t border-white/10 pt-5 lg:col-span-1 lg:col-start-1 lg:row-start-2 lg:self-end lg:pb-4 lg:pt-8">
-                <p className="spec text-slate-300">{t.hero.proofLabel}</p>
+              <div className="col-span-2 min-w-0 border-t border-white/10 pt-5 lg:col-span-1 lg:col-start-1 lg:row-start-5 lg:self-end lg:pb-4 lg:pt-8">
+                <p className="spec text-slate-300 lg:text-slate-200">{t.hero.proofLabel}</p>
                 <ul className="mt-4 grid grid-cols-3 items-center gap-x-4 gap-y-4 sm:grid-cols-6 lg:flex lg:flex-wrap lg:gap-x-4 lg:gap-y-4 xl:gap-x-6">
                   {proofClients.map((client) => (
                     <li key={client.id} className="flex items-center justify-start">

@@ -41,7 +41,7 @@ export const en = {
   },
 
   hero: {
-    headline: 'Commercial & Estate Maintenance.',
+    headline: 'Commercial &\nEstate Maintenance.',
     narrative: "Precision care for Bahrain's finest properties.",
     scrollHint: 'Or scroll to explore',
     proofLabel: 'Our clients',

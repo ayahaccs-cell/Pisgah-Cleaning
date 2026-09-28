@@ -43,7 +43,7 @@ export const ar: Dictionary = {
   },
 
   hero: {
-    headline: 'صيانة تجارية وعناية بالعقارات.',
+    headline: 'صيانة تجارية\nوعناية بالعقارات.',
     narrative: 'عناية دقيقة لأرقى عقارات البحرين.',
     scrollHint: 'أو تابع التصفح',
     proofLabel: 'عملاؤنا',
