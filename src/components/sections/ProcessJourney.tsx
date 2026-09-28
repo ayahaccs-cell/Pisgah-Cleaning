@@ -21,25 +21,24 @@ const STEPS = [
   {
     key: 'survey',
     image: siteConfig.media.process.survey,
-    /* Widths narrow as the sequence advances, which is what makes the column
-       read as a timeline rather than as a stack. */
-    frame: 'aspect-[4/3] w-full',
+    /* The widths used to narrow as the sequence advanced, which made a
+       timeline of the column but left the three images visibly mismatched.
+       Uniformity won: one box, one crop, for all three steps. The inward
+       indent still carries the sequence. */
     indent: '',
-    title: 'text-[clamp(23px,2.4vw,30px)]',
+    title: 'text-[clamp(21px,2.1vw,26px)]',
   },
   {
     key: 'mobilisation',
     image: siteConfig.media.process.mobilisation,
-    frame: 'aspect-[4/3] w-full lg:w-[86%]',
     indent: 'lg:ms-[7%]',
-    title: 'text-[clamp(20px,2vw,25px)]',
+    title: 'text-[clamp(21px,2.1vw,26px)]',
   },
   {
     key: 'signoff',
     image: siteConfig.media.process.handover,
-    frame: 'aspect-[4/3] w-full lg:w-[74%]',
     indent: 'lg:ms-[14%]',
-    title: 'text-[clamp(19px,1.85vw,23px)]',
+    title: 'text-[clamp(21px,2.1vw,26px)]',
   },
 ] as const;
 
@@ -109,7 +108,7 @@ export function ProcessJourney() {
                   </p>
 
                   <div
-                    className={`mt-5 overflow-hidden rounded-xl border border-hairline bg-mist shadow-card ${step.frame}`}
+                    className="mt-5 aspect-[16/10] max-h-64 w-full overflow-hidden rounded-xl border border-hairline bg-mist shadow-card"
                   >
                     <div className="relative h-full w-full">
                       <Image

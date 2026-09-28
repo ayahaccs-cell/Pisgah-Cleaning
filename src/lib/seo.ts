@@ -142,18 +142,23 @@ export function localBusinessJsonLd(locale: Locale): Record<string, unknown> {
         closes: '17:00',
       },
     ],
+    /* Two lines, both on the published schedule. The 24/7 emergency contact
+       point was removed with the emergency section: structured data claiming
+       round the clock availability that the site no longer offers is a promise
+       search results would keep making on the company's behalf. */
     contactPoint: [
       {
         '@type': 'ContactPoint',
-        contactType: 'emergency',
+        contactType: 'sales',
         telephone: siteConfig.contact.primaryPhone.dial,
+        email: siteConfig.contact.email,
         availableLanguage: ['en', 'ar'],
-        hoursAvailable: '24/7',
       },
       {
         '@type': 'ContactPoint',
         contactType: 'customer service',
         telephone: siteConfig.contact.secondaryPhone.dial,
+        email: siteConfig.contact.emailOperations,
         availableLanguage: ['en', 'ar'],
       },
     ],

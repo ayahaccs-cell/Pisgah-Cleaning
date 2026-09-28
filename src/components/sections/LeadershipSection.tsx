@@ -8,8 +8,12 @@ import { Reveal } from '@/components/ui/Reveal';
 /**
  * Leadership and operational accountability.
  *
- * Named people, ruled by hairlines and numbered in mono. No rounded avatar
- * circles and no icon badges: a portrait frame, a rule, and the name.
+ * Named people, ruled by hairlines. No rounded avatar circles and no icon
+ * badges: a frame, a rule, and the name.
+ *
+ * The frame is a short 4:3 landscape capped at 144px, not the tall portrait it
+ * was. Four portrait boxes in a row left a column of dead space above four
+ * short names and pushed the section past a screen for no gain.
  *
  * Where no photograph has been supplied the card falls back to typographic
  * initials. A stock portrait is never substituted for a named real employee.
@@ -59,7 +63,7 @@ export function LeadershipSection() {
             const copy = t.leadership.members[member.id];
             return (
               <Reveal as="li" key={member.id} index={index} className="group">
-                <div className="relative aspect-square overflow-hidden rounded-[12px] border border-hairline bg-mist shadow-card lg:aspect-[3/4]">
+                <div className="relative mb-4 aspect-[4/3] max-h-36 overflow-hidden rounded-xl border border-hairline bg-mist shadow-card sm:max-h-40">
                   {member.photo ? (
                     <Image
                       src={member.photo}
@@ -71,14 +75,14 @@ export function LeadershipSection() {
                   ) : (
                     <span
                       aria-hidden="true"
-                      className="grid h-full w-full place-items-center text-[clamp(30px,5.5vw,42px)] font-bold tracking-tight text-ink/20"
+                      className="grid h-full w-full place-items-center text-[clamp(24px,4vw,32px)] font-bold tracking-tight text-ink/25"
                     >
                       {initialsOf(copy.name)}
                     </span>
                   )}
                 </div>
 
-                <div className="hair-light-t mt-5 flex items-baseline gap-3 pt-4">
+                <div className="hair-light-t flex items-baseline gap-3 pt-4">
                   <span className="numeral text-[14px] leading-none">
                     {String(index + 1).padStart(2, '0')}
                   </span>

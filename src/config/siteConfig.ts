@@ -80,17 +80,22 @@ export const siteConfig = {
   },
 
   contact: {
+    /* Updated by the client, September 2026. The primary number is the one
+       every call to action reaches, including the WhatsApp engine; the
+       secondary sits beside it in the footer and contact block. */
     primaryPhone: {
-      display: '+973 33797932',
-      dial: '+97333797932',
-      wa: '97333797932',
+      display: '+973 33512244',
+      dial: '+97333512244',
+      wa: '97333512244',
     } satisfies PhoneNumber,
     secondaryPhone: {
-      display: '+973 34696997',
-      dial: '+97334696997',
+      display: '+973 33524411',
+      dial: '+97333524411',
       wa: null,
     } satisfies PhoneNumber,
-    email: 'george2099@gmail.com',
+    email: 'pisgahcleaning123@gmail.com',
+    /** Operations inbox, shown alongside the general address in the footer. */
+    emailOperations: 'operations.pisgah@gmail.com',
     address: {
       building: 'Building 77',
       road: 'Road 905',
@@ -100,9 +105,9 @@ export const siteConfig = {
       country: 'Kingdom of Bahrain',
     } satisfies PostalAddress,
     hours: {
-      /** Updated by the client, September 2026. */
+      /* One schedule. The 24/7 emergency line was retired with the emergency
+         section, so there is no second set of hours to contradict this one. */
       office: 'Sat to Thu, 09:00 to 17:00',
-      emergency: '24/7 emergency call-out',
       /** Schema.org openingHours, for the LocalBusiness payload. */
       schema: ['Sa-Th 09:00-17:00'],
     },
@@ -172,7 +177,7 @@ export const siteConfig = {
     { id: 'george', photo: null },
     { id: 'shajan', photo: null },
     { id: 'najeer', photo: null },
-    { id: 'santosh', photo: null },
+    { id: 'aqeel', photo: null },
   ] as const satisfies readonly LeadershipMember[],
 
   media: {
@@ -231,8 +236,14 @@ export const siteConfig = {
 
 export type SiteConfig = typeof siteConfig;
 
-/** Address as a single line, used by the footer and the JSON-LD payload. */
+/**
+ * Address as a single line, used by the footer and the JSON-LD payload.
+ *
+ * The unit and the building are one clause, not two: "No. 31 Building 77"
+ * rather than "Building 77, No. 31", which is how the client writes it and how
+ * it is signed at the door.
+ */
 export function formatAddress(): string {
   const a = siteConfig.contact.address;
-  return [a.building, a.road, a.block, a.unit, a.city, a.country].join(', ');
+  return [`${a.unit} ${a.building}`, a.road, a.block, a.city, a.country].join(', ');
 }

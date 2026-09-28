@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useCallback, useState } from 'react';
 import { siteConfig } from '@/config/siteConfig';
 import { useLocale } from '@/context/LocaleProvider';
-import { callOfficeHref, generateWhatsAppLink } from '@/lib/whatsapp';
+import { callPrimaryHref, generateWhatsAppLink } from '@/lib/whatsapp';
 import { Button } from '@/components/ui/Button';
 import { VideoModal } from '@/components/ui/VideoModal';
 import { ChevronDown, PhoneIcon, PlayIcon } from '@/components/ui/Icons';
@@ -31,6 +31,12 @@ import { ChevronDown, PhoneIcon, PlayIcon } from '@/components/ui/Icons';
  * could present. That is why there is no blur behind the copy. The gradient
  * does the work, and glassmorphism stays on the two surfaces allowed to carry
  * it, one of which is the spotlight card below.
+ *
+ * Both hero actions are ghost pills of equal weight, on instruction. That is
+ * a deliberate trade: the hero no longer has a single filled primary drawing
+ * the eye to one action, so the strongest fill on the first screen is now the
+ * Book Now pill in the header. Restore it by switching the first Button back
+ * to variant="primary" if the survey rate drops.
  *
  * The spotlight card is deliberately small. It was sized to fill its 42
  * percent column and ended up competing with the headline for the fold, so on
@@ -92,51 +98,19 @@ export function HeroSection() {
             <div className="flex flex-col gap-10 lg:grid lg:grid-cols-[58fr_42fr] lg:items-center lg:gap-x-12 lg:gap-y-10">
               {/* ---- 1. Headline, subhead, actions ---- */}
               <div className="order-1 min-w-0 lg:order-none">
-                <h1 className="max-w-[20ch] text-3xl font-bold tracking-tight text-white lg:text-4xl xl:text-5xl">
+                <h1 className="mx-auto max-w-[20ch] text-center text-2xl font-bold tracking-tight text-white sm:text-3xl lg:mx-0 lg:text-start lg:text-4xl xl:text-5xl">
                   {t.hero.headlineA}
                   <span className="block">{t.hero.headlineB}</span>
                 </h1>
 
-                <p className="mt-6 max-w-[54ch] text-[clamp(15px,1.25vw,17px)] leading-relaxed text-white/80">
+                <p className="mx-auto mt-3 max-w-md text-center text-xs leading-relaxed text-white/80 sm:text-sm lg:mx-0 lg:mt-6 lg:max-w-[54ch] lg:text-start lg:text-[17px]">
                   {t.hero.narrative}
                 </p>
 
-                <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
-                  <Button
-                    href={scopeHref}
-                    external
-                    variant="primary"
-                    size="lg"
-                    aria-label={t.a11y.whatsappGeneric}
-                    className="max-sm:w-full"
-                  >
-                    {t.cta.scopeRequest}
-                  </Button>
-
-                  <Button
-                    href={callOfficeHref()}
-                    variant="outline"
-                    size="lg"
-                    aria-label={t.a11y.callOfficeLabel}
-                    className="max-sm:w-full"
-                  >
-                    <PhoneIcon size={17} />
-                    {t.cta.callOffice}
-                  </Button>
-
-                  {/* The quiet third option. A real anchor, not a decoration. */}
-                  <a
-                    href="#process"
-                    className="focus-ring-ink inline-flex min-h-[48px] items-center gap-1.5 rounded text-[13px] font-medium text-white/70 transition-colors duration-fast ease-feedback hover:text-white max-sm:justify-center"
-                  >
-                    {t.hero.scrollHint}
-                    <ChevronDown size={14} aria-hidden="true" />
-                  </a>
-                </div>
               </div>
 
               {/* ---- 2. Spotlight card. One of the two glass surfaces. ---- */}
-              <div className="order-2 min-w-0 lg:order-none lg:row-span-2 lg:flex lg:justify-end lg:ps-4">
+              <div className="order-2 min-w-0 lg:order-none lg:row-span-3 lg:flex lg:justify-end lg:ps-4">
                 <button
                   type="button"
                   onClick={onVideo}
@@ -175,8 +149,46 @@ export function HeroSection() {
                 </button>
               </div>
 
-              {/* ---- 3. Client proof. Static, dignified, no marquee. ---- */}
-              <div className="order-3 min-w-0 border-t border-white/10 pt-6 lg:order-none lg:self-end">
+              {/* ---- 3. Actions. Under the card on a phone, under the copy
+                      on a desktop, where lg:-mt pulls them back up into the
+                      first grid row beneath the headline. ---- */}
+              <div className="order-3 min-w-0 lg:order-none lg:-mt-2 lg:self-start">
+                <div className="mt-6 flex flex-col gap-3 max-lg:items-center sm:flex-row sm:flex-wrap sm:justify-center lg:mt-8 lg:justify-start">
+                  <Button
+                    href={scopeHref}
+                    external
+                    variant="ghost-glass"
+                    size="lg"
+                    aria-label={t.a11y.whatsappGeneric}
+                    className="max-sm:w-full"
+                  >
+                    {t.cta.scopeRequest}
+                  </Button>
+
+                  <Button
+                    href={callPrimaryHref()}
+                    variant="ghost-glass"
+                    size="lg"
+                    aria-label={t.a11y.callPrimary}
+                    className="max-sm:w-full"
+                  >
+                    <PhoneIcon size={17} />
+                    {t.cta.callOffice}
+                  </Button>
+
+                  {/* The quiet third option. A real anchor, not a decoration. */}
+                  <a
+                    href="#process"
+                    className="focus-ring-ink inline-flex min-h-[48px] items-center gap-1.5 rounded text-[13px] font-medium text-white/70 transition-colors duration-fast ease-feedback hover:text-white max-sm:justify-center"
+                  >
+                    {t.hero.scrollHint}
+                    <ChevronDown size={14} aria-hidden="true" />
+                  </a>
+                </div>
+              </div>
+
+              {/* ---- 4. Client proof. Static, dignified, no marquee. ---- */}
+              <div className="order-4 min-w-0 border-t border-white/10 pt-6 lg:order-none lg:self-end">
                 <p className="spec spec-on-ink">{t.hero.proofLabel}</p>
                 <ul className="mt-5 grid grid-cols-3 items-center gap-x-5 gap-y-6 sm:gap-x-7 lg:flex lg:flex-nowrap lg:gap-x-7 xl:gap-x-9">
                   {proofClients.map((client) => (

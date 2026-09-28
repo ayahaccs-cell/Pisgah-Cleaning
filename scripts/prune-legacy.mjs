@@ -25,6 +25,7 @@ const RETIRED = [
   // v5: the sticky bottom action bar was removed from the design
   'src/components/layout/MobilePinnedBar.tsx',
   'src/components/sections/TrustBar.tsx',
+  'src/components/sections/EmergencyCallout.tsx',
   'public/media/process-03-signoff.jpg',
 
   // v5: placeholder imagery replaced by client photography

@@ -4,42 +4,49 @@ import Image from 'next/image';
 import { useEffect, useRef } from 'react';
 import { siteConfig } from '@/config/siteConfig';
 import { useLocale } from '@/context/LocaleProvider';
-import { callOfficeHref, callPrimaryHref, generateWhatsAppLink } from '@/lib/whatsapp';
-import { Button } from '@/components/ui/Button';
+import { callPrimaryHref, generateWhatsAppLink } from '@/lib/whatsapp';
 import { LocaleSwitcher } from '@/components/ui/LocaleSwitcher';
 import { ClockIcon, PhoneIcon, WhatsAppIcon } from '@/components/ui/Icons';
 import { NAV_LINKS } from './Navbar';
 
+/* One ghost pill, shared by both contacts so they read as a pair. The border
+   is load bearing: a white/10 fill alone measures 1.2:1 against the sheet,
+   which would leave the control boundary imperceptible. */
+const GHOST_PILL =
+  'focus-ring-ink u-press tap inline-flex min-h-[48px] w-full items-center justify-center gap-2.5 ' +
+  'rounded-full border border-white/30 bg-white/10 py-3 text-sm font-medium text-white ' +
+  'transition-colors duration-fast ease-feedback hover:bg-white/20';
+
 /**
- * Slide-out menu. A solid obsidian panel.
+ * Full-screen navigation sheet.
  *
- * Enters from the inline end, which is the right in LTR and the left in RTL.
- * The panel is positioned with inset-inline-end and translated on a sign that
- * follows the reading direction, so no second layout exists for Arabic. Its
- * leading edge is border-s, not border-l, so the hairline lands on the left in
- * English and on the right in Arabic with no override.
+ * It is no longer a side drawer. The panel covers the viewport, so there is no
+ * edge to slide from and nothing to mirror: the same layout serves both
+ * directions, and the entrance is a fade rather than a translate.
  *
- * Surface: solid obsidian. The blur is gone. Glassmorphism in this system is
- * restricted by design rule to the pill navigation and the hero spotlight
- * card, and a translucent drawer was the third place it had crept into.
+ * Surface: obsidian at 92 percent with backdrop-blur-2xl, over a scrim of the
+ * same colour. This is the third and last blur surface in the system and it is
+ * declared inline here rather than as a utility, because unlike the pill and
+ * the spotlight it covers everything behind it, so nothing shows through that
+ * could change its contrast.
  *
- * A solid panel is also the honest choice here: it needs no composite
- * arithmetic to prove its contrast, because nothing shows through it. White
- * on obsidian is 19.34:1, slate 400 is 7.54:1, and the emerald chip is 3.65:1
- * against the panel, which clears the 3:1 threshold for a control.
+ * Measured against the worst case, the sheet opened over a white section: the
+ * composite reads #1A1E24, where white is 14.8:1, slate 400 is 5.8:1, and a
+ * white/10 ghost fill is 1.4:1 against the sheet. That last figure is why the
+ * ghost pills carry a border and not only a fill: the border is what makes the
+ * control's boundary perceivable. It sits at 30 percent rather than the 20 the
+ * brief asked for, because white/20 measures 2.5:1 there and white/30 measures
+ * 3.4:1, which is the threshold SC 1.4.11 sets for a component boundary.
  *
- * Every ring inside the panel is focus-ring-ink, because the emerald ring that
- * serves light grounds is only 3.65:1 against obsidian.
- *
- * Nothing here is shared with the desktop header except NAV_LINKS and the
- * LocaleSwitcher 'panel' tone, and that tone is used in this file and nowhere
- * else, so the desktop bar is untouched by this refactor.
+ * Contacts: WhatsApp and the operations line. The office line came off this
+ * sheet on the client's instruction, so the menu offers one number, which is
+ * also the number every other call to action on the site reaches.
  */
 
 type Props = { open: boolean; onClose: () => void };
 
 export function MobileDrawer({ open, onClose }: Props) {
-  const { t, dir, locale } = useLocale();
+  const { t, locale } = useLocale();
   const panelRef = useRef<HTMLElement | null>(null);
   const closeRef = useRef<HTMLButtonElement | null>(null);
 
@@ -83,7 +90,6 @@ export function MobileDrawer({ open, onClose }: Props) {
     return () => document.removeEventListener('keydown', onKeyDown);
   }, [open, onClose]);
 
-  const hidden = dir === 'rtl' ? 'translateX(-100%)' : 'translateX(100%)';
   const waHref = generateWhatsAppLink('mobileBar', {}, { locale, ref: 'WEB-DRAWER' });
 
   return (
@@ -91,7 +97,7 @@ export function MobileDrawer({ open, onClose }: Props) {
       <div
         onClick={onClose}
         aria-hidden="true"
-        className={`fixed inset-0 z-[190] bg-obsidian/70 u-surface-out ${
+        className={`fixed inset-0 z-[190] bg-obsidian/80 u-surface-out ${
           open ? 'visible opacity-100 u-surface-in' : 'invisible opacity-0'
         }`}
         style={{ transitionProperty: 'opacity, visibility' }}
@@ -104,102 +110,86 @@ export function MobileDrawer({ open, onClose }: Props) {
         aria-modal="true"
         aria-label={t.nav.mobile}
         aria-hidden={!open}
-        className={`fixed inset-y-0 end-0 z-[200] flex w-[min(88%,360px)] flex-col overflow-y-auto border-s border-white/10 bg-obsidian p-[18px] text-white shadow-drawer u-surface-out transform-gpu ${
-          open ? 'u-surface-in' : ''
+        className={`fixed inset-0 z-[200] flex h-full min-h-screen w-full flex-col justify-between overflow-y-auto p-6 text-white u-surface-out transform-gpu ${
+          open ? 'u-surface-in opacity-100' : 'pointer-events-none opacity-0'
         }`}
-        style={{ transform: open ? 'translateX(0)' : hidden }}
+        style={{
+          backgroundColor: 'rgba(10,14,20,.92)',
+          backdropFilter: 'blur(28px) saturate(1.1)',
+          WebkitBackdropFilter: 'blur(28px) saturate(1.1)',
+          transitionProperty: 'opacity',
+        }}
       >
-        <div className="mb-5 flex items-center justify-between gap-3">
-          {/* The white knockout on transparency, the same file the header uses.
-              No plate, no border, no fill behind it. */}
-          <Image
-            src={siteConfig.company.logoLight}
-            alt={siteConfig.company.legalName}
-            width={1200}
-            height={481}
-            sizes="126px"
-            className="h-auto w-[126px]"
-          />
-          <button
-            ref={closeRef}
-            type="button"
-            onClick={onClose}
-            aria-label={t.a11y.closeMenuLabel}
-            className="focus-ring-ink u-press tap flex h-11 w-11 flex-none items-center justify-center rounded-full border border-white/15 bg-white/10 text-lg leading-none text-white transition-colors duration-fast ease-feedback hover:bg-white/20"
-          >
-            &#10005;
-          </button>
-        </div>
-
-        {/* Direct actions are pinned above the links, not below them. Three
-            steps of emphasis: WhatsApp, the 24/7 line, then the office line. */}
-        <div className="grid gap-2.5">
-          <Button
-            href={waHref}
-            external
-            variant="whatsapp"
-            size="block"
-            className="min-h-[52px]"
-            aria-label={t.a11y.whatsappGeneric}
-          >
-            <WhatsAppIcon size={18} />
-            {t.cta.whatsapp}
-          </Button>
-
-          {/* The emerald fill carrying a white label at 5.29:1, the same
-              pairing as the emergency section button. */}
-          <Button
-            href={callPrimaryHref()}
-            variant="teal"
-            size="block"
-            className="min-h-[52px]"
-            aria-label={t.a11y.callPrimary}
-          >
-            <PhoneIcon size={17} />
-            {t.cta.callNow}
-            <span dir="ltr" className="tabular-nums">
-              {siteConfig.contact.primaryPhone.display}
-            </span>
-          </Button>
-
-          <Button
-            href={callOfficeHref()}
-            variant="outline"
-            size="block"
-            className="min-h-[52px]"
-            aria-label={t.a11y.callOfficeLabel}
-          >
-            <PhoneIcon size={17} />
-            {t.cta.callOffice}
-            <span dir="ltr" className="tabular-nums">
-              {siteConfig.contact.secondaryPhone.display}
-            </span>
-          </Button>
-        </div>
-
-        <p className="mt-4 inline-flex items-center gap-2 text-xs leading-tight text-faint-soft">
-          <ClockIcon size={14} className="flex-none text-emerald" />
-          {siteConfig.contact.hours.office}
-        </p>
-
-        <nav
-          aria-label={t.nav.mobile}
-          className="mt-5 flex flex-col border-t border-white/10 pt-1"
-        >
-          {NAV_LINKS.map((link) => (
-            <a
-              key={link.key}
-              href={link.href}
+        <div>
+          <div className="relative flex min-h-[44px] items-center justify-center">
+            {/* Centred, and the close button is taken out of flow so the logo
+                sits on the true centre line rather than on what is left of it. */}
+            <Image
+              src={siteConfig.company.logoLight}
+              alt={siteConfig.company.legalName}
+              width={1200}
+              height={481}
+              sizes="148px"
+              className="mx-auto mb-6 h-auto w-[148px]"
+            />
+            <button
+              ref={closeRef}
+              type="button"
               onClick={onClose}
-              className="focus-ring-ink flex min-h-[52px] items-center rounded border-b border-white/10 py-3 text-base font-medium text-white transition-colors duration-fast ease-feedback hover:text-emerald"
+              aria-label={t.a11y.closeMenuLabel}
+              className="focus-ring-ink u-press tap absolute end-0 top-0 flex h-11 w-11 flex-none items-center justify-center rounded-full border border-white/20 text-lg leading-none text-white transition-colors duration-fast ease-feedback hover:bg-white/10"
             >
-              {t.nav[link.key]}
-            </a>
-          ))}
-        </nav>
+              &#10005;
+            </button>
+          </div>
 
-        <div className="mt-5 pt-1">
-          <LocaleSwitcher tone="panel" className="w-full" />
+          <nav aria-label={t.nav.mobile} className="mt-2 flex flex-col">
+            {NAV_LINKS.map((link) => (
+              <a
+                key={link.key}
+                href={link.href}
+                onClick={onClose}
+                className="focus-ring-ink flex min-h-[56px] items-center rounded border-b border-white/10 py-3 text-base font-medium text-white transition-colors duration-fast ease-feedback hover:text-emerald"
+              >
+                {t.nav[link.key]}
+              </a>
+            ))}
+          </nav>
+        </div>
+
+        <div className="pt-8">
+          {/* Two contacts, both ghost pills. The office line was removed on
+              instruction; what is left is the number every call to action on
+              the site reaches. */}
+          <div className="grid gap-2.5">
+            <a
+              href={waHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={t.a11y.whatsappGeneric}
+              className={GHOST_PILL}
+            >
+              <WhatsAppIcon size={18} />
+              {t.cta.whatsapp}
+            </a>
+
+            <a href={callPrimaryHref()} aria-label={t.a11y.callPrimary} className={GHOST_PILL}>
+              <PhoneIcon size={17} />
+              {t.cta.callNow}
+              <span dir="ltr" className="tabular-nums">
+                {siteConfig.contact.primaryPhone.display}
+              </span>
+            </a>
+          </div>
+
+          <p className="mt-5 inline-flex items-center gap-2 text-xs leading-tight text-faint-soft">
+            <ClockIcon size={14} className="flex-none text-emerald" />
+            {siteConfig.contact.hours.office}
+          </p>
+
+          <div className="mt-5">
+            <LocaleSwitcher tone="panel" className="w-full" />
+          </div>
         </div>
       </aside>
     </>

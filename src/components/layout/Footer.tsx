@@ -142,24 +142,32 @@ export function Footer() {
             </li>
             <li className="flex items-start gap-2.5">
               <MailIcon size={16} className="mt-1 flex-none text-emerald" />
-              <a
-                href={mailHref()}
-                aria-label={t.a11y.emailLabel}
-                className="focus-ring-ink break-all rounded hover:text-white"
-              >
-                {siteConfig.contact.email}
-              </a>
+              <span className="flex min-w-0 flex-col">
+                <a
+                  href={mailHref()}
+                  aria-label={t.a11y.emailLabel}
+                  className="focus-ring-ink break-all rounded hover:text-white"
+                >
+                  {siteConfig.contact.email}
+                </a>
+                <a
+                  href={mailHref('operations')}
+                  aria-label={t.a11y.emailOperationsLabel}
+                  className="focus-ring-ink break-all rounded hover:text-white"
+                >
+                  {siteConfig.contact.emailOperations}
+                </a>
+              </span>
             </li>
             <li className="flex items-start gap-2.5">
               <PinIcon size={16} className="mt-1 flex-none text-emerald" />
               <address className="not-italic leading-relaxed">{formatAddress()}</address>
             </li>
+            {/* One schedule. The second line used to carry a 24/7 emergency
+                claim, which the site no longer makes anywhere. */}
             <li className="flex items-start gap-2.5">
               <ClockIcon size={16} className="mt-1 flex-none text-emerald" />
-              <span className="flex flex-col">
-                <span>{siteConfig.contact.hours.office}</span>
-                <span className="text-white">{siteConfig.contact.hours.emergency}</span>
-              </span>
+              <span>{siteConfig.contact.hours.office}</span>
             </li>
           </ul>
         </div>

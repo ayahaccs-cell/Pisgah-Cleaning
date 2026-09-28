@@ -6,7 +6,7 @@ import { ClientStrip } from '@/components/sections/ClientStrip';
 import { ProcessJourney } from '@/components/sections/ProcessJourney';
 import { ServicePillars } from '@/components/sections/ServicePillars';
 import { PackageSelector } from '@/components/sections/PackageSelector';
-import { EmergencyCallout } from '@/components/sections/EmergencyCallout';
+import { ConsultationCta } from '@/components/sections/ConsultationCta';
 import { LeadershipSection } from '@/components/sections/LeadershipSection';
 import { MainLandmark } from '@/components/layout/MainLandmark';
 
@@ -32,7 +32,7 @@ export function HomePage() {
         <ProcessJourney />
         <ServicePillars />
         <PackageSelector />
-        <EmergencyCallout />
+        <ConsultationCta />
         <LeadershipSection />
       </MainLandmark>
       <Footer />

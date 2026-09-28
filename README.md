@@ -734,6 +734,110 @@ Division summaries and coverage lists unified to `text-sm font-normal
 leading-relaxed text-muted`, matching each other and the paragraph under the
 section heading.
 
+## Contact overhaul, navigation sync and mobile restructure (v10)
+
+### Contact data, changed at the single source
+
+| Field | Value |
+| --- | --- |
+| Primary phone | `+973 33512244` - header, drawer, hero, WhatsApp engine, consultation strip |
+| Secondary phone | `+973 33524411` - footer only, beside the primary |
+| Email | `pisgahcleaning123@gmail.com` |
+| Operations email | `operations.pisgah@gmail.com` |
+| Address | `No. 31 Building 77, Road 905, Block 309, Manama, Kingdom of Bahrain` |
+| Hours | `Sat to Thu, 09:00 to 17:00`, and nothing else |
+
+All of it lives in `siteConfig`; no component holds a literal, which is what
+`scripts/guardrails.mjs` enforces on every build. `formatAddress` now joins the
+unit and building as one clause, because that is how the client writes it.
+
+`hours.emergency` is deleted, not emptied. The footer line that rendered it is
+gone, the `a11y.callPrimary` label no longer says "24/7 emergency line", and
+the emergency `ContactPoint` with `hoursAvailable: '24/7'` came out of the
+LocalBusiness JSON-LD. Structured data that keeps promising round the clock
+response after the section promising it was deleted is worse than no structured
+data: search results would go on making the claim on the company's behalf.
+
+### Emergency band replaced
+
+`EmergencyCallout.tsx` is deleted, `ConsultationCta.tsx` takes its slot, and
+the `emergency` dictionary block is replaced by `consultation` in both locales.
+The WhatsApp context moved with it: `WEB-EMG` is now `WEB-CONSULT`, with a new
+opening line in each language.
+
+It is a low-profile strip: heading, one paragraph, two buttons, and the number
+with the schedule beside it on a hairline. No eyebrow, no rule, no radial, no
+status dot.
+
+### Navigation
+
+A `Clients` tab sits between `Specialised` and `How We Work`, pointing at
+`#clients`. Six labels needed slightly tighter nav gaps before the xl collapse
+point; the collapse threshold itself is unchanged.
+
+**Accordion sync.** The three division links point at the ids of the accordion
+cards themselves, and `ServicePillars` watches the hash: arriving at
+`#residential` scrolls there and opens Division B, and every division is a
+real, shareable URL. Two listeners, because one is not enough:
+
+- `hashchange`, for navigating between divisions;
+- a delegated `click` on `a[href^="#"]`, because re-clicking the link for the
+  division already in the URL changes nothing and therefore fires no
+  `hashchange` at all.
+
+Still no scroll listener anywhere on the site.
+
+### Mobile drawer
+
+Full screen, `inset-0`, obsidian at 92 percent with `backdrop-blur-2xl` over a
+scrim of the same colour. No edge to slide from, so the entrance is a fade and
+there is nothing left to mirror: the same layout serves both directions.
+
+Logo centred at the top with the close button taken out of flow, so the logo
+sits on the true centre line rather than on what is left of it after the button.
+Links are hairline-ruled at 56px. The contact pair drops to two ghost pills:
+WhatsApp and the operations line. The office line came off this sheet on
+instruction.
+
+### Mobile hero
+
+Centred headline at `text-2xl sm:text-3xl`, centred subhead at `text-xs
+sm:text-sm`, both returning to start-aligned from `lg`. The block order is now
+headline, subhead, spotlight card, actions, client proof, done with `order`
+utilities on the flex column so the desktop grid is untouched: the actions
+block sits in column one row two there, directly under the copy.
+
+Both hero actions are ghost pills of equal weight.
+
+### Two measured deviations
+
+**Ghost button borders.** The brief specified `border-white/25` on the hero and
+`border-white/20` in the drawer. Measured against the surfaces they actually sit
+on, those give the control boundary 2.2:1 and 2.5:1, below the 3:1 that SC
+1.4.11 asks of a component boundary. They ship at `/40` and `/30`, which measure
+3.4:1 in both places. The labels themselves were never in doubt at 13:1 and
+16:1. One notch each, and both still read unmistakably as ghosts.
+
+**Hierarchy, flagged not fixed.** Two equal ghost buttons means the hero has no
+single filled primary drawing the eye to one action, so the strongest fill on
+the first screen is now the Book Now pill in the header. That is the requested
+look, and it is one word to revert: switch the first hero `Button` back to
+`variant="primary"`.
+
+### Leadership
+
+Card 04 is now Aqeel Thasim, Sales Coordinator, with the supplied bio in both
+locales; the `santosh` id was renamed to `aqeel` throughout. The frame above
+each name dropped from a tall portrait to a 4:3 landscape capped at 144px
+(160px from sm). Four portrait boxes left a column of dead space above four
+short names and pushed the section past a screen for no gain.
+
+### Process frames
+
+All three steps share one box: `aspect-[16/10] max-h-64 w-full`, `rounded-xl`,
+hairline border. The per-step width taper is gone; the inward indent still
+carries the sequence, and the titles are now one size rather than three.
+
 ## Assets to replace
 
 Client photography supplied September 2026 is now in place.

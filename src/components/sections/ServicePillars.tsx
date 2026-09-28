@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { siteConfig } from '@/config/siteConfig';
 import { useLocale } from '@/context/LocaleProvider';
 import { generateWhatsAppLink } from '@/lib/whatsapp';
@@ -41,6 +41,47 @@ export function ServicePillars() {
   const { t, locale } = useLocale();
   /* null is a legal state: every panel closed. */
   const [openId, setOpenId] = useState<DivisionId | null>('commercial');
+
+  /**
+   * Navigation sync.
+   *
+   * The three division links in the header and the drawer point at the ids of
+   * the cards themselves, so arriving at #residential should both scroll here
+   * and open Division B. This listens to the hash rather than taking a prop,
+   * which keeps the two components uncoupled and makes every division a real,
+   * shareable URL.
+   *
+   * hashchange, not a scroll listener. The site still has none.
+   */
+  const syncToHash = useCallback(() => {
+    const id = window.location.hash.replace('#', '');
+    if (siteConfig.divisions.some((d) => d.id === id)) {
+      setOpenId(id as DivisionId);
+    }
+  }, []);
+
+  useEffect(() => {
+    syncToHash();
+    window.addEventListener('hashchange', syncToHash);
+
+    /* Re-clicking the link for the division already in the URL fires no
+       hashchange, so the anchor click is read directly as well. Delegated to
+       the document, so one listener serves the header and the drawer both. */
+    function onAnchorClick(event: MouseEvent) {
+      const anchor = (event.target as HTMLElement | null)?.closest?.('a[href^="#"]');
+      if (!anchor) return;
+      const id = (anchor.getAttribute('href') ?? '').replace('#', '');
+      if (siteConfig.divisions.some((d) => d.id === id)) {
+        setOpenId(id as DivisionId);
+      }
+    }
+    document.addEventListener('click', onAnchorClick);
+
+    return () => {
+      window.removeEventListener('hashchange', syncToHash);
+      document.removeEventListener('click', onAnchorClick);
+    };
+  }, [syncToHash]);
 
   return (
     <section id="services" aria-labelledby="services-heading" className="section-rhythm bg-canvas">
@@ -89,6 +130,8 @@ export function ServicePillars() {
                     onClick={() =>
                       setOpenId((prev) => (prev === division.id ? null : division.id))
                     }
+                    /* The card id lives on the article, so the anchor target
+                       and the accordion state stay one thing. */
                     className="focus-ring-light tap flex w-full items-center gap-4 px-5 py-5 text-start sm:gap-6 sm:px-7 sm:py-6"
                   >
                     {/* The division letter is a display numeral at 24px and up,

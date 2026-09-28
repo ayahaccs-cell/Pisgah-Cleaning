@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { siteConfig } from '@/config/siteConfig';
 import { useLocale } from '@/context/LocaleProvider';
-import { callOfficeHref, generateWhatsAppLink } from '@/lib/whatsapp';
+import { callPrimaryHref, generateWhatsAppLink } from '@/lib/whatsapp';
 import { Button } from '@/components/ui/Button';
 import { LocaleSwitcher } from '@/components/ui/LocaleSwitcher';
 import { ClockIcon, PhoneIcon, WhatsAppIcon } from '@/components/ui/Icons';
@@ -38,10 +38,19 @@ import { MobileDrawer } from './MobileDrawer';
  * text.
  */
 
+/**
+ * One list, rendered by the pill nav and the drawer alike.
+ *
+ * The three division hrefs are the ids of the accordion cards themselves, not
+ * of the section wrapper. That is deliberate: ServicePillars watches the hash
+ * and opens the matching division, so a nav click scrolls to the services and
+ * expands the right panel in one move, and the same URL is shareable.
+ */
 export const NAV_LINKS = [
   { href: '#commercial', key: 'commercial' },
   { href: '#residential', key: 'residential' },
   { href: '#specialised', key: 'specialised' },
+  { href: '#clients', key: 'clients' },
   { href: '#process', key: 'process' },
   { href: '#leadership', key: 'leadership' },
 ] as const;
@@ -82,7 +91,7 @@ export function Navbar() {
             {/* ---- Zone 2: navigation. Shrinks before it collides. ---- */}
             <nav
               aria-label={t.nav.primary}
-              className="hidden min-w-0 flex-1 items-center justify-center gap-4 pe-5 xl:flex xl:gap-6"
+              className="hidden min-w-0 flex-1 items-center justify-center gap-3.5 pe-5 xl:flex xl:gap-5"
             >
               {NAV_LINKS.map((link) => (
                 <a
@@ -107,13 +116,13 @@ export function Navbar() {
                   than pushed up by the line beneath it. */}
               <div className="relative hidden flex-none flex-col items-end sm:flex">
                 <a
-                  href={callOfficeHref()}
-                  aria-label={t.a11y.callOfficeLabel}
+                  href={callPrimaryHref()}
+                  aria-label={t.a11y.callPrimary}
                   className="focus-ring-ink inline-flex items-center gap-1.5 whitespace-nowrap rounded text-xs font-semibold leading-tight text-white transition-colors duration-fast ease-feedback hover:text-white/80"
                 >
                   <PhoneIcon size={14} className="flex-none text-faint-soft" />
                   <span dir="ltr" className="tabular-nums">
-                    {siteConfig.contact.secondaryPhone.display}
+                    {siteConfig.contact.primaryPhone.display}
                   </span>
                 </a>
 

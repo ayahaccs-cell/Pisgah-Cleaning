@@ -10,7 +10,15 @@ import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from 'reac
  * WhatsAppAction wrapper, not here, so a plain navigation link stays simple.
  */
 
-type Variant = 'primary' | 'ghost' | 'glass' | 'whatsapp' | 'teal' | 'outline' | 'light';
+type Variant =
+  | 'primary'
+  | 'ghost'
+  | 'glass'
+  | 'whatsapp'
+  | 'teal'
+  | 'outline'
+  | 'light'
+  | 'ghost-glass';
 type Size = 'md' | 'lg' | 'block';
 
 const BASE =
@@ -27,6 +35,7 @@ const FOCUS: Record<Variant, string> = {
   teal: 'focus-ring-ink',
   outline: 'focus-ring-ink',
   light: 'focus-ring-ink',
+  'ghost-glass': 'focus-ring-ink',
 };
 
 const VARIANTS: Record<Variant, string> = {
@@ -46,6 +55,14 @@ const VARIANTS: Record<Variant, string> = {
   outline: 'bg-transparent text-white border-white/70 hover:border-white hover:bg-white/10',
   /* A white pill on a dark surface. Emerald label at 5.29:1. */
   light: 'bg-white text-emerald hover:bg-canvas',
+  /* Transparent pill for the hero, where both actions are deliberately equal
+     in weight. The border is at 40 percent rather than the 25 the brief asked
+     for: measured over the hero vignette, white/25 gives the control boundary
+     only 2.2:1 against its own fill, below the 3:1 that SC 1.4.11 wants for a
+     component boundary. At 40 percent it reads 3.4:1, and the label itself is
+     13:1. One notch, and the button is still unmistakably a ghost. */
+  'ghost-glass':
+    'border-white/40 bg-white/10 text-white backdrop-blur-sm hover:bg-white/20 hover:border-white/55',
 };
 
 const SIZES: Record<Size, string> = {

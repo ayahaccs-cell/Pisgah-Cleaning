@@ -19,7 +19,7 @@ export const WA_REFS = {
   division: 'WEB-SRV',
   package: 'WEB-PKG',
   deep: 'WEB-DEEP',
-  emergency: 'WEB-EMG',
+  consultation: 'WEB-CONSULT',
   mobileBar: 'WEB-BAR',
   footer: 'WEB-FOOT',
 } as const;
@@ -40,7 +40,7 @@ const OPENINGS: Record<Locale, Record<string, string>> = {
     division: 'Hi Pisgah, I would like a tailored scope for this service.',
     package: 'Hi Pisgah, I would like to book a complimentary inspection.',
     deep: 'Hi Pisgah, I would like a tailored scope for a deep treatment.',
-    emergency: 'URGENT - Pisgah technical call-out required.',
+    consultation: 'Hi Pisgah, I would like to book a site walkthrough for a commercial cleaning contract.',
     mobileBar: 'Hi Pisgah, I would like to arrange a site survey.',
     footer: 'Hi Pisgah, I would like to speak to your team about a contract.',
   },
@@ -51,7 +51,7 @@ const OPENINGS: Record<Locale, Record<string, string>> = {
     division: 'مرحباً بسجاه، أرغب في نطاق عمل مخصص لهذه الخدمة.',
     package: 'مرحباً بسجاه، أرغب في حجز معاينة مجانية للعقار.',
     deep: 'مرحباً بسجاه، أرغب في نطاق عمل مخصص لمعالجة عميقة.',
-    emergency: 'عاجل - مطلوب فريق طوارئ فني من بسجاه.',
+    consultation: 'مرحباً بسجاه، أرغب في حجز جولة تفقدية للموقع لعقد تنظيف تجاري.',
     mobileBar: 'مرحباً بسجاه، أرغب في ترتيب معاينة موقعية.',
     footer: 'مرحباً بسجاه، أرغب في التحدث مع فريقكم بخصوص عقد خدمة.',
   },
@@ -135,6 +135,10 @@ export function callOfficeHref(): string {
 }
 
 /** mailto: href for the published address. */
-export function mailHref(): string {
-  return `mailto:${siteConfig.contact.email}`;
+export function mailHref(inbox: 'general' | 'operations' = 'general'): string {
+  const address =
+    inbox === 'operations'
+      ? siteConfig.contact.emailOperations
+      : siteConfig.contact.email;
+  return `mailto:${address}`;
 }
