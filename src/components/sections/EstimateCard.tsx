@@ -63,7 +63,7 @@ export function EstimateCard() {
         className="rounded-[20px] border border-hairline bg-white p-[clamp(20px,3vw,34px)] shadow-intake"
       >
         <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
-          <h2 id="intake-title" className="font-display text-[clamp(23px,2.6vw,30px)] leading-tight text-ink">
+          <h2 id="intake-title" className="text-[clamp(22px,2.4vw,28px)] font-bold leading-tight tracking-tight text-ink">
             {t.intake.title}
           </h2>
           <p className="spec max-w-[46ch]">{t.intake.note}</p>

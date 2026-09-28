@@ -60,7 +60,7 @@ export function Footer() {
             sizes="180px"
             className="h-auto w-[180px]"
           />
-          <p className="mt-5 max-w-[34ch] font-display text-[22px] leading-snug text-white">
+          <p className="mt-5 max-w-[34ch] text-[20px] font-semibold leading-snug tracking-tight text-white">
             {t.footer.promise}
           </p>
           <Button

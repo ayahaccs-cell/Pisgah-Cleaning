@@ -44,7 +44,7 @@ export function EmergencyCallout() {
 
           <h2
             id="emergency-heading"
-            className="mt-6 max-w-[20ch] font-display text-[clamp(28px,4vw,46px)] leading-[1.03] text-white"
+            className="mt-6 max-w-[20ch] text-[clamp(27px,3.4vw,42px)] font-bold leading-[1.12] tracking-tight text-white"
           >
             {t.emergency.heading}
           </h2>
@@ -63,7 +63,7 @@ export function EmergencyCallout() {
             href={callPrimaryHref()}
             dir="ltr"
             aria-label={t.a11y.callPrimary}
-            className="focus-ring-ink mt-4 block rounded font-display text-[clamp(32px,4.6vw,48px)] leading-none tabular-nums text-white underline-offset-[6px] transition-[text-underline-offset] duration-fast ease-feedback hover:underline hover:underline-offset-[10px]"
+            className="focus-ring-ink mt-4 block rounded text-[clamp(30px,4.2vw,44px)] font-bold leading-none tracking-tight tabular-nums text-white underline-offset-[6px] transition-[text-underline-offset] duration-fast ease-feedback hover:underline hover:underline-offset-[10px]"
           >
             {siteConfig.contact.primaryPhone.display}
           </a>

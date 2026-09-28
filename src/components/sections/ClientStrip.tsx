@@ -33,7 +33,7 @@ export function ClientStrip() {
             <p className="spec spec-on-ink">{t.clients.spec}</p>
             <h2
               id="clients-heading"
-              className="mt-5 max-w-[20ch] font-display text-[clamp(26px,3vw,38px)] leading-[1.08] text-white"
+              className="mt-5 max-w-[20ch] text-[clamp(25px,2.8vw,34px)] font-bold leading-[1.14] tracking-tight text-white"
             >
               {t.clients.heading}
             </h2>

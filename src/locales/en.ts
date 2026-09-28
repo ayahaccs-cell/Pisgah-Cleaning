@@ -82,18 +82,6 @@ export const en = {
     phonePlaceholder: '+973 0000 0000',
   },
 
-  trust: {
-    ratingTitle: 'Top Rated Commercial and Villa Care in Bahrain',
-    ratingSub: 'Retained on landmark contracts since 2008',
-    sectorsLabel: 'Sectors we hold',
-    sectors: {
-      retail: 'Retail Malls',
-      cinemas: 'Cinemas',
-      mosques: 'Mosques',
-      towers: 'Corporate Towers',
-    },
-    guarantee: 'Direct Pisgah Induction - Zero Subcontractors Guarantee',
-  },
 
   clients: {
     heading: '15+ landmark contracts across Bahrain.',

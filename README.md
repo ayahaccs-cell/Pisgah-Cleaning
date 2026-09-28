@@ -651,6 +651,89 @@ The estimate card no longer floats up over the hero. It used to overlap a full
 bleed banner; against a rounded frame a white card straddling the clipped
 corner read as a mistake, so it opens the light canvas instead.
 
+## Typography unification and hero rebalance (v9)
+
+### One typeface, site wide
+
+The serif is gone. `--font-display` and `--font-body` now both resolve to Plus
+Jakarta Sans in Latin and to IBM Plex Sans Arabic under RTL, declared once in
+`globals.css`. Instrument Serif, Cormorant Garamond and Amiri are out of the
+font import entirely, so there is no second face for a component to reach for
+even by accident.
+
+Every heading is `font-bold` with `tracking-tight`, stated explicitly on the
+component rather than only inherited, so a reader can see the weight without
+opening `globals.css`. `.h-ui` remains for card titles at 600, same family,
+same tracking discipline. Sequence numerals moved off the serif and now carry
+the 01 / 02 / 03 rhythm through scale, tabular figures and the accent colour.
+
+Arabic heading leading eased from 1.28 to 1.34, because a bold sans at these
+sizes sets tighter than the serif it replaced.
+
+No component references `font-display` any more. The audit greps clean for
+`serif`, `font-mono`, Instrument, Cormorant and Amiri across `src/` and the
+Tailwind config.
+
+### Hero rebalance
+
+The headline dropped to `text-3xl lg:text-4xl xl:text-5xl font-bold
+tracking-tight`. The spotlight card was filling its 42 percent column and
+competing with the headline for the fold; it is now `p-3`, capped at 320px on
+desktop and pushed to the inline end of that column, with the preview reduced
+from a 4:5 portrait to a 3:2 landscape.
+
+One deliberate difference from the brief: on a phone the card runs the full
+column width rather than the 280px cap. There is no headline beside it there to
+crowd, and a 280px card in a 390px viewport reads as an undersized thumbnail
+rather than as the "normal width inline card" the mobile section asks for. The
+320px desktop cap is exactly as specified.
+
+### New photography
+
+| File | Frame |
+| --- | --- |
+| `intro-hero.jpg` | Cinema auditorium, mopping between seat rows. 16:9, 1800px |
+| `process-01-survey.jpg` | Cineco lobby walk-through. 4:3, 1200px |
+| `process-02-mobilisation.jpg` | Kitchen unit, cabinet interiors. 4:3, 1200px |
+| `process-03-handover.jpg` | Concession counter, supervisor at station. 4:3, 1200px |
+| `hero-spotlight.jpg` | Rotary polishing, recut to 3:2 for the smaller card |
+
+Two of the supplied files carried EXIF orientation, so they were transposed
+before cropping; read cold they are landscape and would have been cropped
+across the wrong axis. All three process frames now share one `aspect-[4/3]`
+box with `rounded-xl` corners and a hairline border.
+
+`process-03-signoff.jpg` was renamed to `process-03-handover.jpg`, and the old
+path was added to `scripts/prune-legacy.mjs` so a stale checkout self-heals.
+The dictionary key `journey.steps.signoff` is unchanged; it names the step, not
+the file.
+
+The spotlight card also stopped borrowing a process frame and has its own file,
+so the two can be art directed independently.
+
+### Trust banner removed
+
+`TrustBar.tsx` is deleted, along with its entry in `HomePage`, the whole
+`trust` block in both dictionaries (parity now 220 nodes each side), and the
+seven icons that only it used: Retail, Cinema, Mosque, Tower, Star, ShieldCheck
+and Shield. `Icons.tsx` went from 6093 to 3552 bytes. The component path is
+listed in `prune-legacy.mjs` for the same self-healing reason.
+
+It carried a star rating, a sector list and a guarantee line. The hero proof
+strip and the client register now make all three of those claims with named
+accounts and scopes attached, so the banner was a second, weaker version of the
+same argument sitting directly under the estimate card.
+
+The estimate card keeps its own `bg-canvas pb-2 pt-12` band and the next
+section opens on the same ground, so there is no leftover margin or empty
+container where the banner used to be.
+
+### Division copy
+
+Division summaries and coverage lists unified to `text-sm font-normal
+leading-relaxed text-muted`, matching each other and the paragraph under the
+section heading.
+
 ## Assets to replace
 
 Client photography supplied September 2026 is now in place.

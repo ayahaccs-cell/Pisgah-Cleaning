@@ -23,21 +23,21 @@ const STEPS = [
     image: siteConfig.media.process.survey,
     /* Widths narrow as the sequence advances, which is what makes the column
        read as a timeline rather than as a stack. */
-    frame: 'aspect-[16/9] w-full',
+    frame: 'aspect-[4/3] w-full',
     indent: '',
     title: 'text-[clamp(23px,2.4vw,30px)]',
   },
   {
     key: 'mobilisation',
     image: siteConfig.media.process.mobilisation,
-    frame: 'aspect-[16/9] w-full lg:w-[86%]',
+    frame: 'aspect-[4/3] w-full lg:w-[86%]',
     indent: 'lg:ms-[7%]',
     title: 'text-[clamp(20px,2vw,25px)]',
   },
   {
     key: 'signoff',
-    image: siteConfig.media.process.signoff,
-    frame: 'aspect-[16/9] w-full lg:w-[74%]',
+    image: siteConfig.media.process.handover,
+    frame: 'aspect-[4/3] w-full lg:w-[74%]',
     indent: 'lg:ms-[14%]',
     title: 'text-[clamp(19px,1.85vw,23px)]',
   },
@@ -56,7 +56,7 @@ export function ProcessJourney() {
             <p className="spec spec-cyan">{t.journey.spec}</p>
             <h2
               id="process-heading"
-              className="mt-5 font-display text-[clamp(28px,3.6vw,44px)] leading-[1.04]"
+              className="mt-5 text-[clamp(27px,3.2vw,40px)] font-bold leading-[1.12] tracking-tight"
             >
               {t.journey.heading}
             </h2>
@@ -109,7 +109,7 @@ export function ProcessJourney() {
                   </p>
 
                   <div
-                    className={`mt-5 overflow-hidden rounded-2xl border border-hairline bg-mist shadow-card ${step.frame}`}
+                    className={`mt-5 overflow-hidden rounded-xl border border-hairline bg-mist shadow-card ${step.frame}`}
                   >
                     <div className="relative h-full w-full">
                       <Image

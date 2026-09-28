@@ -33,7 +33,7 @@ export function PackageSelector() {
             <p className="spec spec-cyan">{t.packages.spec}</p>
             <h2
               id="packages-heading"
-              className="mt-5 font-display text-[clamp(28px,3.6vw,44px)] leading-[1.04]"
+              className="mt-5 text-[clamp(27px,3.2vw,40px)] font-bold leading-[1.12] tracking-tight"
             >
               {t.packages.heading}
             </h2>

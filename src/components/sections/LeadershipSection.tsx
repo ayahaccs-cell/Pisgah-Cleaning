@@ -43,7 +43,7 @@ export function LeadershipSection() {
             <p className="spec spec-cyan">{t.leadership.spec}</p>
             <h2
               id="leadership-heading"
-              className="mt-5 font-display text-[clamp(28px,3.6vw,44px)] leading-[1.04]"
+              className="mt-5 text-[clamp(27px,3.2vw,40px)] font-bold leading-[1.12] tracking-tight"
             >
               {t.leadership.heading}
             </h2>
@@ -71,7 +71,7 @@ export function LeadershipSection() {
                   ) : (
                     <span
                       aria-hidden="true"
-                      className="grid h-full w-full place-items-center font-display text-[clamp(32px,6vw,46px)] text-ink/20"
+                      className="grid h-full w-full place-items-center text-[clamp(30px,5.5vw,42px)] font-bold tracking-tight text-ink/20"
                     >
                       {initialsOf(copy.name)}
                     </span>

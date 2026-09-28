@@ -190,16 +190,14 @@ export const siteConfig = {
       width: 905,
       height: 509,
     },
-    /* The single featured operational frame in the hero spotlight card. The
-       video poster was tried here first and rejected: it is a logo on a wall,
-       and the card has to show the work. This is the rotary extraction frame,
-       cropped to portrait by the card. Replace with a dedicated shot when one
-       is taken and nothing else changes. */
-    heroSpotlight: '/media/process-02-mobilisation.jpg',
+    /* The single featured operational frame in the hero spotlight card. It now
+       has its own file rather than borrowing a process frame, so the two can
+       be art directed independently. */
+    heroSpotlight: '/media/hero-spotlight.jpg',
     process: {
       survey: '/media/process-01-survey.jpg',
       mobilisation: '/media/process-02-mobilisation.jpg',
-      signoff: '/media/process-03-signoff.jpg',
+      handover: '/media/process-03-handover.jpg',
     },
     /* One shot per residential tier. Tiers still awaiting their own photograph
        reuse the carpet extraction frame, which is marked below. */

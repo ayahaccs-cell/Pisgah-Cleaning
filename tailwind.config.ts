@@ -35,12 +35,12 @@ import plugin from 'tailwindcss/plugin';
  * supplied emerald carries a white label at 5.29:1, so the primary button is
  * filled with the brand colour exactly as specified and hovers darker.
  *
- * Typography. Instrument Serif ships a single 400 weight, so editorial
- * headlines are set at normal weight with near-neutral tracking rather than
- * bolded, which is what gives them the high-contrast editorial feel. Plus
- * Jakarta Sans carries every interface string. Under RTL the display stack
- * swaps to Amiri and the body stack to IBM Plex Sans Arabic, both in one place
- * in globals.css, so no component carries a conditional font class.
+ * Typography. One family, site wide. Plus Jakarta Sans carries every heading,
+ * label and paragraph in Latin; IBM Plex Sans Arabic carries all three under
+ * RTL. `display` and `sans` both resolve to the same CSS variable, so a
+ * heading and the paragraph beneath it cannot disagree, and there is no second
+ * face for a component to reach for. The swap happens in one place in
+ * globals.css, so no component carries a conditional font class.
  * ---------------------------------------------------------------------------
  */
 const config: Config = {

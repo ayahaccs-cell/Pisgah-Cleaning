@@ -49,7 +49,7 @@ export function ServicePillars() {
           <p className="spec spec-cyan">{t.pillars.spec}</p>
           <h2
             id="services-heading"
-            className="mt-5 font-display text-[clamp(28px,3.6vw,44px)] leading-[1.04]"
+            className="mt-5 text-[clamp(27px,3.2vw,40px)] font-bold leading-[1.12] tracking-tight"
           >
             {t.pillars.heading}
           </h2>
@@ -112,8 +112,8 @@ export function ServicePillars() {
                           not appear twice for a screen reader and nothing
                           reflows when the panel expands. */}
                       <span
-                        className={`mt-1.5 text-[14.5px] leading-snug ${
-                          isOpen ? 'text-muted' : 'line-clamp-2 text-muted'
+                        className={`mt-2 text-sm font-normal leading-relaxed text-muted ${
+                          isOpen ? '' : 'line-clamp-2'
                         }`}
                       >
                         {copy.summary}
@@ -154,7 +154,7 @@ export function ServicePillars() {
                         {copy.items.map((item) => (
                           <li
                             key={item}
-                            className="relative ps-4 text-[14.5px] leading-snug text-muted"
+                            className="relative ps-4 text-sm font-normal leading-relaxed text-muted"
                           >
                             <span aria-hidden="true" className="bullet-dot bullet-dot-soft" />
                             {item}
@@ -170,7 +170,7 @@ export function ServicePillars() {
                         rel="noopener noreferrer"
                         tabIndex={isOpen ? undefined : -1}
                         aria-label={t.a11y.whatsappDivision}
-                        className="focus-ring-light u-glide-host mt-6 inline-flex min-h-[48px] items-center gap-2 rounded-full text-[14.5px] font-semibold text-emerald transition-colors duration-fast ease-feedback hover:text-emerald-deep"
+                        className="focus-ring-light u-glide-host mt-6 inline-flex min-h-[48px] items-center gap-2 rounded-full text-sm font-semibold text-emerald transition-colors duration-fast ease-feedback hover:text-emerald-deep"
                       >
                         {t.cta.scopeRequest}
                         <ChevronRight size={14} className="u-glide" />

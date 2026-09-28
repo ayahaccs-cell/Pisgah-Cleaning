@@ -31,6 +31,13 @@ import { ChevronDown, PhoneIcon, PlayIcon } from '@/components/ui/Icons';
  * could present. That is why there is no blur behind the copy. The gradient
  * does the work, and glassmorphism stays on the two surfaces allowed to carry
  * it, one of which is the spotlight card below.
+ *
+ * The spotlight card is deliberately small. It was sized to fill its 42
+ * percent column and ended up competing with the headline for the fold, so on
+ * a desktop it is capped at 320px and pushed to the inline end of that column:
+ * a card beside the claim rather than a second claim. On a phone it runs the
+ * full column width, because there is no headline beside it to crowd and a
+ * 280px card in a 390px viewport just reads as an undersized thumbnail.
  */
 
 export function HeroSection() {
@@ -85,7 +92,7 @@ export function HeroSection() {
             <div className="flex flex-col gap-10 lg:grid lg:grid-cols-[58fr_42fr] lg:items-center lg:gap-x-12 lg:gap-y-10">
               {/* ---- 1. Headline, subhead, actions ---- */}
               <div className="order-1 min-w-0 lg:order-none">
-                <h1 className="max-w-[21ch] font-display text-[clamp(33px,4.4vw,54px)] leading-[1.08] text-white">
+                <h1 className="max-w-[20ch] text-3xl font-bold tracking-tight text-white lg:text-4xl xl:text-5xl">
                   {t.hero.headlineA}
                   <span className="block">{t.hero.headlineB}</span>
                 </h1>
@@ -129,14 +136,14 @@ export function HeroSection() {
               </div>
 
               {/* ---- 2. Spotlight card. One of the two glass surfaces. ---- */}
-              <div className="order-2 min-w-0 lg:order-none lg:row-span-2 lg:ps-4">
+              <div className="order-2 min-w-0 lg:order-none lg:row-span-2 lg:flex lg:justify-end lg:ps-4">
                 <button
                   type="button"
                   onClick={onVideo}
                   aria-label={t.a11y.playVideoLabel}
-                  className="focus-ring-ink group glass-spotlight tap block w-full rounded-2xl border border-white/15 p-4 text-start shadow-spotlight transition-colors duration-fast ease-feedback hover:border-white/30"
+                  className="focus-ring-ink group glass-spotlight tap block w-full rounded-2xl border border-white/15 p-3 text-start shadow-spotlight transition-colors duration-fast ease-feedback hover:border-white/30 lg:max-w-[320px]"
                 >
-                  <span className="relative block aspect-[4/3] w-full overflow-hidden rounded-xl bg-obsidian lg:aspect-[4/5]">
+                  <span className="relative block aspect-[4/3] w-full overflow-hidden rounded-xl bg-obsidian lg:aspect-[3/2]">
                     <Image
                       src={siteConfig.media.heroSpotlight}
                       alt=""
@@ -150,18 +157,18 @@ export function HeroSection() {
                     />
                     <span
                       aria-hidden="true"
-                      className="absolute bottom-3 end-3 grid h-11 w-11 place-items-center rounded-full bg-white text-emerald transition-transform duration-standard ease-entrance group-hover:scale-105"
+                      className="absolute bottom-2.5 end-2.5 grid h-10 w-10 place-items-center rounded-full bg-white text-emerald transition-transform duration-standard ease-entrance group-hover:scale-105"
                     >
                       <PlayIcon size={13} className="rtl:-scale-x-100" />
                     </span>
                   </span>
 
-                  <span className="mt-4 block">
+                  <span className="mt-3 block px-1 pb-1">
                     <span className="spec spec-on-ink">{t.hero.videoBadge}</span>
-                    <span className="h-ui mt-2 block text-[17px] leading-snug text-white">
+                    <span className="h-ui mt-1.5 block text-[15px] leading-snug text-white">
                       {t.hero.videoTitle}
                     </span>
-                    <span className="mt-1.5 block text-[13px] leading-snug text-white/65">
+                    <span className="mt-1 block text-[12.5px] leading-snug text-white/65">
                       {videoNotice ? t.hero.videoPending : t.hero.videoSub}
                     </span>
                   </span>

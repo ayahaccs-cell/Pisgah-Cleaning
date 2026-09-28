@@ -6,7 +6,7 @@
    because every family resolves through the CSS variables declared below.
    ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Amiri:wght@400;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -14,14 +14,14 @@
 
 @layer base {
   :root {
-    /* Latin stacks. Redefined wholesale under RTL below.
-       Instrument Serif ships one weight, 400. Editorial headlines are set at
-       normal weight with near-neutral tracking rather than bolded, which is
-       where the high-contrast editorial feel comes from. */
-    --font-display: 'Instrument Serif', 'Cormorant Garamond', Georgia,
-      'Times New Roman', serif;
+    /* One typeface, one stack. The serif experiment is gone: display and body
+       both resolve to Plus Jakarta Sans, so a heading and the paragraph under
+       it can never disagree. --font-display is kept as a variable rather than
+       deleted because every component addresses it, and a single definition
+       here is what guarantees there is nothing left to mismatch. */
     --font-body: 'Plus Jakarta Sans', 'Segoe UI', system-ui, -apple-system,
       sans-serif;
+    --font-display: var(--font-body);
 
     /* Motion tokens, from the approved motion system. */
     --d-instant: 100ms;
@@ -51,10 +51,10 @@
      the whole font stack is swapped in one place.
      -------------------------------------------------------------------- */
   [dir='rtl'] {
-    /* Amiri is the Arabic editorial face, the counterpart to Instrument Serif.
-       IBM Plex Sans Arabic carries every interface string. */
-    --font-display: 'Amiri', 'IBM Plex Sans Arabic', Georgia, serif;
+    /* The same single-family rule in Arabic. Amiri is gone with the Latin
+       serif; IBM Plex Sans Arabic carries headings and body alike. */
     --font-body: 'IBM Plex Sans Arabic', 'Plus Jakarta Sans', system-ui, sans-serif;
+    --font-display: var(--font-body);
   }
 
   [dir='rtl'] * {
@@ -88,29 +88,33 @@
     overflow-x: clip;
   }
 
+  /* Every heading is the same family at the same weight with the same
+     tracking. Setting it once here is what makes the global audit hold: a
+     component cannot opt a heading into a different face, because there is no
+     other face to opt into. */
   h1, h2, h3, h4 {
     @apply font-display;
-    font-weight: 400;
-    line-height: 1.06;
-    /* A serif does not want the tight tracking a grotesk headline needed. */
-    letter-spacing: -0.005em;
+    font-weight: 700;
+    line-height: 1.12;
+    letter-spacing: -0.022em;
     text-wrap: balance;
   }
 
-  /* Interface headings stay on the sans stack. Applied where a heading is a
-     label rather than an editorial statement, such as a card title. */
+  /* Card titles and other heading-shaped labels. One step down in weight from
+     a section heading, same family, same tracking discipline. */
   .h-ui {
     font-family: var(--font-body);
     font-weight: 600;
-    letter-spacing: -0.012em;
+    letter-spacing: -0.016em;
   }
 
-  /* Arabic headings need the tracking removed and a looser leading. */
+  /* Arabic needs a looser leading at every heading size. Tracking is already
+     forced to zero for the whole RTL tree above. */
   [dir='rtl'] h1,
   [dir='rtl'] h2,
   [dir='rtl'] h3,
   [dir='rtl'] h4 {
-    line-height: 1.28;
+    line-height: 1.34;
   }
 
   /* WCAG 2.1 SC 1.4.11 requires a focus indicator at 3:1 against what sits
@@ -407,12 +411,14 @@
   }
 
   /* Technical numbering replaces icon badges. Sits in the type, not in a box. */
-  /* Sequence numerals are set in the editorial serif, which is what carries
-     the 01 / 02 / 03 rhythm now that the mono face is retired. */
+  /* Sequence numerals. Same family as everything else; the rhythm comes from
+     scale, tabular figures and the accent colour rather than from a second
+     typeface. */
   .numeral {
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-variant-numeric: tabular-nums;
-    font-weight: 400;
+    font-weight: 700;
+    letter-spacing: -0.03em;
     color: theme('colors.emerald.DEFAULT');
   }
 
