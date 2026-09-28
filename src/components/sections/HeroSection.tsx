@@ -5,7 +5,6 @@ import { useCallback, useState } from 'react';
 import { siteConfig } from '@/config/siteConfig';
 import { useLocale } from '@/context/LocaleProvider';
 import { callPrimaryHref, generateWhatsAppLink } from '@/lib/whatsapp';
-import { Button } from '@/components/ui/Button';
 import { VideoModal } from '@/components/ui/VideoModal';
 import { ChevronDown, PhoneIcon, PlayIcon } from '@/components/ui/Icons';
 import { ParallaxBackdrop } from '@/components/ui/ParallaxBackdrop';
@@ -19,37 +18,54 @@ import { ParallaxBackdrop } from '@/components/ui/ParallaxBackdrop';
  * navigation overlaps the top of that frame, which is why the content column
  * carries its own top padding rather than the document carrying it.
  *
- * Desktop is an asymmetric 58 / 42 split: the reading column on the inline
- * start, the spotlight card on the inline end, where the vignette has released
- * and the photograph is still readable.
+ * One grid, two columns at every width. Sixty percent copy, forty percent
+ * spotlight card, on a phone as well as on a desktop, so the mobile hero is the
+ * desktop composition made smaller rather than a different page stacked into a
+ * single file. The client proof row is the second grid row: it spans both
+ * columns on a phone and tucks under the buttons, inside the copy column, from
+ * lg up, where the card spans both rows and centres against them.
  *
- * Mobile is not that grid scaled down. It is a single file stack, the vignette
- * runs top to bottom instead of across, and the spotlight card becomes a normal
- * width inline card between the buttons and the client proof grid.
+ * The composition is centred in the frame below the pill, not dropped to its
+ * floor: the content wrapper is a flex row with a minimum height and
+ * items-center, and the top padding is what carries the pill.
  *
  * The backdrop moves slower than the page. See ParallaxBackdrop for why that
- * is a scroll listener and not background-attachment: fixed.
+ * is a scroll listener and not background-attachment: fixed, and for why the
+ * photograph is now sized to the frame plus its top overhang instead of to
+ * twice that.
  *
- * Contrast: the vignette holds white type at 15.7:1 on the reading edge and
- * 5.5:1 at the mid stop, measured against the brightest frame the photograph
- * could present. Parallax does not change those numbers, because the vignette
- * is pinned to the frame and the photograph slides underneath it. That is why there is no blur behind the copy. The gradient
- * does the work, and glassmorphism stays on the two surfaces allowed to carry
- * it, one of which is the spotlight card below.
+ * Contrast. The overlay is a flat black/60 on a phone and a left to right
+ * gradient, black/85 through black/55 to clear, from lg up. It runs the full
+ * height of the frame, so there is no band where a bright patch of photograph
+ * could sit behind type unprotected. Parallax does not change the maths: the
+ * overlay is pinned to the frame and the photograph slides underneath it.
  *
- * Both hero actions are ghost pills of equal weight, on instruction. That is
- * a deliberate trade: the hero no longer has a single filled primary drawing
- * the eye to one action, so the strongest fill on the first screen is now the
- * Book Now pill in the header. Restore it by switching the first Button back
- * to variant="primary" if the survey rate drops.
+ * Measured, not assumed: the brightest 2 percent of the pixels behind each text
+ * element, at both ends of the parallax travel, at 1440, 1024, 390 and 375 wide
+ * and in both locales. The worst case is 4.6:1 for the 10px pill labels on a
+ * phone, 6.2:1 for the subhead and 8.2:1 for the headline. The phone overlay is
+ * 60 percent rather than 55 for one reason: at 55 the 10px pill labels measured
+ * 4.3:1 and 3.9:1, under the 4.5 that text that small needs. The client label is
+ * slate 300 rather than the usual slate 400 for the same reason, 5.4:1 against
+ * 2.7:1.
  *
- * The spotlight card is deliberately small. It was sized to fill its 42
- * percent column and ended up competing with the headline for the fold, so on
- * a desktop it is capped at 320px and pushed to the inline end of that column:
- * a card beside the claim rather than a second claim. On a phone it runs the
- * full column width, because there is no headline beside it to crowd and a
- * 280px card in a 390px viewport just reads as an undersized thumbnail.
+ * Both actions are compact ghost pills of equal weight. That is a deliberate
+ * trade: the hero has no single filled primary, so the strongest fill on the
+ * first screen is the Book Now pill in the header.
+ *
+ * The spotlight card is a small floating panel, 240px on a desktop and 150px on
+ * a phone, and never full width. It carries the thumbnail, a centred play
+ * button and one label, nothing else. It is one of the two surfaces allowed to
+ * use backdrop-filter, via .glass-spotlight.
  */
+
+/* One compact ghost pill, shared by both actions. Border and fill follow the
+   brief: white/25 on a phone, white/20 from lg, over a white/10 fill. */
+const PILL =
+  'focus-ring-ink u-press tap inline-flex min-h-[32px] items-center justify-center gap-1.5 rounded-full ' +
+  'border border-white/25 bg-white/10 px-3 py-1.5 text-[10px] font-medium text-white ' +
+  'transition-colors duration-fast ease-feedback hover:bg-white/15 ' +
+  'sm:text-xs lg:min-h-[36px] lg:border-white/20 lg:px-4 lg:py-2';
 
 export function HeroSection() {
   const { t, locale } = useLocale();
@@ -86,134 +102,131 @@ export function HeroSection() {
         {/* ---- The frame. Rounded, clipped, inset from the outer canvas.
 
              Three stacked layers, painted in DOM order: the parallax backdrop,
-             the vignette over it, then the content. The frame itself carries an
+             the overlay over it, then the content. The frame itself carries an
              obsidian fill so there is no flash of empty frame before the
              photograph decodes. ---- */}
         <div className="relative isolate mx-auto w-full max-w-7xl overflow-hidden rounded-[24px] bg-obsidian shadow-frame lg:rounded-[32px]">
-          <ParallaxBackdrop src={siteConfig.media.intro.src} />
-          <div aria-hidden="true" className="hero-vignette absolute inset-0" />
+          {/* Object position steers which slice of the photograph survives the
+              crop. On a phone the frame is narrow and tall, so only about a
+              quarter of the photograph's width shows; 42 percent puts the
+              operator's shoulder behind the spotlight card on the inline end and
+              leaves dark seating behind the copy. From lg the slice is wide,
+              and 20 percent puts him between the copy and the card. */}
+          <ParallaxBackdrop
+            src={siteConfig.media.intro.src}
+            imageClassName="object-[42%_50%] lg:object-[20%_50%]"
+          />
 
-          <div className="relative px-5 pb-10 pt-[104px] sm:px-8 sm:pb-14 sm:pt-[124px] lg:px-12 lg:pb-16 lg:pt-[148px]">
-            {/* Mobile is a flex column so the three blocks can be ordered
-                independently of the desktop grid. The brief puts the spotlight
-                card above the client logos on a phone and inside the left
-                column beneath them on a desktop; one DOM order cannot satisfy
-                both, so order utilities do it rather than a second tree.
+          {/* Full frame overlay. Flat on a phone; from lg a gradient that
+              starts on the copy edge and clears toward the card. The bg-
+              transparent at lg drops the phone's flat fill so it cannot show
+              through the clear end of the gradient. RTL flips the direction. */}
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 bg-black/60 lg:bg-transparent lg:bg-gradient-to-r lg:from-black/85 lg:via-black/55 lg:to-transparent lg:rtl:bg-gradient-to-l"
+          />
 
-                From lg the grid auto-places: copy into column one row one, the
-                spotlight into column two spanning both rows, and the proof
-                strip into column one row two, directly under the buttons. */}
-            <div className="flex flex-col gap-10 lg:grid lg:grid-cols-[58fr_42fr] lg:items-center lg:gap-x-12 lg:gap-y-10">
+          <div className="relative flex px-4 pb-8 pt-[92px] sm:px-8 sm:pb-12 sm:pt-[112px] lg:min-h-[640px] lg:items-center lg:px-12 lg:pb-14 lg:pt-[120px]">
+            <div className="grid w-full grid-cols-[minmax(0,3fr)_minmax(0,2fr)] items-center gap-x-4 gap-y-7 sm:gap-x-8 lg:grid-cols-[minmax(0,60fr)_minmax(0,40fr)] lg:gap-x-12 lg:gap-y-7">
               {/* ---- 1. Headline, subhead, actions ---- */}
-              <div className="order-1 min-w-0 lg:order-none">
-                {/* Three words where there were nine. The scale steps up a
-                    notch at every breakpoint so a one-line headline still
-                    holds the column it used to fill with four. */}
-                <h1 className="mx-auto max-w-[16ch] text-center text-3xl font-bold tracking-tight text-white sm:text-4xl lg:mx-0 lg:text-start lg:text-5xl xl:text-6xl">
+              <div className="min-w-0 lg:col-start-1 lg:row-start-1 lg:self-end">
+                <h1 className="max-w-[480px] text-start text-lg font-bold leading-tight tracking-tight text-white sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl">
                   {t.hero.headline}
                 </h1>
 
-                <p className="mx-auto mt-3 max-w-md text-center text-xs leading-relaxed text-white/80 sm:text-sm lg:mx-0 lg:mt-6 lg:max-w-[54ch] lg:text-start lg:text-[17px]">
+                <p className="mt-1 max-w-[420px] text-start text-[11px] font-normal leading-snug text-slate-300 sm:mt-2 sm:text-xs lg:text-sm">
                   {t.hero.narrative}
                 </p>
 
-              </div>
-
-              {/* ---- 2. Spotlight card. One of the two glass surfaces. ---- */}
-              <div className="order-2 min-w-0 lg:order-none lg:row-span-3 lg:flex lg:justify-end lg:ps-4">
-                <button
-                  type="button"
-                  onClick={onVideo}
-                  aria-label={t.a11y.playVideoLabel}
-                  className="focus-ring-ink group glass-spotlight tap block w-full rounded-2xl border border-white/15 p-3 text-start shadow-spotlight transition-colors duration-fast ease-feedback hover:border-white/30 lg:max-w-[320px]"
-                >
-                  <span className="relative block aspect-[4/3] w-full overflow-hidden rounded-xl bg-obsidian lg:aspect-[3/2]">
-                    <Image
-                      src={siteConfig.media.heroSpotlight}
-                      alt=""
-                      fill
-                      sizes="(max-width: 1024px) 92vw, 34vw"
-                      className="object-cover transition-transform duration-standard ease-entrance group-hover:scale-[1.03]"
-                    />
-                    <span
-                      aria-hidden="true"
-                      className="absolute inset-0 bg-gradient-to-t from-obsidian/80 via-obsidian/10 to-transparent"
-                    />
-                    <span
-                      aria-hidden="true"
-                      className="absolute bottom-2.5 end-2.5 grid h-10 w-10 place-items-center rounded-full bg-white text-emerald transition-transform duration-standard ease-entrance group-hover:scale-105"
-                    >
-                      <PlayIcon size={13} className="rtl:-scale-x-100" />
-                    </span>
-                  </span>
-
-                  {/* Title only. The category badge and the descriptive line
-                      both came off; what is left is the frame, the play button
-                      and the name of the thing. videoPending takes the title
-                      slot when siteConfig carries no url, so an unconfigured
-                      card still says something. */}
-                  <span className="mt-3 block px-1 pb-1">
-                    <span className="h-ui block text-[14px] uppercase leading-snug tracking-[0.12em] text-white">
-                      {videoNotice ? t.hero.videoPending : t.hero.videoTitle}
-                    </span>
-                  </span>
-                </button>
-              </div>
-
-              {/* ---- 3. Actions. Under the card on a phone, under the copy
-                      on a desktop, where lg:-mt pulls them back up into the
-                      first grid row beneath the headline. ---- */}
-              <div className="order-3 min-w-0 lg:order-none lg:-mt-2 lg:self-start">
-                <div className="mt-6 flex flex-col gap-3 max-lg:items-center sm:flex-row sm:flex-wrap sm:justify-center lg:mt-8 lg:justify-start">
-                  <Button
+                <div className="mt-3 flex flex-wrap items-center gap-2 sm:mt-4 lg:mt-5">
+                  <a
                     href={scopeHref}
-                    external
-                    variant="ghost-glass"
-                    size="lg"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     aria-label={t.a11y.whatsappGeneric}
-                    className="max-sm:w-full"
+                    className={PILL}
                   >
                     {t.cta.scopeRequest}
-                  </Button>
+                  </a>
 
-                  <Button
-                    href={callPrimaryHref()}
-                    variant="ghost-glass"
-                    size="lg"
-                    aria-label={t.a11y.callPrimary}
-                    className="max-sm:w-full"
-                  >
-                    <PhoneIcon size={17} />
+                  <a href={callPrimaryHref()} aria-label={t.a11y.callPrimary} className={PILL}>
+                    <PhoneIcon size={13} />
                     {t.cta.callOffice}
-                  </Button>
+                  </a>
 
-                  {/* The quiet third option. A real anchor, not a decoration. */}
+                  {/* The quiet third option. A real anchor, not a decoration.
+                      Hidden on a phone, where the copy column is too narrow to
+                      carry a third item without wrapping the pair. */}
                   <a
                     href="#process"
-                    className="focus-ring-ink inline-flex min-h-[48px] items-center gap-1.5 rounded text-[13px] font-medium text-white/70 transition-colors duration-fast ease-feedback hover:text-white max-sm:justify-center"
+                    className="focus-ring-ink hidden min-h-[36px] items-center gap-1.5 rounded text-xs font-medium text-white/70 transition-colors duration-fast ease-feedback hover:text-white sm:inline-flex"
                   >
                     {t.hero.scrollHint}
-                    <ChevronDown size={14} aria-hidden="true" />
+                    <ChevronDown size={13} aria-hidden="true" />
                   </a>
                 </div>
               </div>
 
-              {/* ---- 4. Client proof. Static, dignified, no marquee. ---- */}
-              <div className="order-4 min-w-0 border-t border-white/10 pt-6 lg:order-none lg:self-end">
-                <p className="spec spec-on-ink">{t.hero.proofLabel}</p>
-                <ul className="mt-5 grid grid-cols-3 items-center gap-x-5 gap-y-6 sm:gap-x-7 lg:flex lg:flex-nowrap lg:gap-x-7 xl:gap-x-9">
-                  {proofClients.map((client) => (
-                    <li
-                      key={client.id}
-                      className="flex items-center justify-center lg:justify-start"
+              {/* ---- 2. Spotlight card. One of the two glass surfaces.
+
+                      Portrait 4:5. A phone gets 150px, a small tablet 165px, a
+                      desktop 240px and a wide desktop 260px, pushed to the
+                      inline end of its column. It is never full width. ---- */}
+              <div className="flex min-w-0 justify-center lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:justify-end lg:self-center">
+                <button
+                  type="button"
+                  onClick={onVideo}
+                  aria-label={t.a11y.playVideoLabel}
+                  className="focus-ring-ink group glass-spotlight tap relative flex aspect-[4/5] w-full max-w-[150px] flex-col overflow-hidden rounded-xl border border-white/15 p-2 text-start shadow-lg transition-colors duration-fast ease-feedback hover:border-white/30 sm:max-w-[165px] lg:max-w-[240px] lg:rounded-2xl lg:p-3 lg:shadow-2xl xl:max-w-[260px]"
+                >
+                  <span className="relative block min-h-0 w-full flex-1 overflow-hidden rounded-lg bg-obsidian lg:rounded-xl">
+                    <Image
+                      src={siteConfig.media.heroSpotlight}
+                      alt=""
+                      fill
+                      sizes="(max-width: 640px) 150px, (max-width: 1280px) 220px, 240px"
+                      className="object-cover object-[32%_50%] transition-transform duration-standard ease-entrance group-hover:scale-[1.03]"
+                    />
+                    <span
+                      aria-hidden="true"
+                      className="absolute inset-0 bg-gradient-to-t from-obsidian/50 via-transparent to-transparent"
+                    />
+                    <span
+                      aria-hidden="true"
+                      className="absolute inset-0 grid place-items-center"
                     >
+                      <span className="grid h-9 w-9 place-items-center rounded-full bg-white text-emerald transition-transform duration-standard ease-entrance group-hover:scale-105 lg:h-11 lg:w-11">
+                        <PlayIcon size={12} className="rtl:-scale-x-100" />
+                      </span>
+                    </span>
+                  </span>
+
+                  {/* Label only. videoPending takes its slot when siteConfig
+                      carries no url, so an unconfigured card still says
+                      something. Tracking is zeroed under RTL by the global
+                      rule, so the Arabic label keeps its joins. */}
+                  <span className="block py-1 pt-1.5 text-center text-[10px] font-semibold uppercase tracking-widest text-white/90">
+                    {videoNotice ? t.hero.videoPending : t.hero.videoTitle}
+                  </span>
+                </button>
+              </div>
+
+              {/* ---- 3. Client proof. Static, dignified, no marquee.
+
+                      Second grid row. Spans both columns on a phone; from lg
+                      it sits in the copy column directly under the buttons. ---- */}
+              <div className="col-span-2 min-w-0 border-t border-white/10 pt-5 lg:col-span-1 lg:col-start-1 lg:row-start-2 lg:self-start">
+                <p className="spec text-slate-300">{t.hero.proofLabel}</p>
+                <ul className="mt-4 grid grid-cols-3 items-center gap-x-4 gap-y-4 sm:grid-cols-6 lg:flex lg:flex-wrap lg:gap-x-4 lg:gap-y-4 xl:gap-x-6">
+                  {proofClients.map((client) => (
+                    <li key={client.id} className="flex items-center justify-start">
                       <Image
                         src={client.logo}
                         alt={t.clients.names[client.id]}
                         width={siteConfig.clientLogoBox.width}
                         height={siteConfig.clientLogoBox.height}
-                        sizes="120px"
-                        className="client-mark h-7 w-auto object-contain sm:h-8 lg:h-6 xl:h-7"
+                        sizes="90px"
+                        className="client-mark h-5 w-auto object-contain lg:h-5 xl:h-6"
                       />
                     </li>
                   ))}

@@ -1107,6 +1107,99 @@ checkout that unpacks this release over the last one heals itself. The
 dictionary keys `journey.steps.survey`, `.mobilisation` and `.signoff` are
 unchanged; they name the step, not the file.
 
+## Hero fill, 60/40 recomposition and translucent drawer (v14)
+
+### Why the photograph looked like it filled the lower half
+
+Reproduced in a browser before touching anything: the real components rendered
+to static markup against the project's own compiled Tailwind, at 1440 and 390.
+Two causes, and neither was a positioning bug in the container.
+
+1. **The photograph layer was 152 percent of the frame.** `ParallaxBackdrop`
+   gave the layer an equal 26 percent overhang above and below (`1 + 2 * 0.26`).
+   Only the top is ever used, because travel is downward only and the bottom
+   edge moves away from the frame, never toward it. The spare 26 percent made
+   `object-fit: cover` scale the photo half again, so the frame showed a torso
+   from the middle of a much bigger picture.
+2. **The photograph's own top third is a near black ceiling** (mean luminance 32
+   against 65 to 75 in the middle), and the old vignette laid 94 to 66 percent
+   obsidian over it. Together they read as an empty dark upper half.
+
+### Fix
+
+- The layer is now `1 + OVERHANG + BLEED` tall: the same 26 percent above, and a
+  4 percent cushion below. It renders through `next/image` with `fill` and
+  `object-cover`, at `priority`, so the photograph also gets a preload.
+- `OVERHANG = 0.26` and `speed = 0.18` are unchanged, and so is the listener.
+  Measured at 1440, 1024, 768, 390 and 375 wide: at rest the layer sits 26
+  percent above the frame and 4 percent below it; at full travel it sits 8
+  percent above and 22 below. No blank edge at either end, at any width.
+- The overlay is two utilities on one full-height element: `bg-black/60` on a
+  phone, and from lg `bg-gradient-to-r from-black/85 via-black/55 to-transparent`,
+  flipped with `rtl:` for Arabic. `.hero-vignette` is deleted from `globals.css`.
+
+### Composition
+
+One grid, two columns at every width: `60fr / 40fr` (`3fr / 2fr` below lg). Copy
+and actions on the inline start, the spotlight card on the inline end,
+vertically centred. The client row is the second grid row: full width on a
+phone, and under the buttons inside the copy column from lg, where the card
+spans both rows and centres against them.
+
+| Element | Phone | Desktop |
+| --- | --- | --- |
+| Headline | `text-lg` to `text-xl`, left aligned | `text-3xl`, `xl:text-4xl`, `max-w-[480px]` |
+| Subhead | `text-[11px]`, slate 300 | `text-sm`, slate 300, `max-w-[420px]` |
+| Actions | `text-[10px]` ghost pills, `py-1.5 px-3` | `text-xs` ghost pills, `py-2 px-4` |
+| Card | `max-w-[150px]`, `sm:max-w-[165px]`, 4:5 | `max-w-[240px]`, `xl:max-w-[260px]`, 4:5 |
+| Overlay | `bg-black/60` | gradient 85 / 55 / clear |
+
+The card holds a thumbnail, a centred play button and one label. Its surface is
+still `.glass-spotlight`, one of the two named blur utilities, now defined as
+`bg-[#121820]/75 backdrop-blur-md` exactly, so the "two blur surfaces" rule still
+holds. On a phone `object-position` puts the operator behind the card and dark
+seating behind the copy; from lg it puts him between them.
+
+### Measured contrast
+
+The brightest 2 percent of pixels behind each text element, at both ends of the
+parallax travel, at 1440, 1024, 390 and 375, in English and Arabic:
+
+| Element | Worst case |
+| --- | --- |
+| Headline | 8.2:1 (Arabic phone), 9.2:1 (English phone) |
+| Subhead | 6.2:1 phone, 6.4:1 desktop |
+| Ghost pill labels | 4.6:1 phone, 7.2:1 desktop |
+| Client label | 5.4:1 phone, 6.0:1 desktop |
+
+Two deviations from the brief came out of that measurement. The phone overlay is
+`black/60`, not the 50 to 55 asked for: at 55 the 10px pill labels measured 4.3:1
+and 3.9:1, under the 4.5 that text that small needs. And the "Our clients" label
+is slate 300, not slate 400, which measured 2.7:1 over the photograph.
+
+### Mobile drawer
+
+- Surface is `bg-[#0A0E14]/80 backdrop-blur-xl border border-white/10`. The page
+  behind now shows through at 20 percent, blurred.
+- **The solid-wall look was two layers, not one.** A separate scrim sat under the
+  panel at 80 percent, and two 80 percent layers compound to 96. The scrim is
+  removed; the panel already covers the viewport.
+- Links are centred, `text-base font-medium tracking-wide text-slate-200`, hover
+  to white. Hover used to go emerald, which is 3.65:1 on obsidian and not a text
+  colour. The schedule line is centred too.
+- Sizing is `h-[100dvh] max-h-[100dvh]` with
+  `pb-[calc(1.5rem+env(safe-area-inset-bottom))]`. Close stays on the inline end,
+  so it mirrors to the upper left in Arabic.
+- Worst case is the sheet over a white section, which composites to `#3B3E43`.
+  Links are 8.7:1. The schedule moved from slate 400 (4.2:1) to slate 300 (7.2:1).
+  The ghost pill border is `white/40`, not 30: 3.1:1 against 2.4:1.
+
+### Not touched
+
+Parallax listener and constants, the uncropped process frames, the accordion
+sync, all v12 and v13 copy, the client order (Mosques last), the five scope
+cards and their dark buttons, locale parity (211 nodes each side).
+
 ## Assets to replace
 
 Client photography supplied September 2026 is now in place.

@@ -169,12 +169,17 @@ const config: Config = {
             backgroundColor: 'rgba(18,24,32,.82)',
           },
         },
+        /* The spotlight card, resized in v14 from a 320px block to a 240px
+           floating panel. Carbon at 75 percent with a 12px blur, which is
+           bg-[#121820]/75 backdrop-blur-md exactly, kept as a named utility so
+           the "two blur surfaces" rule still holds. Without backdrop-filter
+           support it falls back to the near opaque fill. */
         '.glass-spotlight': {
           backgroundColor: 'rgba(18,24,32,.95)',
-          backdropFilter: 'blur(14px) saturate(1.15)',
-          WebkitBackdropFilter: 'blur(14px) saturate(1.15)',
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
           '@supports (backdrop-filter: blur(1px))': {
-            backgroundColor: 'rgba(18,24,32,.90)',
+            backgroundColor: 'rgba(18,24,32,.75)',
           },
         },
         /* Composite only. Never animate layout properties. */

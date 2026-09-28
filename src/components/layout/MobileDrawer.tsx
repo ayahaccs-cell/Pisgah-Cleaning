@@ -10,11 +10,11 @@ import { ClockIcon, PhoneIcon, WhatsAppIcon } from '@/components/ui/Icons';
 import { NAV_LINKS } from './Navbar';
 
 /* One ghost pill, shared by both contacts so they read as a pair. The border
-   is load bearing: a white/10 fill alone measures 1.2:1 against the sheet,
-   which would leave the control boundary imperceptible. */
+   is load bearing: a white/10 fill alone measures barely 1.2:1 against the
+   sheet, which would leave the control boundary imperceptible. */
 const GHOST_PILL =
   'focus-ring-ink u-press tap inline-flex min-h-[48px] w-full items-center justify-center gap-2.5 ' +
-  'rounded-full border border-white/30 bg-white/10 py-3 text-sm font-medium text-white ' +
+  'rounded-full border border-white/40 bg-white/10 py-3 text-sm font-medium text-white ' +
   'transition-colors duration-fast ease-feedback hover:bg-white/20';
 
 /**
@@ -27,7 +27,7 @@ const GHOST_PILL =
  * then adds env(safe-area-inset-bottom) for the home indicator, which sits
  * inside the dynamic viewport and is a separate problem from the toolbar.
  *
- * Link rows are 48px at py-2. Six links plus the logo, two contact pills, the
+ * Link rows are 48px tall at py-3. Six links plus the logo, two contact pills, the
  * schedule and the language switcher fit one small-phone viewport without
  * scrolling, which is the point of compressing them.
  *
@@ -35,19 +35,28 @@ const GHOST_PILL =
  * edge to slide from and nothing to mirror: the same layout serves both
  * directions, and the entrance is a fade rather than a translate.
  *
- * Surface: obsidian at 92 percent with backdrop-blur-2xl, over a scrim of the
- * same colour. This is the third and last blur surface in the system and it is
- * declared inline here rather than as a utility, because unlike the pill and
- * the spotlight it covers everything behind it, so nothing shows through that
- * could change its contrast.
+ * Surface: obsidian at 80 percent with backdrop-blur-xl and a 10 percent white
+ * hairline, which is bg-[#0A0E14]/80 backdrop-blur-xl border border-white/10.
+ * This is the third and last blur surface in the system and it is declared
+ * inline here rather than as a utility, because unlike the pill and the
+ * spotlight it covers the whole viewport.
  *
- * Measured against the worst case, the sheet opened over a white section: the
- * composite reads #1A1E24, where white is 14.8:1, slate 400 is 5.8:1, and a
- * white/10 ghost fill is 1.4:1 against the sheet. That last figure is why the
- * ghost pills carry a border and not only a fill: the border is what makes the
- * control's boundary perceivable. It sits at 30 percent rather than the 20 the
- * brief asked for, because white/20 measures 2.5:1 there and white/30 measures
- * 3.4:1, which is the threshold SC 1.4.11 sets for a component boundary.
+ * There is no separate scrim any more. It used to be a second obsidian layer at
+ * 80 percent underneath the panel, and two 80 percent layers compound to 96:
+ * the page behind was 4 percent visible, which is why the sheet read as a flat
+ * black wall. The panel covers the viewport edge to edge, so the scrim was
+ * never clickable anyway. What is left is one layer, and the page behind it
+ * shows through at 20 percent, blurred.
+ *
+ * Alignment is centred: logo, links, schedule. The close button stays on the
+ * inline end, so it mirrors to the upper left under RTL.
+ *
+ * Worst case is the sheet opened over a white section: 80 percent obsidian over
+ * white composites to #3B3E43. There, links in slate 200 measure 8.7:1 and the
+ * schedule line, now slate 300 rather than slate 400, measures 7.2:1 (slate 400
+ * was 4.2:1, under the 4.5 that 12px text needs). The ghost pills carry a 40
+ * percent border and not 30: white/30 measures 2.4:1 against that ground and
+ * white/40 measures 3.1:1, which is the SC 1.4.11 floor for a control boundary.
  *
  * Contacts: WhatsApp and the operations line. The office line came off this
  * sheet on the client's instruction, so the menu offers one number, which is
@@ -105,15 +114,6 @@ export function MobileDrawer({ open, onClose }: Props) {
 
   return (
     <>
-      <div
-        onClick={onClose}
-        aria-hidden="true"
-        className={`fixed inset-0 z-[190] bg-obsidian/80 u-surface-out ${
-          open ? 'visible opacity-100 u-surface-in' : 'invisible opacity-0'
-        }`}
-        style={{ transitionProperty: 'opacity, visibility' }}
-      />
-
       <aside
         id="mobile-drawer"
         ref={panelRef}
@@ -121,20 +121,10 @@ export function MobileDrawer({ open, onClose }: Props) {
         aria-modal="true"
         aria-label={t.nav.mobile}
         aria-hidden={!open}
-        className={`fixed inset-0 z-[200] flex h-[100dvh] max-h-[100dvh] w-full flex-col justify-between overflow-y-auto px-6 pb-10 pt-6 text-white u-surface-out transform-gpu sm:pb-12 ${
+        className={`fixed inset-0 z-[200] flex h-[100dvh] max-h-[100dvh] w-full flex-col justify-between overflow-y-auto border border-white/10 bg-[#0A0E14]/80 px-6 pb-[calc(1.5rem+env(safe-area-inset-bottom))] pt-6 text-white backdrop-blur-xl u-surface-out transform-gpu ${
           open ? 'u-surface-in opacity-100' : 'pointer-events-none opacity-0'
         }`}
-        style={{
-          backgroundColor: 'rgba(10,14,20,.92)',
-          backdropFilter: 'blur(28px) saturate(1.1)',
-          WebkitBackdropFilter: 'blur(28px) saturate(1.1)',
-          transitionProperty: 'opacity',
-          /* dvh already tracks the collapsing browser chrome. This is the
-             second half of the problem: on a notched phone the home indicator
-             sits inside that viewport, so the bottom row needs its own inset
-             on top of the padding. */
-          paddingBottom: 'calc(2.5rem + env(safe-area-inset-bottom, 0px))',
-        }}
+        style={{ transitionProperty: 'opacity' }}
       >
         <div>
           <div className="relative flex min-h-[44px] items-center justify-center">
@@ -165,7 +155,7 @@ export function MobileDrawer({ open, onClose }: Props) {
                 key={link.key}
                 href={link.href}
                 onClick={onClose}
-                className="focus-ring-ink flex min-h-[48px] items-center rounded border-b border-white/10 py-2 text-base font-medium text-white transition-colors duration-fast ease-feedback hover:text-emerald sm:py-2.5"
+                className="focus-ring-ink flex min-h-[48px] items-center justify-center rounded border-b border-white/5 py-3 text-center text-base font-medium tracking-wide text-slate-200 transition-colors duration-fast ease-feedback hover:text-white"
               >
                 {t.nav[link.key]}
               </a>
@@ -198,7 +188,7 @@ export function MobileDrawer({ open, onClose }: Props) {
             </a>
           </div>
 
-          <p className="mt-4 inline-flex items-center gap-2 text-xs leading-tight text-faint-soft">
+          <p className="mt-4 flex items-center justify-center gap-2 text-xs leading-tight text-slate-300">
             <ClockIcon size={14} className="flex-none text-emerald" />
             {siteConfig.contact.hours.office}
           </p>

@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useEffect, useRef } from 'react';
 
 /**
@@ -39,6 +40,11 @@ type Props = {
   /** Path under /public. */
   src: string;
   /**
+   * Classes for the photograph itself, used to steer object-position per
+   * breakpoint so the subject lands on the side of the frame the copy is not.
+   */
+  imageClassName?: string;
+  /**
    * Fraction of the frame height the backdrop travels across the full scroll
    * of the frame. 0.18 reads as depth without the image visibly sliding.
    */
@@ -53,10 +59,20 @@ type Props = {
    measured at 11px on an 560px frame, which is inside the range where a
    rounded corner's antialiasing can show a hairline. 0.26 puts the margin at
    eight percent and leaves headroom to raise `speed` later without coming back
-   to this constant. */
-const OVERHANG = 0.26;
+   to this constant.
 
-export function ParallaxBackdrop({ src, speed = 0.18 }: Props) {
+   The layer used to be `1 + 2 * OVERHANG` tall, an equal overhang above and
+   below. Only the top is ever needed: travel is downward only, so the layer's
+   bottom edge moves away from the frame's bottom edge and never toward it. The
+   spare 26 percent underneath did nothing except make the photograph 152
+   percent of the frame's height, so object-fit: cover zoomed it half again and
+   cropped the subject to a torso. The layer is now `1 + OVERHANG + BLEED`
+   tall. BLEED is a small cushion under the frame's bottom edge so a fractional
+   pixel at rest can never show a seam. */
+const OVERHANG = 0.26;
+const BLEED = 0.04;
+
+export function ParallaxBackdrop({ src, imageClassName = '', speed = 0.18 }: Props) {
   const layerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -117,13 +133,24 @@ export function ParallaxBackdrop({ src, speed = 0.18 }: Props) {
     <div
       ref={layerRef}
       aria-hidden="true"
-      className="pointer-events-none absolute inset-x-0 bg-cover bg-center bg-no-repeat will-change-transform"
+      className="pointer-events-none absolute inset-x-0 will-change-transform"
       style={{
-        backgroundImage: `url(${src})`,
         top: `-${OVERHANG * 100}%`,
-        height: `${(1 + OVERHANG * 2) * 100}%`,
+        height: `${(1 + OVERHANG + BLEED) * 100}%`,
       }}
-    />
+    >
+      {/* The photograph fills its layer edge to edge. priority because this is
+          the largest paint on the first screen. */}
+      <Image
+        src={src}
+        alt=""
+        fill
+        priority
+        quality={80}
+        sizes="(max-width: 1280px) 100vw, 1280px"
+        className={`h-full w-full object-cover ${imageClassName}`}
+      />
+    </div>
   );
 }
 

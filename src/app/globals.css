@@ -464,50 +464,10 @@
      exactly what this frame is, and where it is honoured it repaints the layer
      every frame instead of compositing it. */
 
-  /* Directional vignette. Strong on the reading edge, releasing toward the
-     spotlight card. Mirrors with dir, so Arabic gets the same contrast on the
-     other side.
-
-     The far end is lighter than it was, which is what the brief asked for; the
-     reading band is not. Measured over the brightest frame the photograph
-     could present, white is 15.7:1 at the start and 12.4:1 at 38 percent,
-     white at 80 percent is 8.6:1 there, and the ghost button border holds
-     3.1:1, which is the SC 1.4.11 floor for a control boundary. A uniform
-     lightening to 0.90 / 0.70 / transparent put that border at 2.9:1, so the
-     release was moved outward rather than applied across the whole width. */
-  .hero-vignette {
-    background: linear-gradient(
-      to right,
-      rgba(10, 14, 20, 0.94) 0%,
-      rgba(10, 14, 20, 0.88) 38%,
-      rgba(10, 14, 20, 0.66) 64%,
-      rgba(10, 14, 20, 0.24) 100%
-    );
-  }
-
-  [dir='rtl'] .hero-vignette {
-    background: linear-gradient(
-      to left,
-      rgba(10, 14, 20, 0.94) 0%,
-      rgba(10, 14, 20, 0.88) 38%,
-      rgba(10, 14, 20, 0.66) 64%,
-      rgba(10, 14, 20, 0.24) 100%
-    );
-  }
-
-  /* On a phone the column is single file and the card sits under the copy, so
-     the vignette runs down the frame rather than across it. */
-  @media (max-width: 1023px) {
-    .hero-vignette,
-    [dir='rtl'] .hero-vignette {
-      background: linear-gradient(
-        to bottom,
-        rgba(10, 14, 20, 0.86) 0%,
-        rgba(10, 14, 20, 0.92) 48%,
-        rgba(10, 14, 20, 0.96) 100%
-      );
-    }
-  }
+  /* The overlay that used to live here, .hero-vignette, is gone. The hero now
+     declares its own overlay as utilities beside the markup it protects: flat
+     black/60 on a phone, and from lg a gradient of black/85, black/55 and clear
+     that flips with dir. */
 
   /* Client proof marks. The supplied artwork is already a white silhouette on
      transparency, so this is opacity only: no filter chain to fight, and the
