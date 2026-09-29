@@ -69,7 +69,7 @@ export function PackageSelector() {
                 as="article"
                 key={scope.id}
                 index={index}
-                className={`group u-lift flex w-[82%] flex-none snap-start flex-col overflow-hidden rounded-2xl border border-hairline bg-white shadow-card transition-shadow hover:shadow-lifted sm:w-auto ${
+                className={`scope-card group u-lift flex w-[82%] flex-none snap-start flex-col overflow-hidden rounded-2xl border border-hairline bg-white shadow-card transition-shadow hover:shadow-lifted sm:w-auto ${
                   isSelected ? 'ring-2 ring-emerald' : ''
                 }`}
               >
@@ -83,55 +83,63 @@ export function PackageSelector() {
                   />
                 </div>
 
-                <div className="flex flex-1 flex-col p-5">
-                <span className="numeral numeral-accent text-[26px] leading-none">
-                  {String(index + 1).padStart(2, '0')}
-                </span>
+                <div className="scope-card-body flex flex-1 flex-col p-5">
+                  {/* Four zones, each one direct child of the body, so that
+                      from lg they can be four rows of a shared grid. See
+                      .scope-card in globals.css. Below lg the body is the
+                      same flex column it always was and the wrappers are
+                      plain blocks, so nothing moves. */}
+                  <div>
+                    <span className="numeral numeral-accent block text-[26px] leading-none">
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
 
-                <span aria-hidden="true" className="hair-light-t mt-4 block" />
+                    <span aria-hidden="true" className="hair-light-t mt-4 block" />
 
-                <h3 className="h-ui mt-4 text-[18px] leading-snug">
-                  {copy.name}
-                </h3>
+                    <h3 className="h-ui mt-4 text-[18px] leading-snug">{copy.name}</h3>
+                  </div>
 
-                <p className="spec mt-5">{t.packages.coverageLabel}</p>
-                <ul className="mt-3 space-y-2.5">
-                  {copy.covers.map((room) => (
-                    <li key={room} className="relative ps-4 text-[14.5px] leading-snug text-muted">
-                      <span aria-hidden="true" className="bullet-dot" />
-                      {room}
-                    </li>
-                  ))}
-                </ul>
+                  <div>
+                    <p className="spec mt-5">{t.packages.coverageLabel}</p>
+                    <ul className="mt-3 space-y-2.5">
+                      {copy.covers.map((room) => (
+                        <li key={room} className="relative ps-4 text-[14.5px] leading-snug text-muted">
+                          <span aria-hidden="true" className="bullet-dot" />
+                          {room}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
 
-                {/* Same sans stack, same size and colour as the coverage list
-                    above, so the two blocks read as one card rather than as a
-                    body list with a machine readout stapled underneath. */}
-                <div className="hair-light-t mt-5 pt-4">
-                  <p className="spec">{t.packages.deploymentLabel}</p>
-                  <p className="mt-1.5 text-[14.5px] font-normal leading-snug text-muted">
-                    {copy.deployment}
-                  </p>
-                </div>
+                  {/* Same sans stack, same size and colour as the coverage
+                      list above, so the two blocks read as one card rather
+                      than as a body list with a machine readout stapled
+                      underneath. */}
+                  <div className="hair-light-t mt-5 pt-4">
+                    <p className="spec">{t.packages.deploymentLabel}</p>
+                    <p className="mt-1.5 text-[14.5px] font-normal leading-snug text-muted">
+                      {copy.deployment}
+                    </p>
+                  </div>
 
-                {/* Where a price would sit. The obsidian fill reads as the
-                    quiet member of the button family: filled enough to be
-                    obviously pressable at 19:1, dark enough not to compete
-                    with the emerald primaries elsewhere on the page. */}
-                <div className="mt-auto pt-6">
-                  <a
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => setSelected(scope.id)}
-                    onFocus={() => setSelected(scope.id)}
-                    aria-label={t.a11y.whatsappPackage}
-                    className="focus-ring-light u-press tap flex min-h-[48px] w-full items-center justify-center gap-2 rounded-full border border-white/20 bg-obsidian px-4 text-center text-[13px] font-medium text-white transition-colors duration-fast ease-feedback hover:bg-carbon"
-                  >
-                    <WhatsAppIcon size={16} />
-                    {t.cta.inspection}
-                  </a>
-                </div>
+                  {/* Where a price would sit. The obsidian fill reads as the
+                      quiet member of the button family: filled enough to be
+                      obviously pressable at 19:1, dark enough not to compete
+                      with the emerald primaries elsewhere on the page. */}
+                  <div className="mt-auto pt-6">
+                    <a
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => setSelected(scope.id)}
+                      onFocus={() => setSelected(scope.id)}
+                      aria-label={t.a11y.whatsappPackage}
+                      className="focus-ring-light u-press tap flex min-h-[48px] w-full items-center justify-center gap-2 rounded-full border border-white/20 bg-obsidian px-4 text-center text-[13px] font-medium text-white transition-colors duration-fast ease-feedback hover:bg-carbon"
+                    >
+                      <WhatsAppIcon size={16} />
+                      {t.cta.inspection}
+                    </a>
+                  </div>
                 </div>
               </Reveal>
             );

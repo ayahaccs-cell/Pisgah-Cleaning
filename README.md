@@ -1281,6 +1281,17 @@ copy, the headline newline, collapses to a space below lg and cannot show.
 - **Arabic.** The stack mirrors to the inline end. The photograph does not
   mirror, so the operator sits behind the Arabic headline; it still measures 6.4:1.
 
+## v17: desktop scope card alignment
+
+The five service scope cards on desktop (lg and above) now share row lines. Titles of one, two or three lines, and coverage bullets that wrap, no longer push the STANDARD COVERAGE label, the DEPLOYMENT label or the Book Survey button to different heights.
+
+How it works: each card is a subgrid of five rows (photo, title zone, coverage zone, deployment zone, action zone) that joins the section grid. Every card in a row of cards therefore takes the tallest card's height for each zone, so the labels and buttons align by construction. This replaces fixed min-heights, which break the moment copy or language changes (Arabic wraps differently). See `.scope-card` and `.scope-card-body` in `src/app/globals.css`.
+
+- Applies only from 1024px up, inside `@media (min-width: 1024px)` and `@supports (grid-template-rows: subgrid)`. Below 1024 the cards are the same flex columns as v16 and the mobile carousel is untouched (full-page pixel diff against v16: 0 pixels at 390, 375, 320, 768 and 1023, English and Arabic, plus the drawer).
+- Where subgrid is unsupported, the cards fall back to the v16 flex layout, with the button still pinned to the base by `mt-auto`.
+- `PackageSelector.tsx`: the card body is now four zone wrappers (title, coverage, deployment, action). Copy, links, aria labels and the WhatsApp flow are unchanged.
+- Measured with Chromium at 1440, 1280, 1024 (both rows of 3 and 2) and Arabic 1440: exactly one y value per row for the coverage label, deployment label, button top, button bottom and card bottom.
+
 ## Assets to replace
 
 Client photography supplied September 2026 is now in place.

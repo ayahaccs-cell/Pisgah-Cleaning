@@ -480,6 +480,47 @@
     }
   }
 
+  /* --------------------------------------------------------------------
+     Service scope cards, from lg up.
+
+     Five cards in a row (three and two at lg) whose content has different
+     lengths: a title that wraps to one line or two, coverage bullets that wrap
+     to one line or two. Left alone, every eyebrow below the first ragged block
+     lands at a different height.
+
+     The fix is subgrid rather than fixed minimum heights. The parent grid gives
+     each card five rows to span, the card hands those rows to its body, and the
+     body hands its four to its zones: title, coverage, deployment, action. The
+     tallest title in a row sets the title track for every card in that row, the
+     tallest coverage list sets the next, and so on, so each label and each
+     button shares a line with its neighbours whatever the copy or the language
+     does. A fixed min-height would be right for today's English and wrong for
+     tomorrow's Arabic.
+
+     row-gap is zeroed on both subgrids so the parent's 20px gap only opens
+     between one row of cards and the next, not inside a card.
+
+     Guarded by @supports. Where subgrid is missing the cards stay the flex
+     columns they were, with the action pinned by mt-auto: aligned buttons, but
+     ragged labels. Below lg nothing here applies at all. -------------------- */
+  @media (min-width: 1024px) {
+    @supports (grid-template-rows: subgrid) {
+      .scope-card {
+        display: grid;
+        grid-row: span 5;
+        grid-template-rows: subgrid;
+        row-gap: 0;
+      }
+
+      .scope-card-body {
+        display: grid;
+        grid-row: span 4;
+        grid-template-rows: subgrid;
+        row-gap: 0;
+      }
+    }
+  }
+
   /* Client proof marks. The supplied artwork is already a white silhouette on
      transparency, so this is opacity only: no filter chain to fight, and the
      marks resolve to full strength on hover and on keyboard focus. */
