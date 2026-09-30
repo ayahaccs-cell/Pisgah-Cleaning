@@ -33,6 +33,17 @@ import { useEffect, useRef } from 'react';
  *
  * Reduced motion: the effect does not run at all. No listener is attached and
  * no transform is written, so the backdrop is simply a static cover image.
+ *
+ * Desktop (lg and up) is a second mode of the same listener, not a second
+ * listener. The pointer is a wheel or a trackpad there, and a wheel delivers
+ * scroll in coarse steps, so a layer pinned 1:1 to scrollY moves in the same
+ * steps and reads as rigid. From 1024px the layer is therefore eased towards
+ * its target inside a requestAnimationFrame loop (see GLIDE below): it still
+ * ends exactly where the scroll position says it should, but it arrives with
+ * weighted deceleration rather than in one hop. The loop runs only while the
+ * layer is still travelling and stops itself when it has settled, so an idle
+ * page does no work. Below 1024px none of this exists: the original coalesced
+ * single write per frame, at the original speed, is untouched.
  * ---------------------------------------------------------------------------
  */
 
@@ -49,6 +60,14 @@ type Props = {
    * of the frame. 0.18 reads as depth without the image visibly sliding.
    */
   speed?: number;
+  /**
+   * The same measure from lg up. 0.30 means the photograph travels 30 percent
+   * of the distance the page scrolls, so against the copy and the card in the
+   * foreground it drifts at 0.7 of scroll speed, which is the separation the
+   * brief asked for. 0.18 (the phone value) was inside the range a wheel scroll
+   * hides.
+   */
+  desktopSpeed?: number;
   /**
    * From lg up, how far below the frame's top edge the photograph starts at
    * rest, as a fraction of the frame height. The layer still overhangs the
@@ -85,10 +104,46 @@ type Props = {
 const OVERHANG = 0.26;
 const BLEED = 0.04;
 
+/* Why raising the desktop speed to 0.30 does not expose an edge, although it
+   is now larger than OVERHANG.
+
+   Only the part of the frame below the top of the viewport can be seen. When
+   the frame has scrolled by a fraction p of its height, the viewport's top edge
+   sits p * height down the frame, and the layer's top edge sits at
+   (speed * p - OVERHANG) * height. The layer covers what is visible so long as
+   that is above p * height, and it is for every p in 0..1 whenever speed < 1:
+   the spare above the visible edge is (OVERHANG + (1 - speed) * p) * height, at
+   least 26 percent of the frame at every point of travel. The bottom edge only
+   moves away from the frame's bottom, so it can never come up into view. The
+   old "overhang must exceed speed" rule guarded against a case that cannot
+   happen.
+
+   Scaling the layer up (scale 1.08) was considered for the same purpose and
+   rejected: object-fit cover would then crop a further four percent off every
+   side of a photograph whose subject is already framed to the pixel, and the
+   headroom it buys is headroom this arithmetic shows is not needed. */
+
+/* Desktop easing. The layer chases its target with an exponential ease whose
+   time constant is GLIDE seconds: it closes 63 percent of the remaining gap in
+   that time, and the step is scaled by real elapsed time, so it feels the same
+   on a 60 Hz panel and a 120 Hz one. 0.085 s is long enough to smooth a wheel's
+   coarse steps into a glide and short enough that a fast fling trails by only a
+   few dozen pixels. This is a decay, not a spring: nothing overshoots, because
+   an overshooting background would poke the layer's edge back into view. */
+const GLIDE = 0.085;
+
+/* The furthest, as a share of the frame height, the eased layer may trail its
+   target. It only ever matters when the page jumps up (the Home key, a click on
+   an anchor to the top): the layer would otherwise hang low for a few hundred
+   milliseconds and leave the top of the frame dark while it climbs back. Capped
+   at five percent, the worst case is a short soft fade, never a gap. */
+const MAX_LAG = 0.05;
+
 export function ParallaxBackdrop({
   src,
   imageClassName = '',
   speed = 0.18,
+  desktopSpeed = 0.3,
   desktopInset = 0.07,
 }: Props) {
   const layerRef = useRef<HTMLDivElement | null>(null);
@@ -100,10 +155,23 @@ export function ParallaxBackdrop({
     if (typeof IntersectionObserver === 'undefined') return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-    let frameRequest = 0;
-    let queued = false;
-    let listening = false;
+    const wide = window.matchMedia('(min-width: 1024px)');
 
+    let frameRequest = 0;
+    let glideRequest = 0;
+    let queued = false;
+    let gliding = false;
+    let listening = false;
+    let current = 0;
+    let lastTime = 0;
+
+    function write(px: number) {
+      if (!layer) return;
+      layer.style.transform = `translate3d(0, ${px.toFixed(2)}px, 0)`;
+    }
+
+    /* Below 1024px. Exactly the original path: read once, write once, in the
+       frame the scroll event asked for. */
     function paint() {
       queued = false;
       if (!layer || !frame) return;
@@ -113,13 +181,70 @@ export function ParallaxBackdrop({
          the frame has travelled its own height past it. */
       const progress = Math.min(1, Math.max(0, -rect.top / height));
       const shift = progress * speed * height;
-      layer.style.transform = `translate3d(0, ${shift.toFixed(2)}px, 0)`;
+      write(shift);
+    }
+
+    /* From 1024px. Reads where the layer should be, moves the layer part of the
+       way there, and asks for another frame only if it has not arrived. */
+    function glide(now: number) {
+      glideRequest = 0;
+      if (!frame) return;
+      const rect = frame.getBoundingClientRect();
+      const height = rect.height || 1;
+      const progress = Math.min(1, Math.max(0, -rect.top / height));
+      const target = progress * desktopSpeed * height;
+
+      /* Clamp the step: a tab that was in the background returns with a huge
+         elapsed time, which would otherwise be read as one enormous stride. */
+      const dt = lastTime ? Math.min(0.064, Math.max(0.001, (now - lastTime) / 1000)) : 1 / 60;
+      lastTime = now;
+
+      current += (target - current) * (1 - Math.exp(-dt / GLIDE));
+      const reach = MAX_LAG * height;
+      if (current > target + reach) current = target + reach;
+
+      if (Math.abs(target - current) < 0.05) {
+        current = target;
+        write(current);
+        gliding = false;
+        lastTime = 0;
+        return;
+      }
+      write(current);
+      glideRequest = window.requestAnimationFrame(glide);
     }
 
     function onScroll() {
+      if (wide.matches) {
+        if (gliding) return;
+        gliding = true;
+        glideRequest = window.requestAnimationFrame(glide);
+        return;
+      }
       if (queued) return;
       queued = true;
       frameRequest = window.requestAnimationFrame(paint);
+    }
+
+    /* Put the layer exactly on its target, with no easing: on entry, and when a
+       resize or a rotation can have changed both the height and the mode. */
+    function settle() {
+      window.cancelAnimationFrame(glideRequest);
+      window.cancelAnimationFrame(frameRequest);
+      gliding = false;
+      queued = false;
+      lastTime = 0;
+      if (!frame) return;
+      const rect = frame.getBoundingClientRect();
+      const height = rect.height || 1;
+      const progress = Math.min(1, Math.max(0, -rect.top / height));
+      current = progress * (wide.matches ? desktopSpeed : speed) * height;
+      write(current);
+    }
+
+    function onResize() {
+      if (wide.matches) settle();
+      else onScroll();
     }
 
     function listen(on: boolean) {
@@ -127,11 +252,14 @@ export function ParallaxBackdrop({
       listening = on;
       if (on) {
         window.addEventListener('scroll', onScroll, { passive: true });
-        window.addEventListener('resize', onScroll, { passive: true });
-        paint();
+        window.addEventListener('resize', onResize, { passive: true });
+        settle();
       } else {
         window.removeEventListener('scroll', onScroll);
-        window.removeEventListener('resize', onScroll);
+        window.removeEventListener('resize', onResize);
+        window.cancelAnimationFrame(glideRequest);
+        gliding = false;
+        lastTime = 0;
       }
     }
 
@@ -144,8 +272,9 @@ export function ParallaxBackdrop({
       observer.disconnect();
       listen(false);
       window.cancelAnimationFrame(frameRequest);
+      window.cancelAnimationFrame(glideRequest);
     };
-  }, [speed]);
+  }, [speed, desktopSpeed]);
 
   /* Where the photograph's top edge sits inside the layer from lg, as a share
      of the layer's own height: the overhang, plus the inset, over the layer. */

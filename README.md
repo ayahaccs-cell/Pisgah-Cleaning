@@ -1292,6 +1292,19 @@ How it works: each card is a subgrid of five rows (photo, title zone, coverage z
 - `PackageSelector.tsx`: the card body is now four zone wrappers (title, coverage, deployment, action). Copy, links, aria labels and the WhatsApp flow are unchanged.
 - Measured with Chromium at 1440, 1280, 1024 (both rows of 3 and 2) and Arabic 1440: exactly one y value per row for the coverage label, deployment label, button top, button bottom and card bottom.
 
+## v18: desktop cinematic parallax
+
+The hero photograph now travels at 0.30x of scroll from 1024px up (it was 0.18x, which a wheel scroll hides), and arrives with weighted deceleration instead of in coarse steps. Everything is in `src/components/ui/ParallaxBackdrop.tsx`; no copy, colour, size or layout changed.
+
+- Speed: `desktopSpeed` prop, default 0.30. Against the foreground copy and video card the photograph drifts at roughly 0.7 of scroll speed.
+- Glide: inside the existing requestAnimationFrame logic, the layer eases toward its target with an exponential ease (`GLIDE` = 0.085 s time constant), scaled by real frame time so it feels the same at 60 and 120 Hz. It is a decay, not a spring: nothing overshoots, so an edge can never swing into view. The loop runs only while the layer is still travelling and stops itself when settled. No animation library.
+- GPU layer: the only write is `translate3d(0, Ypx, 0)` on one element that carries `will-change: transform`. No transition is set on it, because a CSS transition on a value written every frame adds lag.
+- Edges: the layer still overhangs the frame by 26 percent above and 4 percent below. Only the part of the frame below the viewport top is ever visible, so with speed under 1 the spare above the visible edge is at least 26 percent of the frame at every point of travel; the bottom edge only moves away from the frame. `MAX_LAG` (5 percent of frame height) caps how far the eased layer may trail a jump to the top (Home key, anchor links), so nothing hangs low and leaves a gap. A `scale(1.08)` was considered and rejected: it would crop the photograph the operator is framed in, for headroom the arithmetic shows is not needed.
+- Framing at rest is unchanged (shift is 0 at scroll 0), so the operator's head still sits below the navigation pill as scrolling starts.
+- Below 1024px: the original path, byte for byte in output. One coalesced write per frame, speed 0.18, no easing. Reduced motion still disables the effect entirely.
+
+Measured in Chromium with the real component running: settled offset equals 0.30 x progress x frame height at every tested scroll position; wheel steps of 120px produce a continuous ramp (monotonic, no hops); 155 frames checked across scroll sweeps, End and Home jumps with zero frames where the layer failed to cover the visible frame; at 390px the offset equals the old 0.18 formula exactly. Text contrast re-measured at the longer travel: headline 6.4:1 or better, subhead 5.2:1, pills 4.9:1, labels 4.8:1, video label 6.0:1 (all above 4.5:1), English and Arabic, 1440 / 1280 / 1024.
+
 ## Assets to replace
 
 Client photography supplied September 2026 is now in place.
