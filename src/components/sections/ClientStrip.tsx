@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { siteConfig } from '@/config/siteConfig';
 import { useLocale } from '@/context/LocaleProvider';
+import { Reveal, rc } from '@/components/ui/Reveal';
 
 /**
  * The client register. A dark architectural band.
@@ -29,23 +30,26 @@ export function ClientStrip() {
     >
       <div className="container-page">
         <div className="grid gap-8 lg:grid-cols-12 lg:gap-12">
-          <div className="lg:col-span-4">
-            <p className="spec spec-on-ink">{t.clients.spec}</p>
+          <Reveal stack className="lg:col-span-4">
+            <p {...rc(0)} className="spec spec-on-ink">{t.clients.spec}</p>
             <h2
+              {...rc(0)}
               id="clients-heading"
-              className="mt-5 max-w-[20ch] text-[clamp(25px,2.8vw,34px)] font-bold leading-[1.14] tracking-tight text-white"
+              className="mt-5 max-w-[20ch] text-[clamp(25px,2.8vw,34px)] font-semibold leading-[1.14] tracking-tight text-white"
             >
               {t.clients.heading}
             </h2>
-            <span aria-hidden="true" className="rule-stroke-ink mt-6 block h-[1.5px] w-full" />
-            <p className="spec spec-on-ink mt-5">{t.clients.ratingLabel}</p>
-          </div>
+            <span {...rc(1)} aria-hidden="true" className="rule-stroke-ink mt-6 block h-[1.5px] w-full" />
+            <p {...rc(1)} className="spec spec-on-ink mt-5">{t.clients.ratingLabel}</p>
+          </Reveal>
 
           {/* A ruled register, two columns on a wide screen. Not a logo wall. */}
           <ul className="grid gap-x-10 border-t border-white/10 lg:col-span-8 lg:grid-cols-2">
-            {siteConfig.clients.map((client) => (
-              <li
+            {siteConfig.clients.map((client, index) => (
+              <Reveal
+                as="li"
                 key={client.id}
+                index={index}
                 className="flex items-center gap-5 border-b border-white/10 py-4"
               >
                 <span className="flex h-9 w-[92px] flex-none items-center justify-center">
@@ -64,7 +68,7 @@ export function ClientStrip() {
                   </span>
                   <span className="spec spec-on-ink mt-1">{t.clients.scopes[client.id]}</span>
                 </span>
-              </li>
+              </Reveal>
             ))}
           </ul>
         </div>

@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { siteConfig } from '@/config/siteConfig';
 import { useLocale } from '@/context/LocaleProvider';
 import { generateWhatsAppLink } from '@/lib/whatsapp';
-import { Reveal } from '@/components/ui/Reveal';
+import { Reveal, rc } from '@/components/ui/Reveal';
 import { ChevronDown, ChevronRight } from '@/components/ui/Icons';
 
 /**
@@ -87,16 +87,17 @@ export function ServicePillars() {
   return (
     <section id="services" aria-labelledby="services-heading" className="section-rhythm bg-canvas">
       <div className="container-page">
-        <Reveal className="headline-light max-w-[62ch]">
-          <p className="spec spec-cyan">{t.pillars.spec}</p>
+        <Reveal stack className="headline-light max-w-[62ch]">
+          <p {...rc(0)} className="spec spec-cyan">{t.pillars.spec}</p>
           <h2
+            {...rc(0)}
             id="services-heading"
-            className="mt-5 text-[clamp(27px,3.2vw,40px)] font-bold leading-[1.12] tracking-tight"
+            className="mt-5 text-[clamp(27px,3.2vw,40px)] font-semibold leading-[1.12] tracking-tight"
           >
             {t.pillars.heading}
           </h2>
-          <span aria-hidden="true" className="rule-stroke mt-5" />
-          <p className="mt-5 text-[16.5px] leading-relaxed text-muted">{t.pillars.intro}</p>
+          <span {...rc(1)} aria-hidden="true" className="rule-stroke mt-5" />
+          <p {...rc(1)} className="mt-5 text-pretty text-[16.5px] leading-relaxed text-muted">{t.pillars.intro}</p>
         </Reveal>
 
         <div className="mt-8 flex flex-col gap-3">

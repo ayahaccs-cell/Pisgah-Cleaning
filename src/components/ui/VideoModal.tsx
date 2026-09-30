@@ -99,20 +99,20 @@ export function VideoModal({ open, onClose, src, poster, title, closeLabel }: Pr
       aria-modal="true"
       aria-label={title}
       onClick={stopAndClose}
-      className="fixed inset-0 z-[300] flex items-center justify-center bg-obsidian/94 p-4 sm:p-6"
+      className="glass-scrim fixed inset-0 z-[300] flex items-center justify-center p-4 sm:p-6"
     >
       <div
         ref={frameRef}
         /* Stops a click on the frame from reaching the backdrop handler. */
         onClick={(event) => event.stopPropagation()}
-        className="relative w-full max-w-4xl"
+        className="modal-frame relative w-full max-w-4xl"
       >
         <button
           ref={closeRef}
           type="button"
           onClick={stopAndClose}
           aria-label={closeLabel}
-          className="focus-ring-ink u-press tap absolute -top-2 end-0 z-10 flex h-11 w-11 -translate-y-full items-center justify-center rounded-full bg-white/10 text-xl leading-none text-white transition-colors duration-fast ease-feedback hover:bg-white/20 sm:h-12 sm:w-12"
+          className="focus-ring-ink u-press tap absolute -top-2 end-0 z-10 flex h-11 w-11 -translate-y-full items-center justify-center rounded-full bg-white/10 text-xl leading-none text-white hover:bg-white/20 sm:h-12 sm:w-12"
         >
           <span aria-hidden="true">&#10005;</span>
         </button>

@@ -1305,6 +1305,20 @@ The hero photograph now travels at 0.30x of scroll from 1024px up (it was 0.18x,
 
 Measured in Chromium with the real component running: settled offset equals 0.30 x progress x frame height at every tested scroll position; wheel steps of 120px produce a continuous ramp (monotonic, no hops); 155 frames checked across scroll sweeps, End and Home jumps with zero frames where the layer failed to cover the visible frame; at 390px the offset equals the old 0.18 formula exactly. Text contrast re-measured at the longer travel: headline 6.4:1 or better, subhead 5.2:1, pills 4.9:1, labels 4.8:1, video label 6.0:1 (all above 4.5:1), English and Arabic, 1440 / 1280 / 1024.
 
+## v19: scroll reveals, tactile polish, hero photo scale
+
+Run against the Apple design system (DESIGN.md) and the Taste-Skill standards. Copy, `en.ts`/`ar.ts` parity, the five-card alignment and the desktop hero layout are untouched.
+
+**Hero photo (desktop only).** The v18 parallax already runs at 0.30x of scroll (progress based, eased, clamped) and stays; a literal unbounded `scrollY * 0.3` would ignore the frame's own position and the ease. New: the photo wrapper is `lg:scale-[1.08] lg:origin-top`, a static scale from the top edge, so the fade line does not move and the operator's head shifts about 10px down, clear of the nav pill. Phones are unchanged (their framing was approved without it).
+
+**Scroll reveals (`Reveal.tsx`, `globals.css`).** One IntersectionObserver per block, no scroll listeners. Blocks rise 32px and fade in on a critically damped spring (`--ease-settle`, sampled `linear()` with an expo-out fallback). `<Reveal stack>` reveals its `rc(k)` parts one step (90ms) after another, so every section heading lands just before its description; cards and rows stagger by index (60ms, capped at 7). Now covered below the hero: estimate card, client header and rows, process header and each step (number, title, body, photo), pillars header and cards, scope header and cards, consultation band, leadership header and members. Reduced motion shows everything at once; no JavaScript shows everything at once. Threshold is 0.05 so the next carousel card on a phone shows as a sliver rather than a blank gap.
+
+**Bugs fixed on the way.** Scope cards and division cards carried their own Tailwind transition utility, which replaced the reveal transition, so they popped in with no fade. Their hover lift also inherited the reveal's stagger delay. A mouse never saw the button press shrink because `.u-press:hover` beat `.u-press:active` on specificity. The reveal now hands elements back to their own transitions when it finishes (`is-done`), and `.u-press:hover:active` shows the press.
+
+**Apple polish, below the hero.** Press is `scale(0.95)` (hero keeps 0.98) and releases on a damping 0.8 spring; hover lift and card lift use the same spring. Section headings are weight 600, not 700, and no weight 500 remains outside the nav and drawer chrome; intros and step copy use `text-pretty`, headings already balance. The video modal is the one surface here that content genuinely sits behind, so it gets the frosted material: `.glass-scrim`, obsidian at 66 percent with 20px blur and 180 percent saturation, falling back to the previous 94 percent obsidian without `backdrop-filter` or under reduced transparency; the frame settles in on the spring (opacity and transform only, the blur is never animated). This extends the project's glass rule from two surfaces to three; more glass on flat canvas sections would blur nothing and cost GPU, so none was added.
+
+**Deliberately not adopted from the Apple document:** Action Blue (emerald stays as the single accent, which honours the one-accent rule), SF Pro (the unified Plus Jakarta / IBM Plex Sans Arabic stack is locked), 17px body copy and the no-card-shadow rule (approved v8 card design and locked five-card metrics).
+
 ## Assets to replace
 
 Client photography supplied September 2026 is now in place.

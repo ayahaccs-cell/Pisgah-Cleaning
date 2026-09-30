@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { siteConfig } from '@/config/siteConfig';
 import { useLocale } from '@/context/LocaleProvider';
 import { generateWhatsAppLink } from '@/lib/whatsapp';
-import { Reveal } from '@/components/ui/Reveal';
+import { Reveal, rc } from '@/components/ui/Reveal';
 import { WhatsAppIcon } from '@/components/ui/Icons';
 
 /**
@@ -33,18 +33,19 @@ export function PackageSelector() {
   return (
     <section id="packages" aria-labelledby="packages-heading" className="section-rhythm bg-canvas">
       <div className="container-page">
-        <Reveal className="headline-light grid gap-8 lg:grid-cols-12 lg:items-end">
+        <Reveal stack className="headline-light grid gap-8 lg:grid-cols-12 lg:items-end">
           <div className="lg:col-span-7">
-            <p className="spec spec-cyan">{t.packages.spec}</p>
+            <p {...rc(0)} className="spec spec-cyan">{t.packages.spec}</p>
             <h2
+              {...rc(0)}
               id="packages-heading"
-              className="mt-5 text-[clamp(27px,3.2vw,40px)] font-bold leading-[1.12] tracking-tight"
+              className="mt-5 text-[clamp(27px,3.2vw,40px)] font-semibold leading-[1.12] tracking-tight"
             >
               {t.packages.heading}
             </h2>
-            <span aria-hidden="true" className="rule-stroke mt-5" />
+            <span {...rc(1)} aria-hidden="true" className="rule-stroke mt-5" />
           </div>
-          <p className="text-[16.5px] leading-relaxed text-muted lg:col-span-5">
+          <p {...rc(1)} className="text-pretty text-[16.5px] leading-relaxed text-muted lg:col-span-5">
             {t.packages.intro}
           </p>
         </Reveal>
@@ -69,7 +70,7 @@ export function PackageSelector() {
                 as="article"
                 key={scope.id}
                 index={index}
-                className={`scope-card group u-lift flex w-[82%] flex-none snap-start flex-col overflow-hidden rounded-2xl border border-hairline bg-white shadow-card transition-shadow hover:shadow-lifted sm:w-auto ${
+                className={`scope-card group u-lift flex w-[82%] flex-none snap-start flex-col overflow-hidden rounded-2xl border border-hairline bg-white shadow-card hover:shadow-lifted sm:w-auto ${
                   isSelected ? 'ring-2 ring-emerald' : ''
                 }`}
               >
@@ -134,7 +135,7 @@ export function PackageSelector() {
                       onClick={() => setSelected(scope.id)}
                       onFocus={() => setSelected(scope.id)}
                       aria-label={t.a11y.whatsappPackage}
-                      className="focus-ring-light u-press tap flex min-h-[48px] w-full items-center justify-center gap-2 rounded-full border border-white/20 bg-obsidian px-4 text-center text-[13px] font-medium text-white transition-colors duration-fast ease-feedback hover:bg-carbon"
+                      className="focus-ring-light u-press tap flex min-h-[48px] w-full items-center justify-center gap-2 rounded-full border border-white/20 bg-obsidian px-4 text-center text-[13px] font-semibold text-white hover:bg-carbon"
                     >
                       <WhatsAppIcon size={16} />
                       {t.cta.inspection}

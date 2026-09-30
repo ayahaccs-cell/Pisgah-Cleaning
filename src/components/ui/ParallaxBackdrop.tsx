@@ -118,10 +118,15 @@ const BLEED = 0.04;
    old "overhang must exceed speed" rule guarded against a case that cannot
    happen.
 
-   Scaling the layer up (scale 1.08) was considered for the same purpose and
-   rejected: object-fit cover would then crop a further four percent off every
-   side of a photograph whose subject is already framed to the pixel, and the
-   headroom it buys is headroom this arithmetic shows is not needed. */
+   From lg the photograph is also scaled to 1.08 from its top edge. That is
+   belt and braces on top of the arithmetic above, requested so that no fast
+   scroll can ever show a seam, and it is cheap because it is a static scale on
+   the photo wrapper, not part of the animated transform. The origin is the top
+   centre on purpose: the top edge (where the fade starts) does not move, the
+   operator's head shifts down by about a tenth of its distance from that edge,
+   which keeps it clear of the navigation pill, and the crop lands on the sides
+   and the floor, which carry no subject. Phones do not get it: their framing
+   was approved without it. */
 
 /* Desktop easing. The layer chases its target with an exponential ease whose
    time constant is GLIDE seconds: it closes 63 percent of the remaining gap in
@@ -296,7 +301,7 @@ export function ParallaxBackdrop({
           continuing upward rather than as a boundary. priority because this is
           the largest paint on the first screen. */}
       <div
-        className="parallax-photo-fade absolute inset-x-0 bottom-0 top-0 lg:top-[var(--photo-top)]"
+        className="parallax-photo-fade absolute inset-x-0 bottom-0 top-0 lg:top-[var(--photo-top)] lg:origin-top lg:scale-[1.08]"
         style={{ ['--photo-top' as string]: `${photoTop.toFixed(3)}%` }}
       >
         <Image

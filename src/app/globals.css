@@ -28,19 +28,47 @@
     --d-fast: 200ms;
     --d-standard: 350ms;
     --d-deliberate: 500ms;
-    --stagger: 50ms;
+    --stagger: 60ms;
+    /* Scroll reveals. One duration for the travel, and a fixed step between the
+       parts of a section header so the heading lands just before its
+       description. */
+    --d-reveal: 560ms;
+    --rc-step: 90ms;
 
     --ease-entrance: cubic-bezier(0.16, 1, 0.3, 1);
     --ease-hover: cubic-bezier(0.2, 0, 0, 1);
     --ease-exit: cubic-bezier(0.7, 0, 0.84, 0);
 
+    /* Springs. Both are real second order solutions sampled into linear(), so
+       the shape comes from the damping and the duration from the response:
+       settle is critically damped (no overshoot, for anything that merely
+       arrives), spring is damping 0.8 (about 1.5 percent overshoot, for
+       anything a finger has just released). Engines without linear() keep the
+       expo-out curve above, which is the same family without the tail. */
+    --ease-settle: var(--ease-entrance);
+    --ease-spring: var(--ease-entrance);
+
     --lift-card: -4px;
     --lift-btn: -2px;
-    --press: 0.98;
-    --reveal-y: 16px;
+    /* Press feedback for buttons below the hero. The hero keeps the gentler
+       0.98 (see #top below): it sits over a photograph and a deeper shrink
+       reads as a flicker there. */
+    --press: 0.95;
+    --reveal-y: 32px;
     --glide: 4px;
 
     color-scheme: light;
+  }
+
+  @supports (transition-timing-function: linear(0, 1)) {
+    :root {
+      --ease-settle: linear(0, 0.0232, 0.0799, 0.1551, 0.2388, 0.3241, 0.4068, 0.4843, 0.5552, 0.6189, 0.6753, 0.7247, 0.7676, 0.8045, 0.8361, 0.8631, 0.8859, 0.9051, 0.9213, 0.9348, 0.9461, 0.9556, 0.9634, 0.9699, 0.9753, 0.9797, 0.9834, 0.9864, 0.9889, 0.9909, 0.9926, 0.9939, 1);
+      --ease-spring: linear(0, 0.0226, 0.08, 0.1592, 0.2502, 0.3455, 0.4399, 0.5295, 0.6119, 0.686, 0.7509, 0.8068, 0.8539, 0.893, 0.9248, 0.9502, 0.97, 0.985, 0.9962, 1.0041, 1.0094, 1.0128, 1.0145, 1.0152, 1.0149, 1.0141, 1.013, 1.0116, 1.0102, 1.0088, 1.0074, 1.0061, 1);
+    }
+  }
+
+  #top {
+    --press: 0.98;
   }
 
   /* --------------------------------------------------------------------
@@ -150,29 +178,77 @@
   /* ----------------------------------------------------------------------
      Motion utilities. Composite properties only: transform and opacity.
      ---------------------------------------------------------------------- */
+  /* ------------------------------------------------------------------
+     Scroll reveal.
+
+     Three states, driven by Reveal.tsx:
+       is-pre   hidden and displaced, set after IntersectionObserver support is
+                confirmed, so a page without JavaScript renders finished
+       is-live  released: opacity and transform travel on the settle spring,
+                delayed by the element's stagger index
+       is-done  travel finished: the stagger delay is cleared and the element
+                goes back to its own transitions, so a hover on a card is never
+                held back by its position in the row
+
+     .is-live is written at two classes of specificity on purpose. Several
+     revealed elements carry their own Tailwind transition utility (the scope
+     cards, the division accordion), and a utility would otherwise replace this
+     transition outright and leave the element popping in with no fade at all.
+     ------------------------------------------------------------------ */
   .u-reveal {
     opacity: 1;
     transform: none;
-    transition:
-      opacity var(--d-standard) var(--ease-entrance),
-      transform var(--d-standard) var(--ease-entrance);
-    transition-delay: calc(var(--i, 0) * var(--stagger));
   }
 
-  /* Added by script only after IntersectionObserver support is confirmed, so a
-     page without JavaScript renders fully rather than blank. */
   .u-reveal.is-pre {
     opacity: 0;
     transform: translateY(var(--reveal-y));
     transition: none;
     transition-delay: 0ms;
+    will-change: opacity, transform;
   }
 
+  .u-reveal.is-live {
+    transition:
+      opacity var(--d-reveal) var(--ease-settle),
+      transform var(--d-reveal) var(--ease-settle);
+    transition-delay: calc(var(--i, 0) * var(--stagger));
+    will-change: opacity, transform;
+  }
+
+  .u-reveal.is-done {
+    transition-delay: 0ms;
+  }
+
+  /* A stack reveals its marked parts one after another instead of as a single
+     block: the container stays put and each [data-rc] child carries its own
+     step, so a heading lands first and its description follows. */
+  .u-reveal-stack.is-pre [data-rc] {
+    opacity: 0;
+    transform: translateY(var(--reveal-y));
+    transition: none;
+    will-change: opacity, transform;
+  }
+
+  .u-reveal-stack.is-live [data-rc] {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity var(--d-reveal) var(--ease-settle),
+      transform var(--d-reveal) var(--ease-settle);
+    transition-delay: calc(var(--k, 0) * var(--rc-step));
+    will-change: opacity, transform;
+  }
+
+  /* Press is the contract, hover the bonus. The press is instant and eased
+     out; the release is the spring, because a released button has momentum and
+     should settle rather than stop. Colour keeps its own short ease. */
   .u-press {
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
     transition:
-      transform var(--d-fast) var(--ease-hover),
+      transform 345ms var(--ease-spring),
+      color var(--d-fast) var(--ease-hover),
       background-color var(--d-fast) var(--ease-hover),
       box-shadow var(--d-fast) var(--ease-hover),
       border-color var(--d-fast) var(--ease-hover);
@@ -180,18 +256,23 @@
 
   .u-press:active {
     transform: scale(var(--press));
-    transition-duration: var(--d-instant);
+    transition-duration: var(--d-instant), var(--d-fast), var(--d-fast), var(--d-fast), var(--d-fast);
+    transition-timing-function: ease-out, var(--ease-hover), var(--ease-hover), var(--ease-hover), var(--ease-hover);
   }
 
   .u-lift {
     transition:
-      transform var(--d-standard) var(--ease-entrance),
+      transform 474ms var(--ease-spring),
       box-shadow var(--d-standard) var(--ease-entrance),
       border-color var(--d-standard) var(--ease-entrance);
   }
 
   @media (hover: hover) {
     .u-press:hover { transform: translateY(var(--lift-btn)); }
+    /* Declared after the hover lift and one class more specific, so a pointer
+       that is both over the button and down on it shows the press. Before this
+       the hover rule won the tie and a mouse never saw the shrink. */
+    .u-press:hover:active { transform: scale(var(--press)); }
     .u-lift:hover { transform: translateY(var(--lift-card)); }
     .u-glide-host:hover .u-glide { transform: translateX(var(--glide)); }
   }
@@ -219,6 +300,50 @@
     transform: scaleY(1);
     opacity: 1;
     visibility: visible;
+  }
+
+  /* Dim to focus. The video modal is the one surface on the page that content
+     genuinely sits behind, so it is the one place below the hero that earns a
+     frosted material: the page stays legible as a blurred, darkened context
+     instead of vanishing behind a near-opaque black. The 0.94 obsidian is the
+     fallback for engines without backdrop-filter and for anyone who has asked
+     for reduced transparency, and it is what the modal shipped with before. */
+  .glass-scrim {
+    background-color: rgb(10 14 20 / 0.94);
+    animation: scrim-in var(--d-standard) var(--ease-entrance) both;
+  }
+
+  @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .glass-scrim {
+      background-color: rgb(10 14 20 / 0.66);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      backdrop-filter: blur(20px) saturate(180%);
+    }
+  }
+
+  @media (prefers-reduced-transparency: reduce) {
+    .glass-scrim {
+      background-color: rgb(10 14 20 / 0.96);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
+
+  /* The frame settles in from a slightly smaller size. Opacity and transform
+     only; the blur is never animated, because animating a blur radius on a
+     full-viewport surface drops frames on mid-range hardware. */
+  .modal-frame {
+    animation: frame-in 474ms var(--ease-settle) both;
+  }
+
+  @keyframes scrim-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes frame-in {
+    from { opacity: 0; transform: scale(0.96) translateY(12px); }
+    to { opacity: 1; transform: none; }
   }
 
   .u-surface-out { transition: transform var(--d-standard) var(--ease-exit); }
@@ -557,12 +682,16 @@
   }
 
   .u-reveal,
-  .u-reveal.is-pre {
+  .u-reveal.is-pre,
+  .u-reveal-stack [data-rc],
+  .u-reveal-stack.is-pre [data-rc] {
     opacity: 1 !important;
     transform: none !important;
+    will-change: auto !important;
   }
 
   .u-press:hover,
+  .u-press:hover:active,
   .u-press:active,
   .u-lift:hover,
   .u-glide-host:hover .u-glide {

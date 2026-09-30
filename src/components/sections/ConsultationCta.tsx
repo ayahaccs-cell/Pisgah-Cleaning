@@ -4,6 +4,7 @@ import { siteConfig } from '@/config/siteConfig';
 import { useLocale } from '@/context/LocaleProvider';
 import { callPrimaryHref, generateWhatsAppLink } from '@/lib/whatsapp';
 import { Button } from '@/components/ui/Button';
+import { Reveal, rc } from '@/components/ui/Reveal';
 import { PhoneIcon, WhatsAppIcon } from '@/components/ui/Icons';
 
 /**
@@ -30,21 +31,22 @@ export function ConsultationCta() {
       aria-labelledby="consultation-heading"
       className="bg-obsidian py-14 text-faint-soft sm:py-16"
     >
-      <div className="container-page">
+      <Reveal stack className="container-page">
         <div className="grid items-center gap-8 lg:grid-cols-12 lg:gap-12">
           <div className="lg:col-span-7">
             <h2
+              {...rc(0)}
               id="consultation-heading"
-              className="max-w-[24ch] text-[clamp(22px,2.4vw,30px)] font-bold leading-[1.18] tracking-tight text-white"
+              className="max-w-[24ch] text-[clamp(22px,2.4vw,30px)] font-semibold leading-[1.18] tracking-tight text-white"
             >
               {t.consultation.heading}
             </h2>
-            <p className="mt-4 max-w-[62ch] text-[15px] leading-relaxed">
+            <p {...rc(1)} className="mt-4 max-w-[62ch] text-pretty text-[15px] leading-relaxed">
               {t.consultation.body}
             </p>
           </div>
 
-          <div className="flex flex-col gap-3 sm:flex-row lg:col-span-5 lg:justify-end">
+          <div {...rc(2)} className="flex flex-col gap-3 sm:flex-row lg:col-span-5 lg:justify-end">
             <Button
               href={href}
               external
@@ -71,7 +73,7 @@ export function ConsultationCta() {
 
         {/* The number itself, so the strip answers "who do I ring" without a
             click. Latin order is forced inside an Arabic page. */}
-        <p className="mt-8 border-t border-white/10 pt-5 text-[13px]">
+        <p {...rc(3)} className="mt-8 border-t border-white/10 pt-5 text-[13px]">
           <a
             href={callPrimaryHref()}
             dir="ltr"
@@ -84,7 +86,7 @@ export function ConsultationCta() {
             {siteConfig.contact.hours.office}
           </span>
         </p>
-      </div>
+      </Reveal>
     </section>
   );
 }

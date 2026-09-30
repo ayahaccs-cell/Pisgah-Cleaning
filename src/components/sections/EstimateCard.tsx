@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import { useLocale } from '@/context/LocaleProvider';
+import { Reveal } from '@/components/ui/Reveal';
 import { generateWhatsAppLink } from '@/lib/whatsapp';
 import type { Dictionary } from '@/locales';
 
@@ -56,6 +57,7 @@ export function EstimateCard() {
        the dark one. */
     <div className="bg-canvas pb-2 pt-12 sm:pt-14">
       <div className="container-page">
+      <Reveal>
       <section
         id="intake"
         role="region"
@@ -63,7 +65,7 @@ export function EstimateCard() {
         className="rounded-[20px] border border-hairline bg-white p-[clamp(20px,3vw,34px)] shadow-intake"
       >
         <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
-          <h2 id="intake-title" className="text-[clamp(22px,2.4vw,28px)] font-bold leading-tight tracking-tight text-ink">
+          <h2 id="intake-title" className="text-[clamp(22px,2.4vw,28px)] font-semibold leading-tight tracking-tight text-ink">
             {t.intake.title}
           </h2>
           <p className="spec max-w-[46ch]">{t.intake.note}</p>
@@ -130,7 +132,7 @@ export function EstimateCard() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label={t.a11y.whatsappEstimate}
-              className="focus-ring-light u-press tap flex min-h-[52px] w-full items-center justify-center whitespace-nowrap rounded-xl bg-emerald px-7 text-[15px] font-semibold text-white transition-colors duration-fast ease-feedback hover:bg-emerald-deep xl:w-auto"
+              className="focus-ring-light u-press tap flex min-h-[52px] w-full items-center justify-center whitespace-nowrap rounded-xl bg-emerald px-7 text-[15px] font-semibold text-white hover:bg-emerald-deep xl:w-auto"
             >
               {t.intake.submit}
             </a>
@@ -150,6 +152,7 @@ export function EstimateCard() {
           ))}
         </ul>
       </section>
+      </Reveal>
       </div>
     </div>
   );

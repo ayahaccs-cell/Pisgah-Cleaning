@@ -5,7 +5,7 @@ import { siteConfig } from '@/config/siteConfig';
 import { useLocale } from '@/context/LocaleProvider';
 import { generateWhatsAppLink } from '@/lib/whatsapp';
 import { Button } from '@/components/ui/Button';
-import { Reveal } from '@/components/ui/Reveal';
+import { Reveal, rc } from '@/components/ui/Reveal';
 import { ChevronRight } from '@/components/ui/Icons';
 
 /**
@@ -50,20 +50,21 @@ export function ProcessJourney() {
     <section id="process" aria-labelledby="process-heading" className="section-rhythm bg-canvas">
       <div className="container-page grid gap-8 lg:grid-cols-12 lg:gap-12">
         {/* Heading rail */}
-        <Reveal className="headline-light lg:col-span-4">
+        <Reveal stack className="headline-light lg:col-span-4">
           <div className="lg:sticky lg:top-28">
-            <p className="spec spec-cyan">{t.journey.spec}</p>
+            <p {...rc(0)} className="spec spec-cyan">{t.journey.spec}</p>
             <h2
+              {...rc(0)}
               id="process-heading"
-              className="mt-5 text-[clamp(27px,3.2vw,40px)] font-bold leading-[1.12] tracking-tight"
+              className="mt-5 text-[clamp(27px,3.2vw,40px)] font-semibold leading-[1.12] tracking-tight"
             >
               {t.journey.heading}
             </h2>
-            <span aria-hidden="true" className="rule-stroke mt-5" />
-            <p className="mt-5 max-w-[46ch] text-[16.5px] leading-relaxed text-muted">
+            <span {...rc(1)} aria-hidden="true" className="rule-stroke mt-5" />
+            <p {...rc(1)} className="mt-5 max-w-[46ch] text-pretty text-[16.5px] leading-relaxed text-muted">
               {t.journey.intro}
             </p>
-            <div className="mt-6 hidden lg:block">
+            <div {...rc(2)} className="mt-6 hidden lg:block">
               <Button
                 href={ctaHref}
                 external
@@ -84,26 +85,26 @@ export function ProcessJourney() {
             const copy = t.journey.steps[step.key];
             return (
               <Reveal
+                stack
                 as="li"
                 key={step.key}
-                index={index}
                 className={`group block pt-7 first:pt-0 ${
                   index > 0 ? 'hair-light-t mt-7' : ''
                 }`}
               >
                 <div className={step.indent}>
-                  <div className="flex items-baseline gap-5">
+                  <div {...rc(0)} className="flex items-baseline gap-5">
                     <span className="numeral numeral-accent text-[clamp(28px,3vw,38px)] leading-none">
                       {String(index + 1).padStart(2, '0')}
                     </span>
                     <span className="spec spec-cyan">{copy.spec}</span>
                   </div>
 
-                  <h3 className={`h-ui mt-4 max-w-[24ch] ${step.title}`}>
+                  <h3 {...rc(1)} className={`h-ui mt-4 max-w-[24ch] ${step.title}`}>
                     {copy.title}
                   </h3>
 
-                  <p className="mt-3.5 max-w-[58ch] text-[16px] leading-relaxed text-muted">
+                  <p {...rc(2)} className="mt-3.5 max-w-[58ch] text-pretty text-[16px] leading-relaxed text-muted">
                     {copy.body}
                   </p>
 
@@ -118,7 +119,7 @@ export function ProcessJourney() {
                       Intrinsic width and height rather than `fill`, because a
                       filled image needs a parent with a definite height and
                       this parent no longer has one. */}
-                  <div className="mt-5 overflow-hidden rounded-xl border border-hairline bg-mist shadow-card">
+                  <div {...rc(3)} className="mt-5 overflow-hidden rounded-xl border border-hairline bg-mist shadow-card">
                     <Image
                       src={step.image}
                       alt=""

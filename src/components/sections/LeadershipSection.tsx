@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { siteConfig } from '@/config/siteConfig';
 import { useLocale } from '@/context/LocaleProvider';
-import { Reveal } from '@/components/ui/Reveal';
+import { Reveal, rc } from '@/components/ui/Reveal';
 
 /**
  * Leadership and operational accountability.
@@ -42,18 +42,19 @@ export function LeadershipSection() {
       className="section-rhythm bg-canvas"
     >
       <div className="container-page">
-        <Reveal className="headline-light grid gap-8 lg:grid-cols-12 lg:items-end">
+        <Reveal stack className="headline-light grid gap-8 lg:grid-cols-12 lg:items-end">
           <div className="lg:col-span-6">
-            <p className="spec spec-cyan">{t.leadership.spec}</p>
+            <p {...rc(0)} className="spec spec-cyan">{t.leadership.spec}</p>
             <h2
+              {...rc(0)}
               id="leadership-heading"
-              className="mt-5 text-[clamp(27px,3.2vw,40px)] font-bold leading-[1.12] tracking-tight"
+              className="mt-5 text-[clamp(27px,3.2vw,40px)] font-semibold leading-[1.12] tracking-tight"
             >
               {t.leadership.heading}
             </h2>
-            <span aria-hidden="true" className="rule-stroke mt-5" />
+            <span {...rc(1)} aria-hidden="true" className="rule-stroke mt-5" />
           </div>
-          <p className="max-w-[52ch] text-[16.5px] leading-relaxed text-muted lg:col-span-6">
+          <p {...rc(1)} className="max-w-[52ch] text-pretty text-[16.5px] leading-relaxed text-muted lg:col-span-6">
             {t.leadership.intro}
           </p>
         </Reveal>
